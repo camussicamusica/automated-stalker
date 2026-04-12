@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automated Stalker — Intelligence Hub</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0f1e; color: #fff; font-family: system-ui, sans-serif; }
+  
+  .hero {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    text-align: center; padding: 60px 20px 40px;
+    border-bottom: 1px solid #1e293b;
+  }
+  .hero h1 {
+    font-size: 2.5rem; color: #00d4ff; letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+    animation: glitch-main 2s infinite;
+  }
+  .hero h1::before, .hero h1::after {
+    content: '🤖 AUTOMATED STALKER';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #0a0f1e;
+    overflow: hidden;
+  }
+  .hero h1::before {
+    left: 3px; text-shadow: -2px 0 #ff0080;
+    clip-path: polygon(0 10%, 100% 10%, 100% 35%, 0 35%);
+    animation: glitch-top 2s infinite;
+  }
+  .hero h1::after {
+    left: -3px; text-shadow: 2px 0 #00ffcc;
+    clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+    animation: glitch-bot 2s infinite;
+  }
+  @keyframes glitch-main {
+    0%,88%,92%,96%,100% { transform: none; text-shadow: 0 0 18px rgba(0,212,255,0.6); }
+    89%   { transform: skewX(-2deg) translateX(2px); text-shadow: -3px 0 #ff0080, 3px 0 #00ffcc; }
+    90%   { transform: skewX(2deg) translateX(-2px); }
+    91%   { transform: none; text-shadow: 3px 0 #ff0080; }
+    93%   { transform: skewX(-1deg); text-shadow: 0 0 18px rgba(0,212,255,0.6); }
+    95%   { transform: skewX(1deg) translateX(1px); text-shadow: -2px 0 #00ffcc; }
+  }
+  @keyframes glitch-top {
+    0%,88%,92%,100% { opacity: 0; transform: none; }
+    89%   { opacity: 1; transform: translateX(-4px); }
+    90%   { opacity: 1; transform: translateX(4px); }
+    91%   { opacity: 0; }
+  }
+  @keyframes glitch-bot {
+    0%,90%,95%,100% { opacity: 0; transform: none; }
+    91%   { opacity: 1; transform: translateX(4px); }
+    93%   { opacity: 1; transform: translateX(-4px); }
+    94%   { opacity: 0; }
+  }
+  .hero p { color: #94a3b8; margin-top: 10px; font-size: 1rem; }
+  .hero .tag {
+    display: inline-block; background: rgba(0,212,255,0.1);
+    border: 1px solid #00d4ff; color: #00d4ff;
+    padding: 4px 12px; border-radius: 20px; font-size: 0.75rem;
+    letter-spacing: 1px;
+  }
+
+  .section { padding: 50px 40px; max-width: 1200px; margin: auto; }
+  .section-title { 
+    font-size: 0.75rem; letter-spacing: 3px; color: #00d4ff; 
+    text-transform: uppercase; margin-bottom: 24px;
+    border-left: 3px solid #00d4ff; padding-left: 12px;
+  }
+
+  /* STEP META PILLS (reused from iterations) */
+  .iteration-meta {
+    display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap;
+  }
+  .meta-pill {
+    background: rgba(0,212,255,0.08); border: 1px solid #1e293b;
+    color: #64748b; font-size: 0.7rem; padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .btn {
+    padding: 10px 22px; border-radius: 8px; font-weight: 700;
+    font-size: 0.85rem; text-decoration: none; white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-blue { background: #00d4ff; color: #0a0f1e; }
+  .btn-gold { background: #ffd700; color: #0a0f1e; }
+  .btn-grey { background: #1e293b; color: #94a3b8; }
+
+  /* 28 CANDIDATE GRID */
+  .cards-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .candidate-card {
+    background: #111827; border: 1px solid #1e293b; border-radius: 10px;
+    padding: 16px; text-decoration: none; color: #fff;
+    transition: border-color 0.2s, transform 0.2s;
+    display: block;
+  }
+  .candidate-card:hover { border-color: #00d4ff; transform: translateY(-2px); }
+  .candidate-card.top3 { border-color: #ffd700; }
+  .candidate-name { font-weight: 600; font-size: 0.875rem; margin-bottom: 4px; }
+  .candidate-badge { 
+    font-size: 0.65rem; color: #64748b; letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .candidate-badge.gold { color: #ffd700; }
+
+  /* NUNO BRAIN */
+  .brain-card {
+    background: #111827; border: 1px solid #7c3aed; border-radius: 12px;
+    padding: 28px; display: flex; justify-content: space-between; 
+    align-items: center; gap: 20px;
+  }
+  .brain-title { font-size: 1.2rem; font-weight: 700; color: #a78bfa; }
+  .brain-desc { color: #94a3b8; font-size: 0.875rem; margin-top: 6px; line-height: 1.5; }
+  .brain-stats { display: flex; gap: 24px; margin-top: 14px; }
+  .brain-stat { text-align: center; }
+  .brain-stat-num { font-size: 1.4rem; font-weight: 700; color: #a78bfa; }
+  .brain-stat-label { font-size: 0.65rem; color: #64748b; text-transform: uppercase; }
+  .btn-purple { background: #7c3aed; color: #fff; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center; padding: 40px 20px;
+    border-top: 1px solid #1e293b; color: #475569; font-size: 0.8rem;
+  }
+  .footer a { color: #00d4ff; text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .brain-card { flex-direction: column; }
+    .hero h1 { font-size: 1.6rem; }
+  }
+
+  /* ── TIMELINE ALGORITHM ── */
+  .timeline-outer {
+    position: relative;
+    padding-left: 52px;
+  }
+  .timeline-rail {
+    position: absolute;
+    left: 19px;
+    top: 24px;
+    bottom: 24px;
+    width: 2px;
+    background: linear-gradient(to bottom, #00d4ff 0%, #0099cc 40%, #7c3aed 80%, #ffd700 100%);
+    border-radius: 2px;
+  }
+
+  .step-wrap { position: relative; margin-bottom: 0; }
+  .step-dot {
+    position: absolute;
+    left: -41px;
+    top: 28px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #00d4ff;
+    border: 3px solid #0a0f1e;
+    box-shadow: 0 0 0 2px #00d4ff;
+    z-index: 2;
+  }
+  .step-dot.step4 { background: #ffd700; box-shadow: 0 0 0 2px #ffd700; }
+
+  .step-card {
+    background: #111827;
+    border-radius: 12px;
+    border: 1px solid #1e293b;
+    padding: 24px 28px;
+    margin-bottom: 0;
+    transition: border-color 0.2s;
+  }
+  .step-card:hover { border-color: #00d4ff33; }
+  .step-card.gold-step { border-color: #ffd700; }
+
+  .step-number {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #00d4ff;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    margin-bottom: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+  .step-number.gold-num { color: #ffd700; }
+  .step-subtitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .step-gen {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: #475569;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .step-desc { color: #94a3b8; font-size: 0.875rem; line-height: 1.6; margin-bottom: 12px; }
+  .step-footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .toggle-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ── FLOW ARROW ── */
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0 10px 4px;
+    color: #334155;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .flow-arrow::before {
+    content: '';
+    display: block;
+    width: 2px; height: 28px;
+    background: linear-gradient(to bottom, #1e293b, #334155);
+    flex-shrink: 0;
+  }
+  .flow-arrow-tip { font-size: 1rem; }
+
+  /* ── TOGGLE BUTTONS ── */
+  .toggle-btn {
+    background: #1e293b;
+    color: #00d4ff;
+    border: 1px solid #334155;
+    border-radius: 20px;
+    padding: 5px 13px;
+    font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .toggle-btn:hover { background: #243044; border-color: #00d4ff; }
+  .toggle-btn.warn { color: #f59e0b; border-color: #44350a; }
+  .toggle-btn.warn:hover { background: #1c1506; border-color: #f59e0b; }
+
+  /* citation link pills */
+  .cite-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; align-items: center; }
+  .cite-label { font-size: 0.68rem; color: #475569; text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+  a.cite-link {
+    background: #1e293b; border: 1px solid #334155;
+    border-radius: 20px; padding: 4px 11px;
+    font-family: 'SF Mono','Fira Code','Courier New',monospace;
+    font-size: 0.7rem; text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  a.cite-link.gemini { color: #4ade80; border-color: #14532d; }
+  a.cite-link.gemini:hover { background: #0d2e1a; border-color: #4ade80; }
+  a.cite-link.claude { color: #c084fc; border-color: #3b1f5e; }
+  a.cite-link.claude:hover { background: #200d38; border-color: #c084fc; }
+  a.cite-link.terminal { color: #fcd34d; border-color: #44350a; }
+  a.cite-link.terminal:hover { background: #1c1506; border-color: #fcd34d; }
+
+  /* ── CODE BLOCKS ── */
+  .code-wrap {
+    margin-top: 14px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #1e293b;
+    max-height: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .code-wrap.open {
+    max-height: 800px;
+    opacity: 1;
+  }
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0d1521;
+    padding: 8px 14px;
+    border-bottom: 1px solid #1e293b;
+  }
+  .code-header span {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.72rem;
+    color: #475569;
+    letter-spacing: 0.05em;
+  }
+  .copy-btn {
+    background: #1e293b;
+    color: #64748b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 0.68rem;
+    cursor: pointer;
+    font-family: system-ui, sans-serif;
+    transition: color 0.15s, background 0.15s;
+  }
+  .copy-btn:hover { background: #243044; color: #00d4ff; }
+  .copy-btn.copied { color: #10b981; border-color: #10b981; }
+  pre.code-pre {
+    background: #0a0f1e;
+    color: #10b981;
+    font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 0.78rem;
+    line-height: 1.65;
+    padding: 16px;
+    margin: 0;
+    overflow-x: auto;
+    white-space: pre;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  /* Scrollbar for code blocks */
+  pre.code-pre::-webkit-scrollbar { width: 5px; height: 5px; }
+  pre.code-pre::-webkit-scrollbar-track { background: #0a0f1e; }
+  pre.code-pre::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+
+  @media (max-width: 640px) {
+    .timeline-outer { padding-left: 36px; }
+    .timeline-rail { left: 14px; }
+    .step-dot { left: -30px; }
+    .step-number { font-size: 1.2rem; }
+  }
+
+  /* ── ALGORITHM SOP PANEL ── */
+  .sop-trigger {
+    position: relative;
+    cursor: pointer;
+    background: linear-gradient(135deg, #0d1526 0%, #0a0f1e 100%);
+    border: 1px solid rgba(0,212,255,0.35);
+    border-radius: 16px;
+    padding: 32px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    overflow: hidden;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    user-select: none;
+  }
+  .sop-trigger::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 80% at 20% 50%, rgba(0,212,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .sop-trigger:hover { border-color: rgba(0,212,255,0.7); box-shadow: 0 0 40px rgba(0,212,255,0.08); }
+  .sop-trigger.open { border-color: #00d4ff; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  .sop-trigger-left { flex: 1; }
+  .sop-eyebrow {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: #00d4ff; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sop-eyebrow::before { content: ''; width: 24px; height: 1px; background: #00d4ff; }
+  .sop-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 10px; }
+  .sop-title span { color: #00d4ff; }
+  .sop-desc { font-size: 0.85rem; color: #475569; max-width: 520px; line-height: 1.6; }
+  .sop-stats { display: flex; gap: 28px; margin-top: 20px; flex-wrap: wrap; }
+  .sop-stat { text-align: center; }
+  .sop-stat-n { font-size: 1.8rem; font-weight: 900; color: #00d4ff; line-height: 1; }
+  .sop-stat-l { font-size: 0.6rem; color: #334155; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; }
+  .sop-cta {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    flex-shrink: 0;
+  }
+  .sop-btn {
+    background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.4);
+    color: #00d4ff; border-radius: 10px; padding: 12px 22px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em;
+    cursor: pointer; transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .sop-btn:hover { background: rgba(0,212,255,0.18); border-color: #00d4ff; }
+  .sop-chevron {
+    font-size: 1.4rem; color: #00d4ff; transition: transform 0.4s ease;
+    line-height: 1;
+  }
+  .sop-trigger.open .sop-chevron { transform: rotate(180deg); }
+
+  /* SOP content panel */
+  .sop-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(0,212,255,0.35);
+    border-top: none;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    background: #0a0f1e;
+  }
+  .sop-panel.open {
+    max-height: 12000px;
+    overflow: visible;
+  }
+  .sop-inner { padding-bottom: 20px; }
+
+  /* Darwin Engine embedded styles (namespaced .de-) */
+  .de-section { padding: 60px 10%; }
+  .de-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #00d4ff; margin-bottom: 0.6rem; }
+  .de-hero { background: linear-gradient(135deg, #0d1526 0%, #0a0f1e 100%); border-top: 1px solid rgba(0,212,255,0.2); border-bottom: 1px solid rgba(255,255,255,0.07); padding: 60px 10% 48px; position: relative; overflow: hidden; }
+  .de-hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 70% 60% at 60% 40%, rgba(0,212,255,0.06) 0%, transparent 70%); pointer-events:none; }
+  .de-hero-tag { display: inline-block; padding: 0.3rem 0.9rem; border: 1px solid #00d4ff; color: #00d4ff; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; border-radius: 2px; margin-bottom: 1.4rem; }
+  .de-hero h2 { font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 900; color: #fff; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 0.8rem; }
+  .de-hero h2 span { color: #00d4ff; }
+  .de-hero p { font-size: 1rem; color: rgba(255,255,255,0.5); max-width: 580px; margin-bottom: 2.5rem; }
+  .de-hero-stats { display: flex; gap: 3rem; flex-wrap: wrap; }
+  .de-hstat .dn { font-size: 2.6rem; font-weight: 900; color: #00d4ff; line-height: 1; }
+  .de-hstat .dl { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.25rem; }
+  .de-prob-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1.2rem; margin-top: 2rem; }
+  .de-prob-card { background: #111827; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.6rem; position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s; }
+  .de-prob-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-2px); }
+  .de-prob-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,#ef4444,transparent); }
+  .de-prob-card .dpi { font-size: 1.6rem; margin-bottom: 0.7rem; }
+  .de-prob-card h4 { font-size: 0.95rem; font-weight: 700; color:#fff; margin-bottom: 0.4rem; }
+  .de-prob-card p { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+  .de-pills { display:flex; flex-wrap:wrap; gap:0.7rem; margin: 1.8rem 0; }
+  .de-pill { background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.28); color: #00d4ff; border-radius: 999px; padding: 0.4rem 1rem; font-size: 0.8rem; font-weight: 600; }
+  .de-api-box { background: #111827; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.6rem 1.8rem; display: flex; align-items: flex-start; gap: 1.2rem; margin-top: 1.2rem; }
+  .de-api-box .dai { font-size: 2.2rem; flex-shrink: 0; }
+  .de-api-box h4 { font-size: 0.95rem; font-weight:700; color:#fff; margin-bottom: 0.3rem; }
+  .de-api-box p { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+  .de-stat-row { display:flex; gap:1.2rem; margin-top:1rem; flex-wrap:wrap; }
+  .de-sc { background: rgba(0,212,255,0.07); border:1px solid rgba(0,212,255,0.18); border-radius:8px; padding: 0.5rem 0.9rem; text-align:center; }
+  .de-sc .sn { font-size: 1.3rem; font-weight:800; color:#00d4ff; }
+  .de-sc .sl { font-size: 0.68rem; color:rgba(255,255,255,0.4); text-transform:uppercase; }
+  .de-dims-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:1.1rem; margin-top:2rem; }
+  .de-dim-card { background: #111827; border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:1.4rem; position:relative; overflow:hidden; transition:transform 0.2s, border-color 0.2s; }
+  .de-dim-card:hover { transform:translateY(-3px); border-color:rgba(0,212,255,0.35); }
+  .de-dim-card .dwb { position:absolute; top:0.9rem; right:0.9rem; background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.25); color:#00d4ff; font-size:0.75rem; font-weight:700; padding:0.18rem 0.55rem; border-radius:5px; }
+  .de-dim-card .dwb.hi { background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.35); color:#f59e0b; }
+  .de-dim-card .dnum { font-size:0.65rem; font-weight:700; letter-spacing:0.15em; color:rgba(255,255,255,0.3); text-transform:uppercase; margin-bottom:0.4rem; }
+  .de-dim-card h4 { font-size:1rem; font-weight:700; color:#fff; margin-bottom:0.5rem; padding-right:4rem; }
+  .de-bar-w { height:3px; background:rgba(255,255,255,0.08); border-radius:2px; margin:0.6rem 0; overflow:hidden; }
+  .de-bar { height:100%; border-radius:2px; background:linear-gradient(90deg,#0099cc,#00d4ff); }
+  .de-bar.hi { background:linear-gradient(90deg,#b45309,#f59e0b); }
+  .de-dim-card .dm { font-size:0.78rem; color:rgba(255,255,255,0.45); margin-bottom:0.4rem; }
+  .de-dim-card .dw { font-size:0.78rem; color:rgba(255,255,255,0.35); font-style:italic; border-top:1px solid rgba(255,255,255,0.06); padding-top:0.5rem; margin-top:0.5rem; }
+  .de-funnel { display:flex; flex-direction:column; align-items:center; gap:0; margin-top:2.5rem; }
+  .de-fstage { display:flex; flex-direction:column; align-items:center; width:100%; max-width:680px; }
+  .de-fbox { width:100%; background:#111827; border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:1.6rem 1.8rem; position:relative; overflow:hidden; }
+  .de-fbox::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+  .de-fbox.dg1::before { background:linear-gradient(90deg,#3b82f6,#06b6d4); }
+  .de-fbox.dg2::before { background:linear-gradient(90deg,#8b5cf6,#06b6d4); }
+  .de-fbox.dg3::before { background:linear-gradient(90deg,#f59e0b,#f97316); }
+  .de-fhdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:0.4rem; }
+  .de-glbl { font-size:0.68rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; }
+  .de-glbl.dg1 { color:#60a5fa; } .de-glbl.dg2 { color:#a78bfa; } .de-glbl.dg3 { color:#f59e0b; }
+  .de-fcut { display:flex; align-items:center; gap:0.4rem; padding:0.4rem 0.8rem; background:rgba(239,68,68,0.08); border:1px dashed rgba(239,68,68,0.28); border-radius:7px; font-size:0.75rem; color:#f87171; }
+  .de-fsteps { display:flex; align-items:center; flex-wrap:wrap; gap:0.5rem; }
+  .de-fnode { display:flex; flex-direction:column; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:0.8rem 1rem; min-width:100px; }
+  .de-fnode .dc { font-size:1.8rem; font-weight:900; color:#fff; line-height:1; }
+  .de-fnode .dc.c1 { color:#60a5fa; } .de-fnode .dc.c2 { color:#a78bfa; } .de-fnode .dc.c3 { color:#f59e0b; }
+  .de-fnode .dd { font-size:0.7rem; color:rgba(255,255,255,0.35); text-align:center; margin-top:0.2rem; line-height:1.3; }
+  .de-farr { font-size:1.3rem; color:rgba(255,255,255,0.25); flex-shrink:0; }
+  .de-fadown { display:flex; flex-direction:column; align-items:center; padding:0.8rem 0; color:rgba(255,255,255,0.25); font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; }
+  .de-fadown::before { content:''; width:2px; height:24px; background:linear-gradient(to bottom,rgba(255,255,255,0.08),#00d4ff); margin-bottom:0.3rem; }
+  .de-amber { background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.3); border-left:4px solid #f59e0b; border-radius:12px; padding:1.8rem 2rem; }
+  .de-amber .dat { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#f59e0b; margin-bottom:0.9rem; }
+  .de-amber p { font-size:0.9rem; color:#d1d5db; line-height:1.75; }
+  .de-amber strong { color:#fff; }
+  .de-res-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.4rem; margin-top:2rem; }
+  .de-rc { background:#111827; border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:1.8rem; position:relative; overflow:hidden; transition:transform 0.2s; }
+  .de-rc:hover { transform:translateY(-4px); }
+  .de-rc.dgold { border-color:rgba(245,158,11,0.35); } .de-rc.dsilver { border-color:rgba(148,163,184,0.35); } .de-rc.dbronze { border-color:rgba(205,124,47,0.35); }
+  .de-rc::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+  .de-rc.dgold::before { background:linear-gradient(90deg,#b45309,#f59e0b,#fbbf24); }
+  .de-rc.dsilver::before { background:linear-gradient(90deg,#475569,#94a3b8,#cbd5e1); }
+  .de-rc.dbronze::before { background:linear-gradient(90deg,#92400e,#cd7c2f,#d97706); }
+  .de-rc .dmedal { font-size:2.2rem; line-height:1; margin-bottom:0.7rem; }
+  .de-rc h4 { font-size:1.3rem; font-weight:800; color:#fff; margin-bottom:0.2rem; }
+  .de-rc .dhandle { font-size:0.75rem; color:rgba(255,255,255,0.35); margin-bottom:1rem; }
+  .de-rstat { display:flex; justify-content:space-between; align-items:center; padding:0.45rem 0.7rem; background:rgba(255,255,255,0.025); border-radius:7px; border:1px solid rgba(255,255,255,0.05); margin-bottom:0.4rem; }
+  .de-rstat .rk { font-size:0.75rem; color:rgba(255,255,255,0.4); }
+  .de-rstat .rv { font-size:0.82rem; font-weight:600; color:#fff; }
+  .de-rstat .rv.rg { color:#f59e0b; } .de-rstat .rv.rr { color:#f87171; } .de-rstat .rv.rn { color:#10b981; }
+  .de-finding { background:linear-gradient(135deg,rgba(245,158,11,0.09),rgba(251,191,36,0.04)); border:1px solid rgba(245,158,11,0.45); border-radius:16px; padding:3rem; text-align:center; position:relative; overflow:hidden; }
+  .de-finding::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(245,158,11,0.07) 0%,transparent 70%); pointer-events:none; }
+  .de-finding .dfi { font-size:2.8rem; margin-bottom:0.8rem; }
+  .de-finding h3 { font-size:clamp(1.1rem,3vw,1.5rem); font-weight:800; color:#fff; line-height:1.4; margin-bottom:0.8rem; }
+  .de-finding h3 span { color:#f59e0b; }
+  .de-finding p { font-size:0.92rem; color:rgba(255,255,255,0.45); max-width:480px; margin:0 auto; }
+  .de-tools-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1.1rem; margin-top:2rem; }
+  .de-tc { background:#111827; border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:1.4rem; display:flex; gap:1rem; align-items:flex-start; transition:border-color 0.2s, transform 0.2s; }
+  .de-tc:hover { border-color:rgba(0,212,255,0.28); transform:translateY(-2px); }
+  .de-ticon { width:42px; height:42px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
+  .de-tc h4 { font-size:0.88rem; font-weight:700; color:#fff; margin-bottom:0.25rem; }
+  .de-tc p { font-size:0.76rem; color:rgba(255,255,255,0.4); }
+  .de-tbadge { display:inline-block; margin-top:0.4rem; font-size:0.62rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:0.14rem 0.45rem; border-radius:4px; }
+  .de-chart-wrap { background:#111827; border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:2rem; margin-top:2rem; max-width:500px; }
+  .de-lead { font-size:0.95rem; color:rgba(255,255,255,0.45); max-width:640px; margin-bottom:2rem; }
+  .de-div { width:100%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.05),transparent); margin:0; }
+
+  @media (max-width: 640px) {
+    .sop-trigger { flex-direction: column; align-items: flex-start; }
+    .sop-cta { flex-direction: row; }
+    .de-section { padding: 40px 20px; }
+  }
+</style>
+<style>body{padding-top:64px!important}</style>
+</head>
+<body>
+<!-- ═══ UNIVERSAL NAV ═══ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600;9..40,700&family=Syne:wght@400;600;700;800&display=swap');
+.unav{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);z-index:9999;font-family:'Syne',sans-serif;letter-spacing:.06em;font-size:.78rem;text-transform:uppercase}
+.unav-brand{font-weight:800;color:#fff;text-decoration:none;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.unav-brand em{color:#D4AF37;font-style:normal}
+.unav-links{display:flex;gap:1.8rem;align-items:center;list-style:none}
+.unav-links li{position:relative}
+.unav-links a,.unav-drop-trigger{color:rgba(255,255,255,0.65);text-decoration:none;cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:6px;padding:.3rem 0;background:none;border:none;font:inherit;letter-spacing:inherit;text-transform:inherit;font-size:inherit}
+.unav-links a:hover,.unav-drop-trigger:hover{color:#fff}
+.unav-links a.active,.unav-drop-trigger.active{color:#D4AF37}
+.unav-arrow{font-size:.5rem;transition:transform .25s;opacity:.6}
+.unav-links li:hover .unav-arrow{transform:rotate(180deg);opacity:1}
+.unav-drop{position:absolute;top:calc(100% + 12px);right:0;background:rgba(14,14,20,0.97);border:1px solid rgba(255,255,255,0.08);border-radius:10px;min-width:240px;padding:.5rem 0;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .25s cubic-bezier(.16,1,.3,1);box-shadow:0 20px 40px rgba(0,0,0,.7)}
+.unav-drop::before{content:'';position:absolute;top:-5px;right:18px;width:9px;height:9px;background:rgba(14,14,20,.97);border-left:1px solid rgba(255,255,255,.08);border-top:1px solid rgba(255,255,255,.08);transform:rotate(45deg)}
+.unav-links li:hover .unav-drop{opacity:1;visibility:visible;transform:translateY(0)}
+.unav-drop a{color:rgba(255,255,255,.55);text-decoration:none;padding:.75rem 1.4rem;display:flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;text-transform:none;letter-spacing:0;transition:all .2s;border-left:2px solid transparent;white-space:nowrap}
+.unav-drop a:hover{color:#fff;background:rgba(255,255,255,.03);border-left-color:#D4AF37}
+.unav-drop a .di{font-size:.75rem;opacity:.5}
+.unav-cta{background:#D4AF37;color:#0a0a0f;padding:.45rem 1.1rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.72rem;transition:opacity .2s;white-space:nowrap}
+.unav-cta:hover{opacity:.85;color:#0a0a0f}
+.unav-body-pad{padding-top:64px}
+@media(max-width:768px){.unav-links{gap:1rem}.unav{padding:1rem 1.2rem}.unav-drop{right:-60px}}
+</style>
+<nav class="unav">
+  <a href="hub.html" class="unav-brand">Automated <em>Stalker</em></a>
+  <ul class="unav-links">
+    <li><a href="index.html" class="unav-cta">View Report</a></li>
+    <li>
+      <button class="unav-drop-trigger">Intelligence <span class="unav-arrow">▼</span></button>
+      <div class="unav-drop">
+        <a href="hub.html"><span class="di">🏠</span> Intelligence Hub</a>
+        <a href="index.html"><span class="di">🥇</span> Top 3 Deep Intel</a>
+        <a href="algorithm_sop.html"><span class="di">🧬</span> Algorithm SOP</a>
+        <a href="competitors28.html"><span class="di">👥</span> All 28 Candidates</a>
+      </div>
+    </li>
+    <li><a href="funnelipc.html">Funnel &amp; ICP</a></li>
+    <li><a href="https://github.com/camussicamusica/automated-stalker" target="_blank">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+
+<!-- HERO -->
+<div class="hero">
+  <h1>🤖 AUTOMATED STALKER</h1>
+  <div class="tag">PHASE 1 · COMPETITOR INTELLIGENCE</div>
+  <p>Built for Nuno Tavares (Automated Marketer) · Pareto Talent Final Project · April 2026</p>
+  <p style="color:#475569; font-size:0.8rem; margin-top:8px;">
+    A Darwinian evolutionary algorithm built with Claude Code, Claude AI & Gemini · 
+    Powered by YouTube Data API v3 + RivalSearchMCP
+  </p>
+</div>
+
+<!-- ══ ALGORITHM SOP — EXPANDABLE PANEL ══ -->
+<div class="section" style="padding-bottom: 0;">
+  <div id="sop-trigger" class="sop-trigger" onclick="window.location='algorithm_sop.html'" style="cursor:pointer">
+    <div class="sop-trigger-left">
+      <div class="sop-eyebrow">Algorithm SOP · Full Technical Breakdown</div>
+      <div class="sop-title">The <span>Darwin</span> Engine</div>
+      <div class="sop-desc">The complete methodology behind how we found Nuno's top 3 competitors — 7 weighted dimensions, 3 elimination generations, 28 candidates scored. Click to open the full SOP.</div>
+      <div class="sop-stats">
+        <div class="sop-stat"><div class="sop-stat-n">28</div><div class="sop-stat-l">Candidates</div></div>
+        <div class="sop-stat"><div class="sop-stat-n">7</div><div class="sop-stat-l">Dimensions</div></div>
+        <div class="sop-stat"><div class="sop-stat-n">3</div><div class="sop-stat-l">Generations</div></div>
+        <div class="sop-stat"><div class="sop-stat-n">3</div><div class="sop-stat-l">Finalists</div></div>
+      </div>
+    </div>
+    <div class="sop-cta">
+      <a href="algorithm_sop.html" class="sop-btn" style="text-decoration:none" onclick="event.stopPropagation()">🧬 View Full SOP →</a>
+      <div class="sop-chevron">→</div>
+    </div>
+  </div>
+
+  <div id="sop-panel" class="sop-panel">
+    <div class="sop-inner">
+
+      <!-- DARWIN HERO -->
+      <div class="de-div"></div>
+      <div class="de-hero">
+        <div class="de-hero-tag">Algorithm SOP · How It Works</div>
+        <h2>The <span>Darwin</span> Engine</h2>
+        <p>How we found Nuno's top 3 competitors from 28 candidates using a Darwinian elimination algorithm across 7 weighted dimensions and 3 generations of scoring.</p>
+        <div class="de-hero-stats">
+          <div class="de-hstat"><div class="dn">28</div><div class="dl">Candidates Discovered</div></div>
+          <div class="de-hstat"><div class="dn">7</div><div class="dl">Scoring Dimensions</div></div>
+          <div class="de-hstat"><div class="dn">3</div><div class="dl">Generations</div></div>
+          <div class="de-hstat"><div class="dn">3</div><div class="dl">Finalists Identified</div></div>
+        </div>
+      </div>
+
+      <!-- WHY AN ALGORITHM -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">Why Systematic</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Why Random Research Fails</h2>
+        <p class="de-lead">Without an algorithm, competitor research suffers from confirmation bias, cherry-picking, and surface-level analysis that misses the real strategic threats.</p>
+        <div class="de-prob-grid">
+          <div class="de-prob-card"><div class="dpi">🎯</div><h4>Confirmation Bias</h4><p>Manual research gravitates toward already-known names, missing dark-horse competitors who pose greater strategic risk.</p></div>
+          <div class="de-prob-card"><div class="dpi">📊</div><h4>No Weighting System</h4><p>Without weighted dimensions, a creator with 2M subscribers but zero webinar overlap scores equal to a direct competitor with 50K.</p></div>
+          <div class="de-prob-card"><div class="dpi">🔀</div><h4>Inconsistent Criteria</h4><p>Switching criteria mid-analysis means you're not comparing apples to apples. The algorithm forces the same rubric for all 28.</p></div>
+          <div class="de-prob-card"><div class="dpi">⏳</div><h4>Scale Impossibility</h4><p>Deep-diving 28 creators manually would take weeks. Algorithmic scoring collapses that to hours, reserving human intelligence for the Top 3.</p></div>
+        </div>
+      </section>
+
+      <!-- DATA COLLECTION -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">Data Collection</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">YouTube API Discovery</h2>
+        <p class="de-lead">The YouTube Data API v3 was queried across 8 targeted search terms designed to surface creators at the intersection of AI automation, workflow tools, and Python education.</p>
+        <div class="de-pills">
+          <span class="de-pill">AI automation tools</span>
+          <span class="de-pill">Python automation tutorial</span>
+          <span class="de-pill">n8n workflow automation</span>
+          <span class="de-pill">Make.com automation</span>
+          <span class="de-pill">AI business automation</span>
+          <span class="de-pill">No-code AI workflow</span>
+          <span class="de-pill">AI tools for entrepreneurs</span>
+          <span class="de-pill">Zapier automation tutorial</span>
+        </div>
+        <div class="de-api-box">
+          <div class="dai">📡</div>
+          <div>
+            <h4>YouTube Data API v3 · search.list endpoint</h4>
+            <p>Each search term returned up to 50 video results. Channel metadata extracted per result. Deduplication by channel ID collapsed overlapping appearances into unique candidates.</p>
+            <div class="de-stat-row">
+              <div class="de-sc"><div class="sn">8</div><div class="sl">Search Terms</div></div>
+              <div class="de-sc"><div class="sn">~400</div><div class="sl">Raw Results</div></div>
+              <div class="de-sc"><div class="sn">28</div><div class="sl">Unique Candidates</div></div>
+              <div class="de-sc"><div class="sn">100%</div><div class="sl">Programmatic</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 DIMENSIONS -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">The Scoring Rubric</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">The 7 Scoring Dimensions</h2>
+        <p class="de-lead">Each of the 28 candidates was scored 0–10 across seven dimensions, then multiplied by its weight. Weights were calibrated to Nuno's specific competitive threat profile.</p>
+        <div class="de-dims-grid">
+          <div class="de-dim-card"><div class="dnum">Dimension 01</div><div class="dwb hi">25%</div><h4>Niche Density</h4><div class="de-bar-w"><div class="de-bar hi" style="width:100%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> How precisely the creator occupies Nuno's specific niche — AI automation + Python + business workflows.</p><p class="dw">Highest weight because exact-niche creators are maximally threatening regardless of audience size.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 02</div><div class="dwb hi">25%</div><h4>Webinar Strategy</h4><div class="de-bar-w"><div class="de-bar hi" style="width:100%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Whether the creator uses webinars, live events, or cohort launches as a primary monetization channel.</p><p class="dw">Webinar competitors steal Nuno's audience during launch windows. Zero-webinar creators are irrelevant to launch strategy.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 03</div><div class="dwb">20%</div><h4>Audience Overlap</h4><div class="de-bar-w"><div class="de-bar" style="width:80%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Shared subscriber demographics — small business owners, solopreneurs, and no-code/low-code adopters.</p><p class="dw">Perfect niche fit but zero audience overlap means not a real competitor for Nuno's specific buyers.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 04</div><div class="dwb">10%</div><h4>Content Format</h4><div class="de-bar-w"><div class="de-bar" style="width:40%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Alignment with tutorial-style, long-form video content — Nuno's core format on YouTube.</p><p class="dw">Format divergence (short-form only, podcast-first) reduces competitive pressure even if niches overlap.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 05</div><div class="dwb">10%</div><h4>Offer Structure</h4><div class="de-bar-w"><div class="de-bar" style="width:40%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Whether the creator sells courses, communities, templates, or SaaS competing with Nuno's launch.</p><p class="dw">Offer similarity determines whether the competitor will be positioned as an alternative at checkout.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 06</div><div class="dwb">5%</div><h4>Revenue Scale</h4><div class="de-bar-w"><div class="de-bar" style="width:20%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Estimated monthly revenue from communities, courses, sponsorships, and SaaS.</p><p class="dw">Revenue scale signals market validation, not direct threat. Low weight avoids over-indexing on big names.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 07</div><div class="dwb">5%</div><h4>Authority Score</h4><div class="de-bar-w"><div class="de-bar" style="width:20%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Domain authority, press coverage, backlink profile, and industry recognition signals.</p><p class="dw">Authority affects SEO and credibility halo — important context but not a direct proxy for threat to a launch.</p></div>
+        </div>
+        <div class="de-chart-wrap">
+          <canvas id="de-radarChart" height="260"></canvas>
+        </div>
+      </section>
+
+      <!-- 3 GENERATIONS -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">The Elimination Funnel</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">The 3 Generations</h2>
+        <p class="de-lead">Inspired by natural selection: each generation scores, penalizes, and eliminates the weakest candidates. Only the strategically fittest survive to the next round.</p>
+        <div class="de-funnel">
+          <div class="de-fstage">
+            <div class="de-fbox dg1">
+              <div class="de-fhdr"><div class="de-glbl dg1">Generation 1 · Initial Scoring</div><div class="de-fcut">✂ Bottom 40% eliminated → 11 removed</div></div>
+              <div class="de-fsteps">
+                <div class="de-fnode"><div class="dc c1">28</div><div class="dd">Candidates<br>enter scoring</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c1" style="font-size:1rem;">7D Score</div><div class="dd">All 7 dimensions<br>scored 0–10</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c1" style="font-size:1rem;">Rank</div><div class="dd">Weighted total<br>0–100 pts</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c1">17</div><div class="dd">Survivors<br>advance</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="de-fadown">Survivors advance</div>
+          <div class="de-fstage">
+            <div class="de-fbox dg2">
+              <div class="de-fhdr"><div class="de-glbl dg2">Generation 2 · Webinar Penalty</div><div class="de-fcut">✂ Bottom 40% eliminated → 7 removed</div></div>
+              <div class="de-fsteps">
+                <div class="de-fnode"><div class="dc c2">17</div><div class="dd">Survivors<br>re-evaluated</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c2" style="font-size:1rem;">Penalty</div><div class="dd">Non-webinar creators<br>score penalized</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c2" style="font-size:1rem;">Re-rank</div><div class="dd">Adjusted scores<br>re-sorted</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c2">10</div><div class="dd">Survivors<br>advance</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="de-fadown">Final selection</div>
+          <div class="de-fstage">
+            <div class="de-fbox dg3">
+              <div class="de-fhdr"><div class="de-glbl dg3">Generation 3 · Benchmark Comparison</div><div class="de-fcut">✂ 7 candidates eliminated → Top 3 identified</div></div>
+              <div class="de-fsteps">
+                <div class="de-fnode"><div class="dc c3">10</div><div class="dd">Finalists<br>benchmarked</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c3" style="font-size:0.9rem;">Deep Intel</div><div class="dd">Claude Code +<br>RivalSearchMCP</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c3" style="font-size:0.9rem;">vs Nuno</div><div class="dd">Head-to-head<br>comparison</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c3">🏆 3</div><div class="dd">Strategic<br>competitors</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HONEST METHODOLOGY -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">Transparency</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Honest Methodology Note</h2>
+        <div class="de-amber">
+          <div class="dat">⚠ Transparency Notice</div>
+          <p>The automated web scraping phase (<strong>report2.py</strong>) returned limited results — most websites blocked requests, Instagram and LinkedIn rejected scrapers, and Meta Ad Library is JavaScript-rendered and inaccessible to standard HTTP clients.<br><br>
+          <strong>Individual candidate cards reflect only publicly accessible data</strong> (YouTube API metadata, publicly indexed pages). Real deep intelligence was only achievable on the <strong>Top 3 finalists</strong> using <strong>Claude Code + RivalSearchMCP</strong> with Cloudflare bypass, which enabled full website rendering, ad library access, community pricing visibility, and revenue estimation.<br><br>
+          The 28-candidate cards are algorithmic signals, not verified profiles. The Top 3 reports are high-confidence intelligence.</p>
+        </div>
+      </section>
+
+      <!-- RESULTS -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">The Finalists</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Top 3 Competitors</h2>
+        <p class="de-lead">After 3 generations of scoring and elimination, these three creators represent Nuno's highest-priority strategic competitors in the AI automation education space.</p>
+        <div class="de-res-grid">
+          <div class="de-rc dgold"><div class="dmedal">🥇</div><h4>Nick Saraev</h4><div class="dhandle">@nicksaraev · AI Automation</div><div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv rg">377K</span></div><div class="de-rstat"><span class="rk">Community Pricing</span><span class="rv">$184 / mo · Skool</span></div><div class="de-rstat"><span class="rk">Est. Monthly Revenue</span><span class="rv rn">~$441K / mo</span></div><div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div></div>
+          <div class="de-rc dsilver"><div class="dmedal">🥈</div><h4>Riley Brown</h4><div class="dhandle">@rileybrown.ai · VibeCode</div><div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv" style="color:#94a3b8;">211K</span></div><div class="de-rstat"><span class="rk">Funding</span><span class="rv">$9.4M VC Funded</span></div><div class="de-rstat"><span class="rk">Product</span><span class="rv">VibeCode App (SaaS)</span></div><div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div></div>
+          <div class="de-rc dbronze"><div class="dmedal">🥉</div><h4>Nate Herk</h4><div class="dhandle">@nateherk · AI Automation</div><div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv" style="color:#cd7c2f;">648K</span></div><div class="de-rstat"><span class="rk">Community Pricing</span><span class="rv">$99 / month</span></div><div class="de-rstat"><span class="rk">Est. Monthly Revenue</span><span class="rv rn">~$320K / mo</span></div><div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div></div>
+        </div>
+      </section>
+
+      <!-- KEY FINDING -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">Strategic Insight</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1.5rem;">The Key Finding</h2>
+        <div class="de-finding">
+          <div class="dfi">🎯</div>
+          <h3><span>NONE</span> of the top 3 competitors run public webinars.<br>Nuno's webinar is completely <span>uncontested</span> in this space.</h3>
+          <p>Every major player monetizes through communities, SaaS, and courses — not live webinar launches. This is a genuine strategic white space that Nuno can own without fighting established players on their home turf.</p>
+        </div>
+      </section>
+
+      <!-- TOOLS -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">Stack</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Tools Used</h2>
+        <p class="de-lead">This intelligence system was built using a layered stack of AI models, APIs, and specialized tools — each assigned to the task it handles best.</p>
+        <div class="de-tools-grid">
+          <div class="de-tc"><div class="de-ticon" style="background:rgba(100,116,139,0.12);">🤖</div><div><h4>Claude Sonnet 4.6</h4><p>Prompt engineering, algorithm architecture, scoring rubric design, and strategic synthesis.</p><span class="de-tbadge" style="background:rgba(0,212,255,0.1);color:#00d4ff;border:1px solid rgba(0,212,255,0.2);">Anthropic</span></div></div>
+          <div class="de-tc"><div class="de-ticon" style="background:rgba(59,130,246,0.1);">✨</div><div><h4>Google Gemini 2.5 Pro</h4><p>Python code generation for the scraping pipeline, API integration, and data processing logic.</p><span class="de-tbadge" style="background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);">Google DeepMind</span></div></div>
+          <div class="de-tc"><div class="de-ticon" style="background:rgba(16,185,129,0.1);">🔍</div><div><h4>Claude Code + RivalSearchMCP</h4><p>Deep intel on Top 3 — Cloudflare bypass, full site rendering, ad library access, revenue estimation.</p><span class="de-tbadge" style="background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.2);">Anthropic · MCP</span></div></div>
+          <div class="de-tc"><div class="de-ticon" style="background:rgba(239,68,68,0.1);">📡</div><div><h4>YouTube Data API v3</h4><p>Programmatic candidate discovery across 8 search terms. 28 unique channels extracted and deduplicated.</p><span class="de-tbadge" style="background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);">Google Cloud</span></div></div>
+        </div>
+      </section>
+
+    </div><!-- /sop-inner -->
+  </div><!-- /sop-panel -->
+</div><!-- /section -->
+
+<!-- ALGORITHM TIMELINE -->
+<div class="section">
+  <div class="section-title">🧬 THE DARWIN ENGINE — One Algorithm, Four Steps</div>
+
+  <div class="timeline-outer">
+    <div class="timeline-rail"></div>
+
+    <!-- ── STEP 1 ── -->
+    <div class="step-wrap">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">STEP 1 OF 4</div>
+        <div class="step-subtitle">The Darwin Engine — First Run</div>
+        <div class="step-gen">Generation 1 · Built with Gemini + Claude</div>
+        <div class="step-desc">
+          Queried YouTube Data API v3 across 8 niche search terms. Discovered 28 unique candidates.
+          Applied 7-dimension weighted fitness scoring (audience overlap, niche density, webinar strategy…).
+          Ran 3 Darwinian elimination rounds. Produced ranked CSV + first HTML visualization.
+        </div>
+        <div class="iteration-meta">
+          <span class="meta-pill">28 candidates</span>
+          <span class="meta-pill">YouTube API v3</span>
+          <span class="meta-pill">7D fitness score</span>
+          <span class="meta-pill">Python</span>
+        </div>
+        <div class="step-footer">
+          <a href="iteration1.html" class="btn btn-grey">View Report →</a>
+          <div class="toggle-row">
+            <button class="toggle-btn" onclick="toggleBlock('wrap-code1','btn-code1')" id="btn-code1">&lt;/&gt; Show Python Code</button>
+          </div>
+        </div>
+        <div class="cite-row">
+          <span class="cite-label">💎 Gemini</span>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7fae70229974" target="_blank">Conv 1</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7d3034e042bf" target="_blank">Conv 2</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/9d253dea0799" target="_blank">Conv 3</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/d9c7a8d036b5" target="_blank">Conv 4</a>
+          <span class="cite-label" style="margin-left:6px;">🤖 Claude</span>
+          <a class="cite-link claude" href="https://claude.ai/share/c7992f5f-f1ce-442d-988e-d29d8be77d86" target="_blank">Conv 1</a>
+          <a class="cite-link claude" href="https://claude.ai/share/8f0f8190-132d-4c63-a136-8bf2f8d02b91" target="_blank">Conv 2</a>
+          <a class="cite-link claude" href="https://claude.ai/share/fed341c9-ab17-454f-b1d5-a7fdf3230fc1" target="_blank">Conv 3</a>
+          <a class="cite-link claude" href="https://claude.ai/share/3bc08b45-ab22-433b-b734-deeb99aa9ae4" target="_blank">Conv 4</a>
+        </div>
+        <div id="wrap-code1" class="code-wrap">
+          <div class="code-header">
+            <span>nuno_competition.py — YouTube API + Fitness Scoring + Elimination</span>
+            <button class="copy-btn" onclick="copyCode('pre-code1',this)">Copy</button>
+          </div>
+          <pre id="pre-code1" class="code-pre"></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow"><span class="flow-arrow-tip">↓</span> 28 candidates → competitor_analysis.csv</div>
+
+    <!-- ── STEP 2 ── -->
+    <div class="step-wrap">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">STEP 2 OF 4</div>
+        <div class="step-subtitle">Deep Link Enrichment — All 28 Candidates</div>
+        <div class="step-gen">Generation 2 · Built with Gemini + Claude</div>
+        <div class="step-desc">
+          Reads competitor_analysis.csv and generates a self-contained HTML intelligence dashboard.
+          Injects all CSV data as JSON into the HTML template. Renders a searchable ranked table,
+          Top 3 profile cards with tabbed deep-dives, and a Chart.js fitness visualization.
+        </div>
+        <div class="iteration-meta">
+          <span class="meta-pill">HTML generation</span>
+          <span class="meta-pill">JSON injection</span>
+          <span class="meta-pill">Chart.js</span>
+          <span class="meta-pill">Tabbed profiles</span>
+        </div>
+        <div class="step-footer">
+          <a href="iteration2.html" class="btn btn-grey">View Report →</a>
+          <div class="toggle-row">
+            <button class="toggle-btn" onclick="toggleBlock('wrap-code2','btn-code2')" id="btn-code2">&lt;/&gt; Show Python Code</button>
+          </div>
+        </div>
+        <div class="cite-row">
+          <span class="cite-label">💎 Gemini</span>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7fae70229974" target="_blank">Conv 1</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7d3034e042bf" target="_blank">Conv 2</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/9d253dea0799" target="_blank">Conv 3</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/d9c7a8d036b5" target="_blank">Conv 4</a>
+          <span class="cite-label" style="margin-left:6px;">🤖 Claude</span>
+          <a class="cite-link claude" href="https://claude.ai/share/c7992f5f-f1ce-442d-988e-d29d8be77d86" target="_blank">Conv 1</a>
+          <a class="cite-link claude" href="https://claude.ai/share/8f0f8190-132d-4c63-a136-8bf2f8d02b91" target="_blank">Conv 2</a>
+          <a class="cite-link claude" href="https://claude.ai/share/fed341c9-ab17-454f-b1d5-a7fdf3230fc1" target="_blank">Conv 3</a>
+          <a class="cite-link claude" href="https://claude.ai/share/3bc08b45-ab22-433b-b734-deeb99aa9ae4" target="_blank">Conv 4</a>
+        </div>
+        <div id="wrap-code2" class="code-wrap">
+          <div class="code-header">
+            <span>2. report.py — HTML Generation + Chart.js Injection</span>
+            <button class="copy-btn" onclick="copyCode('pre-code2',this)">Copy</button>
+          </div>
+          <pre id="pre-code2" class="code-pre"></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow"><span class="flow-arrow-tip">↓</span> competitor_report.html → per-candidate card pages</div>
+
+    <!-- ── STEP 3 ── -->
+    <div class="step-wrap">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">STEP 3 OF 4</div>
+        <div class="step-subtitle">Individual Report Cards — One Per Candidate</div>
+        <div class="step-gen">Generation 3 · Built with Gemini + Claude</div>
+        <div class="step-desc">
+          Ran automated Google searches for each of the 19 qualifying candidates to discover
+          websites, LinkedIn, Instagram, webinar pages, and course pages. Scraped each site for
+          headline, sections, CTA, and pricing signals. Generated 28 individual HTML report cards.
+        </div>
+        <div class="iteration-meta">
+          <span class="meta-pill">7 searches/candidate</span>
+          <span class="meta-pill">BeautifulSoup</span>
+          <span class="meta-pill">28 report cards</span>
+          <span class="meta-pill">deep_enriched.csv</span>
+        </div>
+        <div class="step-footer">
+          <a href="iteration3.html" class="btn btn-grey">View Report →</a>
+          <div class="toggle-row">
+            <button class="toggle-btn" onclick="toggleBlock('wrap-code3','btn-code3')" id="btn-code3">&lt;/&gt; Show Python Code</button>
+            <button class="toggle-btn warn" onclick="toggleBlock('wrap-note3','btn-note3')" id="btn-note3">⚠️ Methodology Note</button>
+          </div>
+        </div>
+        <div class="cite-row">
+          <span class="cite-label">💎 Gemini</span>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7fae70229974" target="_blank">Conv 1</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7d3034e042bf" target="_blank">Conv 2</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/9d253dea0799" target="_blank">Conv 3</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/d9c7a8d036b5" target="_blank">Conv 4</a>
+          <span class="cite-label" style="margin-left:6px;">🤖 Claude</span>
+          <a class="cite-link claude" href="https://claude.ai/share/c7992f5f-f1ce-442d-988e-d29d8be77d86" target="_blank">Conv 1</a>
+          <a class="cite-link claude" href="https://claude.ai/share/8f0f8190-132d-4c63-a136-8bf2f8d02b91" target="_blank">Conv 2</a>
+          <a class="cite-link claude" href="https://claude.ai/share/fed341c9-ab17-454f-b1d5-a7fdf3230fc1" target="_blank">Conv 3</a>
+          <a class="cite-link claude" href="https://claude.ai/share/3bc08b45-ab22-433b-b734-deeb99aa9ae4" target="_blank">Conv 4</a>
+        </div>
+        <div id="wrap-code3" class="code-wrap">
+          <div class="code-header">
+            <span>3. report2.py — deep_search() + Enrichment Loop</span>
+            <button class="copy-btn" onclick="copyCode('pre-code3',this)">Copy</button>
+          </div>
+          <pre id="pre-code3" class="code-pre"></pre>
+        </div>
+        <div id="wrap-note3" class="code-wrap">
+          <div class="code-header" style="background:rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.3);">
+            <span style="color:#f59e0b;">⚠️  What Actually Happened During Scraping</span>
+            <button class="copy-btn" onclick="copyCode('pre-note3',this)">Copy</button>
+          </div>
+          <pre id="pre-note3" class="code-pre" style="color:#f59e0b; background:#0c0a04;"></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow"><span class="flow-arrow-tip">↓</span> deep_enriched.csv → Top 3 escalated to Claude Code</div>
+
+    <!-- ── STEP 4 ── -->
+    <div class="step-wrap">
+      <div class="step-dot step4"></div>
+      <div class="step-card gold-step">
+        <div class="step-number gold-num">STEP 4 OF 4</div>
+        <div class="step-subtitle">⭐ Top 3 Deep Intelligence — The Crown Jewel</div>
+        <div class="step-gen">Generation 4 · Built with Claude Code + RivalSearchMCP</div>
+        <div class="step-desc">
+          Switched from Python scraping to Claude Code + RivalSearchMCP for Cloudflare bypass and
+          multi-engine search. Deep-stalked Nick Saraev, Riley Brown, and Nate Herk across all platforms.
+          Found real pricing ($184/mo Skool, $99/mo community), revenue estimates ($320K–$441K/mo),
+          press mentions, and full business model breakdowns.
+          <br><br>
+          <strong style="color:#ffd700">Key finding: none of the top 3 run public webinars — Nuno's webinar is uncontested.</strong>
+        </div>
+        <div class="iteration-meta">
+          <span class="meta-pill">RivalSearchMCP</span>
+          <span class="meta-pill">Claude Code</span>
+          <span class="meta-pill">Revenue intel</span>
+          <span class="meta-pill">Business models</span>
+          <span class="meta-pill">Cloudflare bypass</span>
+        </div>
+        <div class="step-footer">
+          <a href="index.html" class="btn btn-gold">View Report →</a>
+        </div>
+        <div class="cite-row">
+          <span class="cite-label">⚡ Session</span>
+          <a class="cite-link terminal" href="https://github.com/camussicamusica/automated-stalker/blob/main/02_Data/session_transcript.txt" target="_blank">Terminal Session Log</a>
+          <span class="cite-label" style="margin-left:6px;">🤖 Claude</span>
+          <a class="cite-link claude" href="https://claude.ai/share/c7992f5f-f1ce-442d-988e-d29d8be77d86" target="_blank">Conv 1</a>
+          <a class="cite-link claude" href="https://claude.ai/share/8f0f8190-132d-4c63-a136-8bf2f8d02b91" target="_blank">Conv 2</a>
+          <a class="cite-link claude" href="https://claude.ai/share/fed341c9-ab17-454f-b1d5-a7fdf3230fc1" target="_blank">Conv 3</a>
+          <a class="cite-link claude" href="https://claude.ai/share/3bc08b45-ab22-433b-b734-deeb99aa9ae4" target="_blank">Conv 4</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /timeline-outer -->
+</div>
+
+
+<!-- 28 INDIVIDUAL CARDS -->
+<div class="section">
+  <div class="section-title">👥 All 28 Candidates — Individual Report Cards</div>
+  <div style="background:rgba(245,158,11,0.1);border:1px solid #f59e0b;border-radius:10px;padding:16px 20px;margin-bottom:20px">
+    <span style="color:#f59e0b;font-weight:700">⚠️ Methodology Note:</span>
+    <span style="color:#94a3b8;font-size:0.875rem"> The automated Google scraping (report2.py) returned mostly empty results for these 28 candidates — websites blocked requests, Instagram and LinkedIn rejected scrapers, and Meta Ad Library is JavaScript-rendered. The individual cards below reflect what the Python scraper could publicly access, which was limited. The real deep intelligence was only achievable on the Top 3 finalists using Claude Code + RivalSearchMCP (Cloudflare bypass + multi-engine search). This is documented honestly as part of the iterative methodology.</span>
+  </div>
+  <div class="cards-grid">
+    <a href="../05_Assets/report_cards/Nick_Saraev_Report.html" class="candidate-card top3">
+      <div class="candidate-name">Nick Saraev</div>
+      <div class="candidate-badge gold">🥇 Finalist #1 · 62.5</div>
+    </a>
+    <a href="../05_Assets/report_cards/Riley_Brown_Report.html" class="candidate-card top3">
+      <div class="candidate-name">Riley Brown</div>
+      <div class="candidate-badge gold">🥈 Finalist #2 · 58.75</div>
+    </a>
+    <a href="../05_Assets/report_cards/Nate_Herk_AI_Automation_Report.html" class="candidate-card top3">
+      <div class="candidate-name">Nate Herk</div>
+      <div class="candidate-badge gold">🥉 Finalist #3 · 58.75</div>
+    </a>
+    <a href="../05_Assets/report_cards/Helena_Liu_Report.html" class="candidate-card">
+      <div class="candidate-name">Helena Liu</div>
+      <div class="candidate-badge">272K subs · 55.0</div>
+    </a>
+    <a href="../05_Assets/report_cards/Liam_Ottley_Report.html" class="candidate-card">
+      <div class="candidate-name">Liam Ottley</div>
+      <div class="candidate-badge">764K subs · 25.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/Matt_Wolfe_Report.html" class="candidate-card">
+      <div class="candidate-name">Matt Wolfe</div>
+      <div class="candidate-badge">927K subs · 25.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/Jason_Wardrop_Report.html" class="candidate-card">
+      <div class="candidate-name">Jason Wardrop</div>
+      <div class="candidate-badge">337K subs · 22.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/Keaton_Walker_Report.html" class="candidate-card">
+      <div class="candidate-name">Keaton Walker</div>
+      <div class="candidate-badge">73.8K subs · 21.2</div>
+    </a>
+    <a href="../05_Assets/report_cards/Mikey_No_Code_Report.html" class="candidate-card">
+      <div class="candidate-name">Mikey No Code</div>
+      <div class="candidate-badge">119K subs · 25.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/Corbin_Brown_Report.html" class="candidate-card">
+      <div class="candidate-name">Corbin Brown</div>
+      <div class="candidate-badge">165K subs · 25.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/Pragati_Kunwer_Claude_Code_Report.html" class="candidate-card">
+      <div class="candidate-name">Pragati Kunwer</div>
+      <div class="candidate-badge">112K subs · 31.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/HighLevel_Report.html" class="candidate-card">
+      <div class="candidate-name">HighLevel</div>
+      <div class="candidate-badge">92.1K subs · 49.7</div>
+    </a>
+    <a href="../05_Assets/report_cards/GoHighLevel_Tutorials_HL_Power_Hub_Report.html" class="candidate-card">
+      <div class="candidate-name">GHL Power Hub</div>
+      <div class="candidate-badge">3.37K subs · 33.2</div>
+    </a>
+    <a href="../05_Assets/report_cards/Vibe_Coding_with_Naman_Report.html" class="candidate-card">
+      <div class="candidate-name">Vibe Coding w/ Naman</div>
+      <div class="candidate-badge">8.97K subs · 34.3</div>
+    </a>
+    <a href="../05_Assets/report_cards/n8n_Report.html" class="candidate-card">
+      <div class="candidate-name">n8n</div>
+      <div class="candidate-badge">230K subs · 55.0</div>
+    </a>
+    <a href="../05_Assets/report_cards/Manus_AI_Report.html" class="candidate-card">
+      <div class="candidate-name">Manus AI</div>
+      <div class="candidate-badge">65.7K subs · 19.9</div>
+    </a>
+    <a href="../05_Assets/report_cards/Claude_Ams_Programming_Guru_Report.html" class="candidate-card">
+      <div class="candidate-name">Claude Ams</div>
+      <div class="candidate-badge">412K subs · 28.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/Anthropic_Report.html" class="candidate-card">
+      <div class="candidate-name">Anthropic</div>
+      <div class="candidate-badge">516K subs · 25.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/Jonathan_Ferrell_GoHighLevel_Automations_Report.html" class="candidate-card">
+      <div class="candidate-name">Jonathan Ferrell</div>
+      <div class="candidate-badge">731 subs · 10.5</div>
+    </a>
+    <a href="../05_Assets/report_cards/Milan_Vasarhelyi_Business_Automation_Report.html" class="candidate-card">
+      <div class="candidate-name">Milan Vasarhelyi</div>
+      <div class="candidate-badge">287 subs · 13.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/MCP_Manager_by_Usercentrics_Report.html" class="candidate-card">
+      <div class="candidate-name">MCP Manager</div>
+      <div class="candidate-badge">157 subs · 13.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/WEBINARIS_automatisiertes_Webinar_Marketing_Report.html" class="candidate-card">
+      <div class="candidate-name">WEBINARIS</div>
+      <div class="candidate-badge">1.44K subs · 25.3</div>
+    </a>
+    <a href="../05_Assets/report_cards/MCP_Builder_ai_Report.html" class="candidate-card">
+      <div class="candidate-name">MCP Builder AI</div>
+      <div class="candidate-badge">13 subs · 10.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/Yazdan_Report.html" class="candidate-card">
+      <div class="candidate-name">Yazdan</div>
+      <div class="candidate-badge">149 subs · 10.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/Vibe_Coding_Tutorials_Report.html" class="candidate-card">
+      <div class="candidate-name">Vibe Coding Tutorials</div>
+      <div class="candidate-badge">1 sub · 7.4</div>
+    </a>
+    <a href="../05_Assets/report_cards/Marketing_Cube_Marketing_Automation_Report.html" class="candidate-card">
+      <div class="candidate-name">Marketing Cube</div>
+      <div class="candidate-badge">762 subs · 4.5</div>
+    </a>
+    <a href="../05_Assets/report_cards/Zoho_Marketing_Automation_Report.html" class="candidate-card">
+      <div class="candidate-name">Zoho Marketing Auto</div>
+      <div class="candidate-badge">694 subs · 4.5</div>
+    </a>
+    <a href="../05_Assets/report_cards/mcp_Report.html" class="candidate-card">
+      <div class="candidate-name">mcp (electronics)</div>
+      <div class="candidate-badge">176 subs · 4.4</div>
+    </a>
+  </div>
+</div>
+
+<!-- NUNO BRAIN -->
+<div class="section">
+  <div class="section-title">🧠 Nuno Brain — The Knowledge Base</div>
+  <div class="brain-card">
+    <div>
+      <div class="brain-title">Ultimate_Nuno_Brain.txt</div>
+      <div class="brain-desc">
+        The complete knowledge base fed into the AI project. Compiled from Nuno Tavares's 
+        YouTube video transcripts, audience comments, pain points, and content themes. 
+        This file is the foundation for all voice cloning, ICP development, and 
+        webinar strategy work in this project.
+      </div>
+      <div class="brain-stats">
+        <div class="brain-stat">
+          <div class="brain-stat-num">20+</div>
+          <div class="brain-stat-label">Videos transcribed</div>
+        </div>
+        <div class="brain-stat">
+          <div class="brain-stat-num">100+</div>
+          <div class="brain-stat-label">Audience comments</div>
+        </div>
+        <div class="brain-stat">
+          <div class="brain-stat-num">1</div>
+          <div class="brain-stat-label">AI knowledge base</div>
+        </div>
+      </div>
+    </div>
+    <a href="nuno_brain.txt" class="btn btn-purple">View Nuno Brain →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Built by Sofia Renata · Pareto Talent Final Project · April 2026<br>
+  <a href="https://github.com/camussicamusica/automated-stalker">GitHub Repository</a> · 
+  <a href="https://github.com/damionrashford/RivalSearchMCP">Powered by RivalSearchMCP</a> · 
+  Built with Claude Code + Claude AI + Gemini
+</div>
+
+
+<script>
+// ── SOP PANEL ───────────────────────────────────────────
+function toggleSOP() {
+  const trigger = document.getElementById('sop-trigger');
+  const panel   = document.getElementById('sop-panel');
+  const label   = document.getElementById('sop-btn-label');
+  const isOpen  = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  trigger.classList.toggle('open', !isOpen);
+  trigger.setAttribute('aria-expanded', String(!isOpen));
+  if (label) label.textContent = isOpen ? '🧬 View Full SOP' : '✕ Close SOP';
+  if (!isOpen && !window._sopChartInit) {
+    window._sopChartInit = true;
+    const ctx = document.getElementById('de-radarChart');
+    if (ctx) {
+      new Chart(ctx.getContext('2d'), {
+        type: 'radar',
+        data: {
+          labels: ['Niche Density (25%)', 'Webinar Strategy (25%)', 'Audience Overlap (20%)', 'Content Format (10%)', 'Offer Structure (10%)', 'Revenue Scale (5%)', 'Authority Score (5%)'],
+          datasets: [
+            { label: 'Nick Saraev', data: [9,3,8,9,8,9,7], borderColor:'rgba(245,158,11,0.9)',  backgroundColor:'rgba(245,158,11,0.07)',  pointBackgroundColor:'rgba(245,158,11,1)',  borderWidth:2, pointRadius:3 },
+            { label: 'Riley Brown', data: [7,2,7,7,6,8,8],  borderColor:'rgba(148,163,184,0.9)', backgroundColor:'rgba(148,163,184,0.05)', pointBackgroundColor:'rgba(148,163,184,1)', borderWidth:2, pointRadius:3 },
+            { label: 'Nate Herk',   data: [8,2,9,8,7,8,8],  borderColor:'rgba(205,124,47,0.9)',  backgroundColor:'rgba(205,124,47,0.05)',  pointBackgroundColor:'rgba(205,124,47,1)',  borderWidth:2, pointRadius:3 }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: { r: { min:0, max:10, ticks:{ stepSize:2, color:'rgba(100,116,139,0.8)', font:{size:9}, backdropColor:'transparent' }, grid:{color:'rgba(30,41,59,0.8)'}, angleLines:{color:'rgba(30,41,59,0.8)'}, pointLabels:{color:'#64748b', font:{size:9, weight:'600'}} } },
+          plugins: { legend:{ labels:{ color:'#94a3b8', font:{size:10}, boxWidth:10, padding:12 } }, title:{ display:true, text:'Top 3 · Dimension Score Comparison', color:'#e2e8f0', font:{size:12, weight:'700'}, padding:{bottom:14} } }
+        }
+      });
+    }
+  }
+}
+
+// ── TOGGLE ──────────────────────────────────────────────
+function toggleBlock(wrapId, btnId) {
+  const wrap = document.getElementById(wrapId);
+  const btn  = document.getElementById(btnId);
+  if (!wrap) return;
+  const isOpen = wrap.classList.contains('open');
+  wrap.classList.toggle('open', !isOpen);
+  if (btn) btn.style.borderColor = isOpen ? '' : '#00d4ff';
+}
+
+// ── COPY TO CLIPBOARD ────────────────────────────────────
+function copyCode(preId, btn) {
+  const pre = document.getElementById(preId);
+  if (!pre) return;
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '\u2713 Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+// ── PYTHON CODE SNIPPETS (populated directly — no template literal nesting) ──
+const CODE = {
+  'pre-code1': [
+    "# ─────────────────────────────────────────────────────────",
+    "# nuno_competition.py  —  YouTube API + Fitness Scoring + Elimination",
+    "# ─────────────────────────────────────────────────────────",
+    "from googleapiclient.discovery import build",
+    "import pandas as pd",
+    "",
+    "def get_youtube_candidates(api_key):",
+    "    youtube = build('youtube', 'v3', developerKey=api_key)",
+    "    queries = [",
+    '        "MCP tutorial for beginners",    "Manus AI agent tutorial",',
+    '        "GoHighLevel training 2024",      "AI agents no code tutorial",',
+    '        "vibe coding tutorial",           "n8n automation for business",',
+    '        "Claude Code tutorial",           "marketing automation webinar"',
+    "    ]",
+    "    known_seeds = [",
+    '        "Nick Saraev", "Liam Ottley", "Matt Wolfe", "Keaton Walker",',
+    '        "Jason Wardrop", "Cole Humphus", "Riley Brown", "Corbin Brown"',
+    "    ]",
+    "    candidates = {}",
+    "    for q in queries:",
+    "        request = youtube.search().list(",
+    '            q=q, part="snippet", type="channel", maxResults=3',
+    "        )",
+    "        for item in request.execute().get('items', []):",
+    "            cid = item['snippet']['channelId']",
+    "            candidates[cid] = {'name': item['snippet']['channelTitle'], 'id': cid}",
+    "",
+    "    for name in known_seeds:   # ensure seeds always included",
+    "        req = youtube.search().list(q=name, part='snippet',",
+    "                                    type='channel', maxResults=1).execute()",
+    "        if req['items']:",
+    "            cid = req['items'][0]['snippet']['channelId']",
+    "            candidates[cid] = {'name': name, 'id': cid}",
+    "    return candidates  # ~28 unique channel IDs",
+    "",
+    "# ─────────────────────────────────────────────────────────",
+    "# DARWINIAN FITNESS SCORING — 7 WEIGHTED DIMENSIONS",
+    "# ─────────────────────────────────────────────────────────",
+    "def calculate_fitness(row):",
+    "    d1 = min(10, (row['subs'] / 100000) * 10)           # Audience Overlap  20%",
+    '    niche_keys = ["mcp","gohighlevel","vibe","claude","agent","n8n","make"]',
+    "    d2 = min(10, sum(1 for k in niche_keys",
+    "                     if k in str(row['bio']).lower()",
+    "                     or k in str(row['top_videos']).lower()) * 1.5)  # Niche 25%",
+    "    d3 = 10 if row['has_webinar_keyword'] else 3         # Content Format   10%",
+    "    d4 = 10 if row['has_webinar_keyword'] and \",
+    "               row['price_signal'] else (5 if row['has_webinar_keyword'] else 0)  # Webinar 25%",
+    "    d5 = 10 if row['price_signal'] else 0               # Offer Structure  10%",
+    "    d6 = 10 if row['subs'] > 50000 else 5               # Revenue Scale     5%",
+    "    d7 = min(10, row['authority_count'] * 2)            # Authority Score   5%",
+    "    score = (d1*0.2)+(d2*0.25)+(d3*0.1)+(d4*0.25)+(d5*0.1)+(d6*0.05)+(d7*0.05)",
+    "    return pd.Series([d1, d2, d3, d4, d5, d6, d7, score * 10])",
+    "",
+    "# ─────────────────────────────────────────────────────────",
+    "# 3-GENERATION DARWINIAN ELIMINATION",
+    "# ─────────────────────────────────────────────────────────",
+    "    df[score_labels] = df.apply(calculate_fitness, axis=1)",
+    "    df = df.sort_values(by='Total_Fitness', ascending=False)",
+    "",
+    "    # Gen 1: Eliminate bottom 40%  →  28 -> ~17 survive",
+    "    df['Generation'] = \"Finalist\"",
+    "    cutoff = int(len(df) * 0.4)",
+    "    df.iloc[len(df)-cutoff:,",
+    "            df.columns.get_loc('Generation')] = \"Eliminated (Gen 1)\"",
+    "",
+    "    # Gen 2: Penalty for no webinar focus  ->  ~10 survive",
+    "    df.loc[df['has_webinar_keyword'] == False, 'Total_Fitness'] *= 0.8",
+    "    df = df.sort_values(by='Total_Fitness', ascending=False)",
+    "    df.to_csv('competitor_analysis.csv', index=False)   # all 28 -> CSV"
+  ],
+  'pre-code2': [
+    "# ─────────────────────────────────────────────────────────",
+    "# 2. report.py  —  CSV Data Loading + JSON Injection into HTML",
+    "# ─────────────────────────────────────────────────────────",
+    "import pandas as pd, json",
+    "from datetime import datetime",
+    "",
+    "def generate_report():",
+    "    df_analysis = pd.read_csv('competitor_analysis.csv')  # 28 candidates",
+    "    df_vs       = pd.read_csv('nuno_vs_competitors.csv')   # Nuno benchmark",
+    "    top3_data   = parse_top3_txt('top3_competitors.txt')   # Top 3 profiles",
+    "",
+    "    # Convert DataFrames to JSON strings for JS injection",
+    "    analysis_json = df_analysis.to_json(orient='records')  # -> JS array",
+    "    vs_json       = df_vs.to_json(orient='records')",
+    "    top3_json     = json.dumps(top3_data)",
+    "",
+    "# ─────────────────────────────────────────────────────────",
+    "# HTML TEMPLATE PATTERN — data injected as inline JSON",
+    "# (Python f-strings substitute analysis_json, vs_json, top3_json",
+    "#  directly into the HTML at build time — no server needed)",
+    "# ─────────────────────────────────────────────────────────",
+    "html_template = f\"\"\"",
+    "...",
+    "    const analysisData = {analysis_json};   // 28 rows from CSV",
+    "    const vsData       = {vs_json};         // comparison matrix",
+    "",
+    "    // Render ranked table — color-coded by Generation",
+    "    analysisData.forEach(row => {",
+    "        const tr = document.createElement('tr');",
+    "        if (row.Generation === 'Finalist')     tr.className = 'row-finalist';",
+    "        if (row.Generation.includes('Gen 1'))  tr.className = 'row-gen1';",
+    "        const score = row.Total_Fitness || 0;",
+    "        // ... build td cells with progress bar + webinar flag",
+    "        tbody.appendChild(tr);",
+    "    });",
+    "",
+    "    // Chart.js — Nuno vs Top 3 fitness bar chart",
+    "    new Chart(document.getElementById('vsChart'), {",
+    "        type: 'bar',",
+    "        data: { labels: ['Nuno','Nick S.','Riley B.','Nate H.'],",
+    "                datasets: [{ data: [88.5, 62.5, 58.75, 58.75] }] }",
+    "    });",
+    "...",
+    "\"\"\"",
+    "    with open('competitor_report.html', 'w') as f:",
+    "        f.write(html_template)"
+  ],
+  'pre-code3': [
+    "# ─────────────────────────────────────────────────────────",
+    "# 3. report2.py  —  deep_search() + 7-Search Enrichment Loop",
+    "# ─────────────────────────────────────────────────────────",
+    "from googlesearch import search",
+    "import time, requests",
+    "from bs4 import BeautifulSoup",
+    "",
+    "def deep_search(name, query_suffix, keywords, exclude_keywords=None):",
+    "    query = f\"{name} {query_suffix}\"",
+    "    try:",
+    "        time.sleep(5)   # mandatory: prevents Google IP blocks",
+    "        for url in search(query, num_results=5):",
+    "            url_lower = url.lower()",
+    "            if exclude_keywords and any(x in url_lower for x in exclude_keywords):",
+    "                continue",
+    "            if any(k in url_lower for k in keywords):",
+    "                return url   # first matching URL returned",
+    "        return \"Not Found\"",
+    "    except Exception as e:",
+    "        with open(ERROR_LOG, \"a\") as log:",
+    "            log.write(f\"[{datetime.now()}] Search Error ({query}): {e}\\n\")",
+    "        return \"Not Found\"",
+    "",
+    "# ─────────────────────────────────────────────────────────",
+    "# ENRICHMENT LOOP — 7 SEARCHES PER CANDIDATE",
+    "# ─────────────────────────────────────────────────────────",
+    "for idx, cand in enumerate(candidates_list, 1):",
+    "    name = cand['name']",
+    "",
+    "    website    = deep_search(name, \"official website\",",
+    '                    keywords=[".com",".io",".co",".net",".org"],',
+    '                    exclude_keywords=["youtube.com","linkedin.com","instagram.com"])',
+    "",
+    "    linkedin   = deep_search(name, \"LinkedIn\",",
+    '                    keywords=["linkedin.com/in","linkedin.com/company"])',
+    "",
+    "    webinar_url = deep_search(name, \"webinar register live masterclass\",",
+    '                    keywords=["webinar","register","masterclass","workshop","bootcamp"])',
+    "",
+    "    course_url  = deep_search(name, \"course buy enroll skool community\",",
+    '                    keywords=["skool.com","course","enroll","pricing","membership"])',
+    "",
+    "    # Scrape discovered website",
+    "    if website != \"Not Found\":",
+    '        resp = requests.get(website, headers={"User-Agent":"Mozilla/5.0"}, timeout=8)',
+    "        if resp.status_code == 429:",
+    "            time.sleep(45)   # rate limit backoff",
+    "            resp = requests.get(website, headers={...}, timeout=8)",
+    "        soup          = BeautifulSoup(resp.text, 'html.parser')",
+    "        site_headline = soup.find('h1').get_text().strip() if soup.find('h1') else \"Not Found\"",
+    '        has_pricing   = "$" in resp.text',
+    "",
+    "    enriched_results.append({**cand,",
+    '        "website": website, "linkedin": linkedin, "webinar_url": webinar_url,',
+    '        "has_webinar": webinar_url != "Not Found", "course_url": course_url,',
+    '        "site_headline": site_headline, "has_pricing": has_pricing})',
+    "",
+    "df_enriched = pd.DataFrame(enriched_results)",
+    "df_enriched.to_csv(ENRICHED_CSV, index=False)   # -> deep_enriched.csv"
+  ],
+  'pre-note3': [
+    "WHAT ACTUALLY HAPPENED DURING SCRAPING (HONEST ACCOUNT)",
+    "",
+    "report2.py ran successfully but returned severely limited data:",
+    "",
+    "BLOCKED PLATFORMS (0% success rate):",
+    "  Instagram       --- login wall on ALL requests",
+    "  LinkedIn        --- authentication required, all blocked",
+    "  Meta Ad Library --- JavaScript-rendered, not accessible via requests",
+    "  Most websites   --- Cloudflare 403 or bot detection on first request",
+    "",
+    "GOOGLE SEARCH LIMITS:",
+    "  googlesearch-python was rate-limited after ~50 queries",
+    "  Error: '429 Too Many Requests' — IP temporarily banned",
+    "  Some niche creators (< 10K subs) returned 0 Google results",
+    "",
+    "RESULT:",
+    "  deep_enriched.csv shows 'Not Found' for most fields.",
+    "  Individual candidate report cards = algorithmic signals,",
+    "  not verified intelligence.",
+    "",
+    "WHY STEP 4 EXISTS:",
+    "  The scraping failures are the documented reason the project",
+    "  escalated to Claude Code + RivalSearchMCP for the Top 3.",
+    "  RivalSearchMCP provides:",
+    "    + JavaScript rendering (bypasses Cloudflare)",
+    "    + Authenticated session handling",
+    "    + Meta Ad Library access",
+    "    + Multi-engine fallback (Google + Bing + DuckDuckGo)",
+    "    + No rate limiting issues"
+  ]
+};
+
+// Populate all pre elements directly (no DOMContentLoaded needed — script is at page bottom)
+Object.entries(CODE).forEach(([id, lines]) => {
+  const el = document.getElementById(id);
+  if (el) el.textContent = lines.join('\n');
+});
+</script>
+
+<!-- ═══ UNIVERSAL FOOTER ═══ -->
+<footer style="border-top:1px solid rgba(255,255,255,0.06);margin-top:80px;padding:48px 40px 36px;background:rgba(10,10,15,0.8);font-family:'DM Sans',sans-serif">
+  <div style="max-width:1100px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:32px;margin-bottom:36px">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:6px">Automated <span style="color:#D4AF37">Stalker</span></div>
+        <div style="color:rgba(255,255,255,0.35);font-size:0.78rem;line-height:1.7">Darwinian Competitor Intelligence · Built for Nuno Tavares<br>Pareto Talent Final Project · Sofia Renata Camussi · April 2026</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+        <a href="hub.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Hub</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="index.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Top 3 Intel</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="algorithm_sop.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Algorithm SOP</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="iteration1.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Evolution Matrix</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="funnelipc.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Funnel &amp; ICP</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="https://github.com/camussicamusica/automated-stalker" target="_blank" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">GitHub ↗</a>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+      <div style="color:rgba(255,255,255,0.2);font-size:0.72rem">Built with Claude Code · Claude Sonnet 4.6 · Google Gemini 2.5 Pro · RivalSearchMCP · YouTube Data API v3</div>
+      <div style="color:rgba(255,255,255,0.15);font-size:0.72rem">© 2026 · MIT License</div>
+    </div>
+  </div>
+</footer>
+
+</body>

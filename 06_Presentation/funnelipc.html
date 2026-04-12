@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuno's Webinar — Ideal Client Profiles & Funnel Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0a0a0f;
+            --text-light: #f3f4f6;
+            --text-muted: #9ca3af;
+            --tofu: #ff6b35;
+            --mofu: #7c3aed;
+            --bofu: #059669;
+            --card-bg: #13131a;
+            --border-color: #272732;
+            --gold: #D4AF37;
+            --nav-bg: rgba(10, 10, 15, 0.85);
+            
+            /* New Funnel Map Colors */
+            --electric-blue: #2563eb;
+            --electric-blue-light: #3b82f6;
+            --vip-gold: #f59e0b;
+            --vip-gold-light: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .syne {
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 6rem 2rem 2rem 2rem;
+            position: relative;
+        }
+
+        .hero-tag {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 6rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-muted);
+            max-width: 700px;
+        }
+
+        /* --- Main Content Layout --- */
+        .content-wrapper {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            gap: 4rem;
+            position: relative;
+        }
+
+        /* --- Sticky Funnel --- */
+        .funnel-container {
+            width: 30%;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 5;
+        }
+
+        .funnel-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .funnel-layer {
+            width: 100%;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 700;
+            font-family: 'Syne', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.2;
+            transition: all 0.5s ease;
+            transform: scale(0.95);
+            border: 1px solid transparent;
+        }
+
+        .funnel-layer.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #layer-tofu { background-color: rgba(255, 107, 53, 0.1); color: var(--tofu); border-color: var(--tofu); width: 100%; border-radius: 10px 10px 0 0; }
+        #layer-mofu { background-color: rgba(124, 58, 237, 0.1); color: var(--mofu); border-color: var(--mofu); width: 80%; margin: 0 auto; }
+        #layer-bofu { background-color: rgba(5, 150, 105, 0.1); color: var(--bofu); border-color: var(--bofu); width: 60%; margin: 0 auto; border-radius: 0 0 10px 10px; }
+
+        /* --- Persona Cards --- */
+        .personas-container {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            gap: 6rem;
+            padding-bottom: 6rem;
+        }
+
+        .persona-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .persona-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Raffle Banner --- */
+        .raffle-banner {
+            position: absolute;
+            top: -25px;
+            right: -25px;
+            background: linear-gradient(135deg, #FFDF00, #D4AF37, #996515);
+            color: #0a0a0f;
+            padding: 1.2rem;
+            border-radius: 8px;
+            transform: rotate(4deg);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            width: 260px;
+            text-align: center;
+            border: 2px dashed #ffe680;
+            z-index: 10;
+        }
+
+        .raffle-banner h4 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .raffle-banner p {
+            font-size: 0.75rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            line-height: 1.3;
+            opacity: 0.9;
+            margin-bottom: 0.4rem;
+        }
+
+        /* Card Content Inner Elements */
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        img.photo-placeholder {
+            border: 3px solid; 
+            background-color: transparent; 
+        }
+        
+        .photo-placeholder {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background-color: #1a1a24;
+            border: 2px dashed var(--border-color);
+            color: var(--text-muted);
+            flex-shrink: 0;
+            object-fit: cover; 
+        }
+
+        .persona-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .persona-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .stage-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: 'Syne', sans-serif;
+            text-transform: uppercase;
+        }
+
+        /* Specific Card Colors */
+        .card-tofu { border-top: 4px solid var(--tofu); }
+        .card-tofu img.photo-placeholder { border-color: var(--tofu); } 
+        .card-tofu .stage-badge { background-color: rgba(255, 107, 53, 0.15); color: var(--tofu); }
+        .card-tofu h2, .card-tofu .ladder-title, .card-tofu .ladder-step-icon { color: var(--tofu); }
+        .card-tofu .ladder-step { border-left-color: var(--tofu); }
+
+        .card-mofu { border-top: 4px solid var(--mofu); }
+        .card-mofu img.photo-placeholder { border-color: var(--mofu); } 
+        .card-mofu .stage-badge { background-color: rgba(124, 58, 237, 0.15); color: var(--mofu); }
+        .card-mofu h2, .card-mofu .ladder-title, .card-mofu .ladder-step-icon { color: var(--mofu); }
+        .card-mofu .ladder-step { border-left-color: var(--mofu); }
+
+        .card-bofu { border-top: 4px solid var(--bofu); }
+        .card-bofu img.photo-placeholder { border-color: var(--bofu); } 
+        .card-bofu .stage-badge { background-color: rgba(5, 150, 105, 0.15); color: var(--bofu); }
+        .card-bofu h2, .card-bofu .ladder-title, .card-bofu .ladder-step-icon { color: var(--bofu); }
+        .card-bofu .ladder-step { border-left-color: var(--bofu); }
+
+        /* Card Content Grids */
+        .card-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .content-block h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+        }
+
+        .content-block p {
+            font-size: 1.05rem;
+        }
+
+        .quote-block {
+            background-color: #1a1a24;
+            padding: 1.5rem;
+            border-left: 3px solid;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+        
+        .card-tofu .quote-block { border-color: var(--tofu); }
+        .card-mofu .quote-block { border-color: var(--mofu); }
+        .card-bofu .quote-block { border-color: var(--bofu); }
+
+        /* --- Offer Ladder Details Section --- */
+        .ladder-section {
+            margin-top: 1rem;
+            padding-top: 2.5rem;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .ladder-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Syne', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ladder {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ladder-step {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            padding: 1.2rem;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid;
+            margin-left: calc(var(--step, 0) * 1.5rem);
+            transition: transform 0.3s ease, background-color 0.3s;
+        }
+
+        .ladder-step:hover {
+            transform: translateX(5px);
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        .ladder-step.up { background-color: rgba(255, 255, 255, 0.04); }
+        .ladder-step.down { opacity: 0.85; }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .ladder-step-icon {
+            font-size: 1.3rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .step-header strong { color: #fff; }
+        
+        .step-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-left: 2.3rem;
+            margin-top: -0.4rem;
+        }
+
+        .value-stack {
+            list-style: none;
+            margin-left: 2.3rem;
+            padding: 0.8rem;
+            background: #0f0f14;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        .value-stack li {
+            padding: 0.3rem 0;
+            border-bottom: 1px dashed #272732;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        .value-stack li::before {
+            content: '·';
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        .value-stack li:last-child { border-bottom: none; }
+
+        .price-box {
+            margin-left: 2.3rem;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .price-box span {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .guarantee-badge {
+            margin-left: 2.3rem;
+            margin-top: 0.8rem;
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .scarcity-tag {
+            margin-left: 2.3rem;
+            margin-top: 0.8rem;
+            display: inline-block;
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--tofu);
+            color: var(--tofu);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* --- HORMOZI VALUE EQUATION SECTION --- */
+        .hormozi-section {
+            max-width: 900px;
+            margin: 6rem auto 2rem auto;
+            padding: 4rem 3rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .hormozi-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hormozi-section h2 {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+
+        .hormozi-subtitle {
+            color: var(--gold);
+            font-family: 'Syne', sans-serif;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            margin-bottom: 3rem;
+        }
+
+        .equation-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .eq-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .eq-divider {
+            width: 80%;
+            height: 2px;
+            background-color: var(--border-color);
+            margin: 0 auto;
+        }
+
+        .eq-item {
+            text-align: left;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .eq-item-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .eq-item-title.increase { color: var(--bofu); } /* Green */
+        .eq-item-title.decrease { color: var(--tofu); } /* Orange */
+
+        .eq-item-desc {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+            margin-left: 1.8rem;
+        }
+
+        .eq-caption {
+            margin-top: 3rem;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            padding: 1.5rem;
+            background: #0f0f14;
+            border-radius: 8px;
+            border-left: 3px solid var(--gold);
+        }
+
+        /* --- Strategic Rationale --- */
+        .rationale {
+            padding: 6rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .rationale.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .rationale h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #fff;
+        }
+
+        .rationale-quote {
+            font-size: 1.8rem;
+            line-height: 1.5;
+            font-family: 'Syne', sans-serif;
+            color: var(--text-light);
+            position: relative;
+        }
+
+        .rationale-quote::before, .rationale-quote::after {
+            content: '"';
+            color: var(--border-color);
+            font-size: 4rem;
+            position: absolute;
+        }
+        .rationale-quote::before { top: -2rem; left: -2rem; }
+        .rationale-quote::after { bottom: -4rem; right: -2rem; }
+
+        /* =========================================
+           NEW WEBINAR FUNNEL MAP STYLES
+           ========================================= */
+        .funnel-map-section {
+            max-width: 1200px;
+            margin: 0 auto 6rem auto;
+            padding: 5rem 2rem;
+            background-color: var(--bg-color);
+            border-top: 1px dashed var(--border-color);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .funnel-map-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fm-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .fm-header h2 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .fm-header p {
+            color: var(--electric-blue);
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.95rem;
+        }
+
+        .fm-subsection {
+            margin-bottom: 6rem;
+        }
+
+        .fm-subtitle {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        /* --- Sub 1: The 3-Step Funnel --- */
+        .fm-flow-diagram {
+            display: flex;
+            align-items: stretch;
+            gap: 1.5rem;
+            justify-content: space-between;
+        }
+
+        .fm-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-top: 5px solid;
+            border-radius: 12px;
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .fm-box.border-blue { border-top-color: var(--electric-blue); }
+        .fm-box.border-gold { border-top-color: var(--vip-gold); }
+        .fm-box.border-light-blue { border-top-color: var(--electric-blue-light); }
+        .fm-box.border-light-gold { border-top-color: var(--vip-gold-light); }
+
+        .fm-box-label {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+        
+        .border-blue .fm-box-label { color: var(--electric-blue); }
+        .border-gold .fm-box-label { color: var(--vip-gold); }
+        .border-light-blue .fm-box-label { color: var(--electric-blue-light); }
+        .border-light-gold .fm-box-label { color: var(--vip-gold-light); }
+
+        .fm-arrow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 2rem;
+        }
+
+        .fm-col-split {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        /* Lists & Tags inside boxes */
+        .fm-tag-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .fm-tag {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .fm-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .fm-value-stack { margin: 1rem 0; padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.8; }
+        .fm-value-stack li::marker { color: var(--vip-gold); }
+        .fm-price-total { font-weight: 700; color: #fff; margin-bottom: 1rem; }
+        .fm-paths { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.85rem; margin-top: 1rem; font-weight: 600; }
+        .fm-path-yes { color: var(--vip-gold); }
+        .fm-path-no { color: var(--electric-blue); }
+
+        /* --- Sub 2: CRM Logic --- */
+        .crm-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .crm-step {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            width: 100%;
+            text-align: center;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .crm-step-icon {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 28px;
+            height: 28px;
+            background: var(--border-color);
+            border-radius: 50%;
+            font-size: 0.8rem;
+            margin-right: 10px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .crm-split {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .crm-tag-badge { padding: 0.3rem 0.6rem; border-radius: 4px; font-weight: bold; }
+        .bg-tofu { background: rgba(255, 107, 53, 0.15); color: var(--tofu); }
+        .bg-mofu { background: rgba(124, 58, 237, 0.15); color: var(--mofu); }
+        .bg-bofu { background: rgba(5, 150, 105, 0.15); color: var(--bofu); }
+
+        .crm-arrow {
+            color: var(--electric-blue);
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        /* --- Sub 3 & 4: Workflows --- */
+        .wf-timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 2rem;
+        }
+
+        .wf-timeline::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+
+        .wf-node {
+            position: relative;
+            z-index: 2;
+            width: 18%;
+            background: var(--bg-color);
+            padding-top: 40px;
+        }
+
+        .wf-dot {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: var(--electric-blue);
+            border: 4px solid var(--bg-color);
+            border-radius: 50%;
+        }
+
+        .wf-node-time {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .wf-node-email {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .wf-node-note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 0.8rem;
+            font-style: italic;
+        }
+
+        /* Remarketing Flow */
+        .wf-simple-flow {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            background: #111116;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px dashed var(--border-color);
+        }
+
+        .wf-trigger, .wf-exit {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        
+        .wf-trigger { border-left: 3px solid var(--tofu); }
+        .wf-exit { border-left: 3px solid var(--bofu); }
+
+        /* --- Sub 5: Pipeline Kanban --- */
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .k-col {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        .k-col.c1 { border-top: 4px solid var(--electric-blue); }
+        .k-col.c2 { border-top: 4px solid var(--vip-gold); }
+        .k-col.c3 { border-top: 4px solid var(--bofu); } /* Green */
+        .k-col.c4 { border-top: 4px solid #10b981; opacity: 1;} /* Bright Green */
+
+        .k-note {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* --- Final Banner (Footer Replacement) --- */
+        .final-banner {
+            width: 100%;
+            background-color: #050508;
+            border-top: 2px solid var(--gold);
+            padding: 5rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .final-banner p {
+            max-width: 700px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .final-banner p.highlight {
+            color: #fff;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .final-banner-meta {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .final-banner-meta a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .final-banner-meta a:hover {
+            color: #fff;
+        }
+
+        /* --- Media Queries for Funnel Map --- */
+        @media (max-width: 900px) {
+            .fm-flow-diagram { flex-direction: column; }
+            .fm-arrow-container { transform: rotate(90deg); padding: 1rem 0; }
+            .wf-timeline { flex-direction: column; gap: 2rem; }
+            .wf-timeline::before { display: none; }
+            .wf-node { width: 100%; padding-top: 0; padding-left: 40px; }
+            .wf-dot { top: 50%; left: 10px; transform: translateY(-50%); }
+            .wf-node-time { text-align: left; }
+            .wf-node-email { text-align: left; }
+            .wf-node-note { text-align: left; }
+            .wf-simple-flow { flex-direction: column; }
+            .kanban-board { grid-template-columns: 1fr; }
+        }
+    </style>
+<style>body{padding-top:64px!important}</style>
+</head>
+<body>
+<!-- ═══ UNIVERSAL NAV ═══ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600;9..40,700&family=Syne:wght@400;600;700;800&display=swap');
+.unav{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);z-index:9999;font-family:'Syne',sans-serif;letter-spacing:.06em;font-size:.78rem;text-transform:uppercase}
+.unav-brand{font-weight:800;color:#fff;text-decoration:none;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.unav-brand em{color:#D4AF37;font-style:normal}
+.unav-links{display:flex;gap:1.8rem;align-items:center;list-style:none}
+.unav-links li{position:relative}
+.unav-links a,.unav-drop-trigger{color:rgba(255,255,255,0.65);text-decoration:none;cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:6px;padding:.3rem 0;background:none;border:none;font:inherit;letter-spacing:inherit;text-transform:inherit;font-size:inherit}
+.unav-links a:hover,.unav-drop-trigger:hover{color:#fff}
+.unav-links a.active,.unav-drop-trigger.active{color:#D4AF37}
+.unav-arrow{font-size:.5rem;transition:transform .25s;opacity:.6}
+.unav-links li:hover .unav-arrow{transform:rotate(180deg);opacity:1}
+.unav-drop{position:absolute;top:calc(100% + 12px);right:0;background:rgba(14,14,20,0.97);border:1px solid rgba(255,255,255,0.08);border-radius:10px;min-width:240px;padding:.5rem 0;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .25s cubic-bezier(.16,1,.3,1);box-shadow:0 20px 40px rgba(0,0,0,.7)}
+.unav-drop::before{content:'';position:absolute;top:-5px;right:18px;width:9px;height:9px;background:rgba(14,14,20,.97);border-left:1px solid rgba(255,255,255,.08);border-top:1px solid rgba(255,255,255,.08);transform:rotate(45deg)}
+.unav-links li:hover .unav-drop{opacity:1;visibility:visible;transform:translateY(0)}
+.unav-drop a{color:rgba(255,255,255,.55);text-decoration:none;padding:.75rem 1.4rem;display:flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;text-transform:none;letter-spacing:0;transition:all .2s;border-left:2px solid transparent;white-space:nowrap}
+.unav-drop a:hover{color:#fff;background:rgba(255,255,255,.03);border-left-color:#D4AF37}
+.unav-drop a .di{font-size:.75rem;opacity:.5}
+.unav-cta{background:#D4AF37;color:#0a0a0f;padding:.45rem 1.1rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.72rem;transition:opacity .2s;white-space:nowrap}
+.unav-cta:hover{opacity:.85;color:#0a0a0f}
+.unav-body-pad{padding-top:64px}
+@media(max-width:768px){.unav-links{gap:1rem}.unav{padding:1rem 1.2rem}.unav-drop{right:-60px}}
+</style>
+<nav class="unav">
+  <a href="hub.html" class="unav-brand">Automated <em>Stalker</em></a>
+  <ul class="unav-links">
+    <li><a href="index.html" class="unav-cta">View Report</a></li>
+    <li>
+      <button class="unav-drop-trigger">Intelligence <span class="unav-arrow">▼</span></button>
+      <div class="unav-drop">
+        <a href="hub.html"><span class="di">🏠</span> Intelligence Hub</a>
+        <a href="index.html"><span class="di">🥇</span> Top 3 Deep Intel</a>
+        <a href="algorithm_sop.html"><span class="di">🧬</span> Algorithm SOP</a>
+        <a href="competitors28.html"><span class="di">👥</span> All 28 Candidates</a>
+      </div>
+    </li>
+    <li><a href="funnelipc.html">Funnel &amp; ICP</a></li>
+    <li><a href="https://github.com/camussicamusica/automated-stalker" target="_blank">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+    <header class="hero scroll-reveal">
+        <div class="hero-tag">Automated Marketer · ICP Framework · 2026</div>
+        <h1>From Stranger<br>to Superfan</h1>
+        <p>The 3 people who need Nuno's webinar — and why they're all the exact same person.</p>
+    </header>
+
+    <main class="content-wrapper">
+        
+        <aside class="funnel-container">
+            <p class="funnel-label">They all started at TOFU. Some became MOFU. Some became BOFU.</p>
+            <div id="layer-tofu" class="funnel-layer">TOFU</div>
+            <div id="layer-mofu" class="funnel-layer">MOFU</div>
+            <div id="layer-bofu" class="funnel-layer">BOFU</div>
+        </aside>
+
+        <div class="personas-container">
+            
+            <article class="persona-card card-tofu scroll-element" data-stage="tofu">
+                <div class="raffle-banner">
+                    <h4>🎟 Buy anything = automatic raffle entry</h4>
+                    <p>Prizes: 1:1 with Nuno · Group session spot · The Playbook</p>
+                    <p><i>Every purchase is a ticket. The more you invest, the closer you get.</i></p>
+                </div>
+                
+                <div class="card-header">
+                    <img src="../05_Assets/diana.png" alt="Diana" class="photo-placeholder" >
+                    <div class="persona-info">
+                        <h2>Diana</h2>
+                        <div class="persona-meta">Age 38–55 · Service business owner (sales, consulting, small agency)</div>
+                        <div class="stage-badge">Top of Funnel (TOFU)</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="content-block">
+                        <h4>Context</h4>
+                        <p>Never touched GHL or AI tools.</p>
+                    </div>
+                    <div class="content-block">
+                        <h4>Pain Points</h4>
+                        <p>Hiring is expensive. Competitors are moving faster. Doesn't know what she doesn't know.</p>
+                    </div>
+                    <div class="content-block">
+                        <h4>Goal</h4>
+                        <p>Needs to understand <strong>WHY</strong> this matters before committing to <strong>HOW</strong>.</p>
+                    </div>
+                    <div class="content-block">
+                        <h4>Messaging Angle</h4>
+                        <div class="quote-block">
+                            "The market changed. You used to hire an expert. Now YOU are the expert — and AI is your team."
+                        </div>
+                    </div>
+
+                    <div class="ladder-section">
+                        <h3 class="ladder-title">Diana's Offer Ladder</h3>
+                        <div class="ladder">
+                            <div class="ladder-step up" style="--step: 0;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬆</span>
+                                    <span><strong>UP 1 — "The AI Jumpstart Class"</strong></span>
+                                </div>
+                                <div class="step-desc">Live group session with Nuno's facilitation team.</div>
+                                <ul class="value-stack">
+                                    <li>Live group class ($297 value)</li>
+                                    <li>Class recording ($97 value)</li>
+                                    <li>Starter SOP templates ($97 value)</li>
+                                    <li>🎟 Raffle entry — win 1:1 with Nuno ($500 value)</li>
+                                </ul>
+                                <div class="price-box">TOTAL VALUE: $991 — <span>Your price: $97</span></div>
+                                <div class="guarantee-badge">Guarantee: Show up, take notes, implement one thing — or get your money back.</div>
+                            </div>
+                            <div class="ladder-step up" style="--step: 1;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬆</span>
+                                    <span><strong>UP 2 — "The No-Code AI Playbook" (Ebook)</strong></span>
+                                </div>
+                                <ul class="value-stack">
+                                    <li>Ebook PDF ($197 value)</li>
+                                    <li>SOP template pack ($97 value)</li>
+                                    <li>Bonus video walkthrough ($147 value)</li>
+                                    <li>🎟 Raffle entry — win 1:1 with Nuno ($500 value)</li>
+                                </ul>
+                                <div class="price-box">TOTAL VALUE: $941 — <span>Your price: $27</span></div>
+                                <div class="guarantee-badge">Guarantee: Read it. Use it. If you don't get your first automation running, full refund.</div>
+                            </div>
+                            <div class="ladder-step down" style="--step: 2;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬇</span>
+                                    <span><strong>DOWN — "The Vault" (Early Bird Access)</strong></span>
+                                </div>
+                                <div class="step-desc">Discounted access to private platform with recorded sessions NOT on YouTube.</div>
+                                <ul class="value-stack">
+                                    <li>Private library access ($197 value)</li>
+                                    <li>New sessions added monthly ($97/mo value)</li>
+                                    <li>🎟 Raffle entry ($500 value)</li>
+                                </ul>
+                                <div class="price-box">TOTAL VALUE: $794 — <span>Early Bird: $17/mo</span></div>
+                                <div class="scarcity-tag">Founding member pricing. Locks in forever. Limited spots.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="persona-card card-mofu scroll-element" data-stage="mofu">
+                <div class="raffle-banner">
+                    <h4>🎟 Buy anything = automatic raffle entry</h4>
+                    <p>Prizes: 1:1 with Nuno · Group session spot · The Playbook</p>
+                    <p><i>Every purchase is a ticket. The more you invest, the closer you get.</i></p>
+                </div>
+
+                <div class="card-header">
+                    <img src="../05_Assets/ron.png" alt="Ron" class="photo-placeholder" >
+                    <div class="persona-info">
+                        <h2>Ron</h2>
+                        <div class="persona-meta">Age 40–55 · Solopreneur or small biz owner.</div>
+                        <div class="stage-badge">Middle of Funnel (MOFU)</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="content-block">
+                        <h4>Context</h4>
+                        <p>Watches every tutorial, saves every SOP, implements nothing.</p>
+                    </div>
+                    <div class="content-block">
+                        <h4>Pain Points</h4>
+                        <p>Burned credits. Got lost in JSON files. Tried Claude Code once and panicked.</p>
+                    </div>
+                    <div class="content-block">
+                        <h4>Goal</h4>
+                        <p>Finally build <strong>ONE</strong> thing that works. Prove to himself he can do this.</p>
+                    </div>
+                    <div class="content-block">
+                        <h4>Messaging Angle</h4>
+                        <div class="quote-block">
+                            "You're not behind. You just need a system, not another tutorial."
+                        </div>
+                    </div>
+
+                    <div class="ladder-section">
+                        <h3 class="ladder-title">Ron's Offer Ladder</h3>
+                        <div class="ladder">
+                            <div class="ladder-step up" style="--step: 0;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬆</span>
+                                    <span><strong>UP 1 — "The Build Session"</strong></span>
+                                </div>
+                                <div class="step-desc">1:1 with Nuno's facilitation team (not Nuno directly).</div>
+                                <ul class="value-stack">
+                                    <li>60-min private session ($397 value)</li>
+                                    <li>Custom SOP built for YOUR business ($197 value)</li>
+                                    <li>Session recording ($97 value)</li>
+                                    <li>🎟 Raffle entry — win 1:1 with Nuno ($500 value)</li>
+                                </ul>
+                                <div class="price-box">TOTAL VALUE: $1,191 — <span>Your price: $197</span></div>
+                                <div class="scarcity-tag">Limited seats per cohort.</div>
+                                <div class="guarantee-badge">Guarantee: Walk away with one working automation or we redo the session free.</div>
+                            </div>
+                            <div class="ladder-step up" style="--step: 1;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬆</span>
+                                    <span><strong>UP 2 — "The Mastermind Room"</strong></span>
+                                </div>
+                                <div class="step-desc">Live virtual or in-person mastermind event.</div>
+                                <ul class="value-stack">
+                                    <li>Event access ($497 value)</li>
+                                    <li>Peer network + recordings ($197 value)</li>
+                                    <li>🎟 Raffle entry ($500 value)</li>
+                                </ul>
+                                <div class="price-box">TOTAL VALUE: $1,194 — <span>Your price: $297</span></div>
+                                <div class="scarcity-tag">Seats are physically limited.</div>
+                            </div>
+                            <div class="ladder-step down" style="--step: 2;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬇</span>
+                                    <span><strong>DOWN 1 — "The AI Jumpstart Class"</strong></span>
+                                </div>
+                                <div class="step-desc">(Same as Diana's UP 1 — group class with Nuno's team)</div>
+                                <div class="price-box"><span>Price: $97</span></div>
+                            </div>
+                            <div class="ladder-step down" style="--step: 3;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬇</span>
+                                    <span><strong>DOWN 2 — "The No-Code AI Playbook"</strong></span>
+                                </div>
+                                <div class="step-desc">(Same as Diana's UP 2 — ebook bundle)</div>
+                                <div class="price-box"><span>Price: $27</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="persona-card card-bofu scroll-element" data-stage="bofu">
+                <div class="raffle-banner">
+                    <h4>🎟 Buy anything = automatic raffle entry</h4>
+                    <p>Prizes: 1:1 with Nuno · Group session spot · The Playbook</p>
+                    <p><i>Every purchase is a ticket. The more you invest, the closer you get.</i></p>
+                </div>
+
+                <div class="card-header">
+                    <img src="../05_Assets/marco.png" alt="Marco" class="photo-placeholder" >
+                    <div class="persona-info">
+                        <h2>Marco</h2>
+                        <div class="persona-meta">Age 35–50 · GHL Agency Owner, serves clients.</div>
+                        <div class="stage-badge">Bottom of Funnel (BOFU)</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="content-block">
+                        <h4>Context</h4>
+                        <p>Already knows GHL. Builds manually. Fears being left behind by AI.</p>
+                    </div>
+                    <div class="content-block">
+                        <h4>Pain Points</h4>
+                        <p>Clients asking about AI. He's the expert but doesn't have the answers yet.</p>
+                    </div>
+                    <div class="content-block">
+                        <h4>Goal</h4>
+                        <p>Stay the smartest person in the room. Automate client delivery. Scale without hiring.</p>
+                    </div>
+                    <div class="content-block">
+                        <h4>Messaging Angle</h4>
+                        <div class="quote-block">
+                            "You already know GHL. Now let AI run it for you."
+                        </div>
+                    </div>
+
+                    <div class="ladder-section">
+                        <h3 class="ladder-title">Marco's Offer Ladder</h3>
+                        <div class="ladder">
+                            <div class="ladder-step up" style="--step: 0;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬆</span>
+                                    <span><strong>UP 1 — "The Inner Circle"</strong></span>
+                                </div>
+                                <div class="step-desc">1:1 coaching directly with Nuno. HARD LIMIT: 20 spots total. Ever.</div>
+                                <ul class="value-stack">
+                                    <li>90-min private strategy session with Nuno ($997 value)</li>
+                                    <li>Custom AI agent roadmap for your agency ($497 value)</li>
+                                    <li>30-day follow-up access via voice memo ($297 value)</li>
+                                    <li>🎟 Raffle entry ($500 value)</li>
+                                </ul>
+                                <div class="price-box">TOTAL VALUE: $2,291 — <span>Your price: $797</span></div>
+                                <div class="scarcity-tag">17 of 20 spots claimed. This closes when it's full. No exceptions.</div>
+                                <div class="guarantee-badge">Guarantee: Come with your GHL account. Leave with a working AI system. Or Nuno works with you again free.</div>
+                            </div>
+                            <div class="ladder-step up" style="--step: 1;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬆</span>
+                                    <span><strong>UP 2 — "The Mastermind Room"</strong></span>
+                                </div>
+                                <div class="step-desc">Live mastermind event (in-person or virtual).</div>
+                                <ul class="value-stack">
+                                    <li>Event access + recordings ($497 value)</li>
+                                    <li>Peer network of agency owners ($297 value)</li>
+                                    <li>Nuno live Q&A ($497 value)</li>
+                                    <li>🎟 Raffle entry ($500 value)</li>
+                                </ul>
+                                <div class="price-box">TOTAL VALUE: $1,791 — <span>Your price: $497</span></div>
+                                <div class="scarcity-tag">Seats are physically limited.</div>
+                            </div>
+                            <div class="ladder-step down" style="--step: 2;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬇</span>
+                                    <span><strong>DOWN 1 — "The Build Session"</strong></span>
+                                </div>
+                                <div class="step-desc">1:1 with Nuno's facilitation team. (Same as Ron's UP 1)</div>
+                                <div class="price-box"><span>Price: $197</span></div>
+                            </div>
+                            <div class="ladder-step down" style="--step: 3;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬇</span>
+                                    <span><strong>DOWN 2 — "The AI Jumpstart Class"</strong></span>
+                                </div>
+                                <div class="step-desc">Group class with Nuno's team.</div>
+                                <div class="price-box"><span>Price: $97</span></div>
+                            </div>
+                            <div class="ladder-step down" style="--step: 4;">
+                                <div class="step-header">
+                                    <span class="ladder-step-icon">⬇</span>
+                                    <span><strong>DOWN 3 — "The No-Code AI Playbook"</strong></span>
+                                </div>
+                                <div class="step-desc">Ebook bundle.</div>
+                                <div class="price-box"><span>Price: $27</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <section class="hormozi-section scroll-element">
+        <h2>Why these offers are designed this way</h2>
+        <div class="hormozi-subtitle">The Hormozi Value Equation</div>
+        
+        <div class="equation-visual">
+            <div class="eq-row">
+                <div class="eq-item">
+                    <div class="eq-item-title increase"><span>⬆</span> Dream Outcome</div>
+                    <div class="eq-item-desc">"The result they actually want"</div>
+                </div>
+                <div class="eq-item">
+                    <div class="eq-item-title increase"><span>⬆</span> Perceived Likelihood</div>
+                    <div class="eq-item-desc">"Proof it will work FOR THEM"</div>
+                </div>
+            </div>
+            
+            <div class="eq-divider"></div>
+            
+            <div class="eq-row">
+                <div class="eq-item">
+                    <div class="eq-item-title decrease"><span>⬇</span> Time Delay</div>
+                    <div class="eq-item-desc">"How fast they get their first win"</div>
+                </div>
+                <div class="eq-item">
+                    <div class="eq-item-title decrease"><span>⬇</span> Effort & Sacrifice</div>
+                    <div class="eq-item-desc">"SOPs, templates, done-with-you"</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="eq-caption">
+            Value = (Dream Outcome × Likelihood) ÷ (Time Delay × Effort)<br><br>
+            "If effort and time go to zero, value becomes infinite. That's what we're building."
+        </div>
+    </section>
+
+    <section class="rationale scroll-element">
+        <h2>Why 3 profiles and not 1?</h2>
+        <div class="rationale-quote">
+            The three ICPs are not separate audiences — they are the same person at different stages of their journey. Diana becomes Ron. Ron becomes Marco. Nuno's role is to serve each stage with the right offer, so every interaction moves them one level up. The webinar is the entry point for all three.
+        </div>
+    </section>
+
+    <section class="funnel-map-section scroll-element">
+        <div class="fm-header">
+            <h2>The Funnel — How It Works in GoHighLevel</h2>
+            <p>Built to assignment spec. Powered by Hormozi logic.</p>
+        </div>
+
+        <div class="fm-subsection">
+            <h3 class="fm-subtitle">The 3-Step Funnel</h3>
+            <div class="fm-flow-diagram">
+                
+                <div class="fm-box border-blue">
+                    <div class="fm-box-label">Step 1 — Register Free</div>
+                    <div class="fm-tag-list">
+                        <span class="fm-tag">· Hero</span>
+                        <span class="fm-tag">· Dream Outcome</span>
+                        <span class="fm-tag">· Proof & Credibility</span>
+                        <span class="fm-tag">· How It Works (3-day escalated format)</span>
+                        <span class="fm-tag">· What's Included</span>
+                        <span class="fm-tag">· Guarantee</span>
+                        <span class="fm-tag">· CTA + Quiz Form</span>
+                    </div>
+                    <div class="fm-note">
+                        "3-question quiz → tags contact as TOFU / MOFU / BOFU in GHL CRM"
+                    </div>
+                </div>
+
+                <div class="fm-arrow-container">→</div>
+
+                <div class="fm-box border-gold">
+                    <div class="fm-box-label">Step 2 — Upgrade to VIP</div>
+                    <ul style="list-style: none; font-size: 0.9rem; color: #fff; margin-bottom: 0.5rem;">
+                        <li>· Price: $97 (one-time)</li>
+                        <li>· Limited: 50 seats only</li>
+                        <li>· One-step checkout (GHL native)</li>
+                    </ul>
+                    <div style="font-weight: bold; margin-top: 1rem; color: #fff;">Value stack:</div>
+                    <ul class="fm-value-stack">
+                        <li>VIP front-row seat + priority Q&A ($297)</li>
+                        <li>All 3 session recordings ($197)</li>
+                        <li>Private SOP template pack ($197)</li>
+                        <li>30-min group hot seat ($297)</li>
+                        <li>🎟 Raffle entry — win 1:1 with Nuno ($500)</li>
+                    </ul>
+                    <div class="fm-price-total">TOTAL VALUE: $1,488 → $97</div>
+                    <div style="font-size: 0.8rem; font-style: italic; color: var(--text-muted); margin-bottom: 0.5rem;">Guarantee: "Full refund if no value. 7 days."</div>
+                    <div style="font-size: 0.8rem; font-weight: bold; color: var(--vip-gold);">Scarcity: "17 of 50 spots remaining."</div>
+                    
+                    <div class="fm-paths fm-note">
+                        <div class="fm-path-yes">YES → Thank You B (VIP)</div>
+                        <div class="fm-path-no">NO → Thank You A (Free)</div>
+                    </div>
+                </div>
+
+                <div class="fm-arrow-container">→</div>
+
+                <div class="fm-col-split">
+                    <div class="fm-box border-light-blue">
+                        <div class="fm-box-label" style="font-size: 1rem; margin-bottom: 1rem;">Step 3A — You're Registered!</div>
+                        <ul style="list-style: none; font-size: 0.85rem; color: var(--text-muted); gap: 0.5rem; display: flex; flex-direction: column;">
+                            <li>· Confirm registration</li>
+                            <li>· "Your day is Day [X] based on your quiz"</li>
+                            <li>· Add to calendar</li>
+                            <li style="margin-top: 0.5rem; color: var(--electric-blue); font-weight: bold;">· Soft CTA: "Still want VIP? →"</li>
+                        </ul>
+                    </div>
+                    <div class="fm-box border-light-gold">
+                        <div class="fm-box-label" style="font-size: 1rem; margin-bottom: 1rem;">Step 3B — Welcome, VIP!</div>
+                        <ul style="list-style: none; font-size: 0.85rem; color: var(--text-muted); gap: 0.5rem; display: flex; flex-direction: column;">
+                            <li>· Confirm purchase</li>
+                            <li>· Reinforce bonuses</li>
+                            <li>· Raffle entry confirmed 🎟</li>
+                            <li style="margin-top: 0.5rem; color: var(--vip-gold); font-weight: bold;">· "See you in the front row."</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="fm-subsection">
+            <h3 class="fm-subtitle">What Happens in GHL the Second They Register</h3>
+            <div class="crm-flow">
+                <div class="crm-step">
+                    <span class="crm-step-icon">1</span> Form submitted
+                </div>
+                <div class="crm-arrow">↓</div>
+                
+                <div class="crm-step">
+                    <span class="crm-step-icon">2</span> Quiz answers stored in custom fields<br>
+                    <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">(GHL Experience / AI Experience / Challenge)</span>
+                </div>
+                <div class="crm-arrow">↓</div>
+
+                <div class="crm-step">
+                    <span class="crm-step-icon">3</span> IF/ELSE workflow tags contact:
+                    <div class="crm-split">
+                        <span class="crm-tag-badge bg-tofu">Beginner → TOFU-Diana</span>
+                        <span class="crm-tag-badge bg-mofu">Intermediate → MOFU-Ron</span>
+                        <span class="crm-tag-badge bg-bofu">Advanced → BOFU-Marco</span>
+                    </div>
+                </div>
+                <div class="crm-arrow">↓</div>
+
+                <div class="crm-step">
+                    <span class="crm-step-icon">4</span> Opportunity created in pipeline:<br>
+                    <span style="color: var(--electric-blue); font-weight: bold;">"Webinar Launch" → Stage: Registered (Free)</span>
+                </div>
+                <div class="crm-arrow">↓</div>
+
+                <div class="crm-step">
+                    <span class="crm-step-icon">5</span> Internal notification sent to Nuno
+                </div>
+                <div class="crm-arrow">↓</div>
+
+                <div class="crm-step">
+                    <span class="crm-step-icon">6</span> Email sequence begins (Workflow A)
+                </div>
+            </div>
+        </div>
+
+        <div class="fm-subsection">
+            <h3 class="fm-subtitle">Workflow A — Registration Sequence</h3>
+            <div class="wf-timeline">
+                <div class="wf-node">
+                    <div class="wf-dot"></div>
+                    <div class="wf-node-time">Immediate</div>
+                    <div class="wf-node-email">"You're in!"</div>
+                    <div class="wf-node-note">Dynamic — Day 1/2/3 based on ICP tag</div>
+                </div>
+                <div class="wf-node">
+                    <div class="wf-dot"></div>
+                    <div class="wf-node-time">Day +1</div>
+                    <div class="wf-node-email">"Here's what we're building together"</div>
+                    <div class="wf-node-note">Agenda + value teaser</div>
+                </div>
+                <div class="wf-node">
+                    <div class="wf-dot"></div>
+                    <div class="wf-node-time">2 days before</div>
+                    <div class="wf-node-email">"Are you ready to build?"</div>
+                    <div class="wf-node-note">Reminder + tech requirements</div>
+                </div>
+                <div class="wf-node">
+                    <div class="wf-dot"></div>
+                    <div class="wf-node-time">Day of (morning)</div>
+                    <div class="wf-node-email">"Today's the day. We go live in X hours."</div>
+                    <div class="wf-node-note">Join link + last hype</div>
+                </div>
+                <div class="wf-node">
+                    <div class="wf-dot"></div>
+                    <div class="wf-node-time">2 hours before</div>
+                    <div class="wf-node-email">"Starting soon — don't miss this"</div>
+                    <div class="wf-node-note">Final push + VIP scarcity reminder</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fm-subsection">
+            <h3 class="fm-subtitle">Workflow B — Non-VIP Remarketing</h3>
+            <div class="wf-simple-flow">
+                <div class="wf-trigger">
+                    <strong>TRIGGER:</strong><br>
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">Has TOFU/MOFU/BOFU tag<br>BUT does NOT have VIP-Purchased tag</span>
+                </div>
+                <div class="fm-arrow-container">→</div>
+                <div class="wf-node" style="width: auto; padding-top: 0; background: transparent;">
+                    <div class="wf-node-time">1 hour after reg</div>
+                    <div class="wf-node-email">"One more thing before the webinar..."</div>
+                    <div class="wf-node-note">Soft VIP pitch + raffle reminder</div>
+                </div>
+                <div class="fm-arrow-container">→</div>
+                <div class="wf-node" style="width: auto; padding-top: 0; background: transparent;">
+                    <div class="wf-node-time">+24 hours</div>
+                    <div class="wf-node-email">"Last chance — VIP closes soon"</div>
+                    <div class="wf-node-note">Scarcity + urgency + final CTA</div>
+                </div>
+                <div class="fm-arrow-container">→</div>
+                <div class="wf-exit">
+                    <strong>EXIT CONDITION:</strong><br>
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">If VIP-Purchased tag added →<br>remove from workflow immediately</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="fm-subsection" style="margin-bottom: 0;">
+            <h3 class="fm-subtitle">The Pipeline — Tracking Every Lead</h3>
+            <div class="kanban-board">
+                <div class="k-col c1">Registered (Free)</div>
+                <div class="k-col c2">VIP Purchased</div>
+                <div class="k-col c3">Attended</div>
+                <div class="k-col c4">Converted (Post-Offer)</div>
+            </div>
+            <div class="k-note">
+                "Every registrant enters at Stage 1. Every action moves them right."
+            </div>
+        </div>
+    </section>
+
+    <div class="final-banner scroll-element">
+        <p>This funnel was designed using the <br><span class="highlight">Hormozi Grand Slam Offer framework</span>,<br> grounded in Nuno Tavares's real audience pain points, and built for GoHighLevel.</p>
+        <p class="highlight" style="color: var(--gold);">Diana → Ron → Marco.<br>Every stage. Every offer. One journey.</p>
+        
+        <div class="final-banner-meta">
+            <span>Automated Marketer · Pareto Talent Final Project · Sofia Camussi · 2026</span>
+            <a href="https://github.com/camussicamusica/automated-stalker/" target="_blank">View GitHub Repository</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const scrollElements = document.querySelectorAll('.scroll-element');
+            const funnelLayers = {
+                tofu: document.getElementById('layer-tofu'),
+                mofu: document.getElementById('layer-mofu'),
+                bofu: document.getElementById('layer-bofu')
+            };
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 
+            };
+
+            const elementObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Fade/slide in the element
+                        entry.target.classList.add('visible');
+                        
+                        // If it's a persona card, update the funnel highlights
+                        if(entry.target.classList.contains('persona-card')) {
+                            const stage = entry.target.getAttribute('data-stage');
+                            Object.values(funnelLayers).forEach(layer => layer.classList.remove('active'));
+                            
+                            if(stage === 'tofu') {
+                                funnelLayers.tofu.classList.add('active');
+                            } else if (stage === 'mofu') {
+                                funnelLayers.tofu.classList.add('active');
+                                funnelLayers.mofu.classList.add('active');
+                            } else if (stage === 'bofu') {
+                                funnelLayers.tofu.classList.add('active');
+                                funnelLayers.mofu.classList.add('active');
+                                funnelLayers.bofu.classList.add('active');
+                            }
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            scrollElements.forEach(el => {
+                elementObserver.observe(el);
+            });
+        });
+    </script>
+<!-- ═══ UNIVERSAL FOOTER ═══ -->
+<footer style="border-top:1px solid rgba(255,255,255,0.06);margin-top:80px;padding:48px 40px 36px;background:rgba(10,10,15,0.8);font-family:'DM Sans',sans-serif">
+  <div style="max-width:1100px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:32px;margin-bottom:36px">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:6px">Automated <span style="color:#D4AF37">Stalker</span></div>
+        <div style="color:rgba(255,255,255,0.35);font-size:0.78rem;line-height:1.7">Darwinian Competitor Intelligence · Built for Nuno Tavares<br>Pareto Talent Final Project · Sofia Renata Camussi · April 2026</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+        <a href="hub.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Hub</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="index.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Top 3 Intel</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="algorithm_sop.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Algorithm SOP</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="iteration1.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Evolution Matrix</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="funnelipc.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Funnel &amp; ICP</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="https://github.com/camussicamusica/automated-stalker" target="_blank" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">GitHub ↗</a>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+      <div style="color:rgba(255,255,255,0.2);font-size:0.72rem">Built with Claude Code · Claude Sonnet 4.6 · Google Gemini 2.5 Pro · RivalSearchMCP · YouTube Data API v3</div>
+      <div style="color:rgba(255,255,255,0.15);font-size:0.72rem">© 2026 · MIT License</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
