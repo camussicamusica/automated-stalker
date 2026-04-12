@@ -203,6 +203,24 @@
   .toggle-btn.warn { color: #f59e0b; border-color: #44350a; }
   .toggle-btn.warn:hover { background: #1c1506; border-color: #f59e0b; }
 
+  /* citation link pills */
+  .cite-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; align-items: center; }
+  .cite-label { font-size: 0.68rem; color: #475569; text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+  a.cite-link {
+    background: #1e293b; border: 1px solid #334155;
+    border-radius: 20px; padding: 4px 11px;
+    font-family: 'SF Mono','Fira Code','Courier New',monospace;
+    font-size: 0.7rem; text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  a.cite-link.gemini { color: #4ade80; border-color: #14532d; }
+  a.cite-link.gemini:hover { background: #0d2e1a; border-color: #4ade80; }
+  a.cite-link.claude { color: #c084fc; border-color: #3b1f5e; }
+  a.cite-link.claude:hover { background: #200d38; border-color: #c084fc; }
+  a.cite-link.terminal { color: #fcd34d; border-color: #44350a; }
+  a.cite-link.terminal:hover { background: #1c1506; border-color: #fcd34d; }
+
   /* ── CODE BLOCKS ── */
   .code-wrap {
     margin-top: 14px;
@@ -312,8 +330,19 @@
           <a href="iteration1.html" class="btn btn-grey">View Report →</a>
           <div class="toggle-row">
             <button class="toggle-btn" onclick="toggleBlock('wrap-code1','btn-code1')" id="btn-code1">&lt;/&gt; Show Python Code</button>
-            <button class="toggle-btn" onclick="toggleBlock('wrap-prompt1','btn-prompt1')" id="btn-prompt1">🤖 Show Gemini Prompt</button>
           </div>
+        </div>
+        <div class="cite-row">
+          <span class="cite-label">💎 Gemini</span>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7fae70229974" target="_blank">Conv 1</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7d3034e042bf" target="_blank">Conv 2</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/9d253dea0799" target="_blank">Conv 3</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/d9c7a8d036b5" target="_blank">Conv 4</a>
+          <span class="cite-label" style="margin-left:6px;">🤖 Claude</span>
+          <a class="cite-link claude" href="https://claude.ai/share/c7992f5f-f1ce-442d-988e-d29d8be77d86" target="_blank">Conv 1</a>
+          <a class="cite-link claude" href="https://claude.ai/share/8f0f8190-132d-4c63-a136-8bf2f8d02b91" target="_blank">Conv 2</a>
+          <a class="cite-link claude" href="https://claude.ai/share/fed341c9-ab17-454f-b1d5-a7fdf3230fc1" target="_blank">Conv 3</a>
+          <a class="cite-link claude" href="https://claude.ai/share/3bc08b45-ab22-433b-b734-deeb99aa9ae4" target="_blank">Conv 4</a>
         </div>
         <div id="wrap-code1" class="code-wrap">
           <div class="code-header">
@@ -321,13 +350,6 @@
             <button class="copy-btn" onclick="copyCode('pre-code1',this)">Copy</button>
           </div>
           <pre id="pre-code1" class="code-pre"></pre>
-        </div>
-        <div id="wrap-prompt1" class="code-wrap">
-          <div class="code-header">
-            <span>🤖 Gemini Prompt — Darwinian Algorithm Generation</span>
-            <button class="copy-btn" onclick="copyCode('pre-prompt1',this)">Copy</button>
-          </div>
-          <pre id="pre-prompt1" class="code-pre"></pre>
         </div>
       </div>
     </div>
@@ -356,8 +378,19 @@
           <a href="iteration2.html" class="btn btn-grey">View Report →</a>
           <div class="toggle-row">
             <button class="toggle-btn" onclick="toggleBlock('wrap-code2','btn-code2')" id="btn-code2">&lt;/&gt; Show Python Code</button>
-            <button class="toggle-btn" onclick="toggleBlock('wrap-prompt2','btn-prompt2')" id="btn-prompt2">🤖 Show Gemini Prompt</button>
           </div>
+        </div>
+        <div class="cite-row">
+          <span class="cite-label">💎 Gemini</span>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7fae70229974" target="_blank">Conv 1</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7d3034e042bf" target="_blank">Conv 2</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/9d253dea0799" target="_blank">Conv 3</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/d9c7a8d036b5" target="_blank">Conv 4</a>
+          <span class="cite-label" style="margin-left:6px;">🤖 Claude</span>
+          <a class="cite-link claude" href="https://claude.ai/share/c7992f5f-f1ce-442d-988e-d29d8be77d86" target="_blank">Conv 1</a>
+          <a class="cite-link claude" href="https://claude.ai/share/8f0f8190-132d-4c63-a136-8bf2f8d02b91" target="_blank">Conv 2</a>
+          <a class="cite-link claude" href="https://claude.ai/share/fed341c9-ab17-454f-b1d5-a7fdf3230fc1" target="_blank">Conv 3</a>
+          <a class="cite-link claude" href="https://claude.ai/share/3bc08b45-ab22-433b-b734-deeb99aa9ae4" target="_blank">Conv 4</a>
         </div>
         <div id="wrap-code2" class="code-wrap">
           <div class="code-header">
@@ -365,13 +398,6 @@
             <button class="copy-btn" onclick="copyCode('pre-code2',this)">Copy</button>
           </div>
           <pre id="pre-code2" class="code-pre"></pre>
-        </div>
-        <div id="wrap-prompt2" class="code-wrap">
-          <div class="code-header">
-            <span>🤖 Gemini Prompt — Report Generator</span>
-            <button class="copy-btn" onclick="copyCode('pre-prompt2',this)">Copy</button>
-          </div>
-          <pre id="pre-prompt2" class="code-pre"></pre>
         </div>
       </div>
     </div>
@@ -400,9 +426,20 @@
           <a href="iteration3.html" class="btn btn-grey">View Report →</a>
           <div class="toggle-row">
             <button class="toggle-btn" onclick="toggleBlock('wrap-code3','btn-code3')" id="btn-code3">&lt;/&gt; Show Python Code</button>
-            <button class="toggle-btn" onclick="toggleBlock('wrap-prompt3','btn-prompt3')" id="btn-prompt3">🤖 Show Gemini Prompt</button>
             <button class="toggle-btn warn" onclick="toggleBlock('wrap-note3','btn-note3')" id="btn-note3">⚠️ Methodology Note</button>
           </div>
+        </div>
+        <div class="cite-row">
+          <span class="cite-label">💎 Gemini</span>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7fae70229974" target="_blank">Conv 1</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/7d3034e042bf" target="_blank">Conv 2</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/9d253dea0799" target="_blank">Conv 3</a>
+          <a class="cite-link gemini" href="https://gemini.google.com/share/d9c7a8d036b5" target="_blank">Conv 4</a>
+          <span class="cite-label" style="margin-left:6px;">🤖 Claude</span>
+          <a class="cite-link claude" href="https://claude.ai/share/c7992f5f-f1ce-442d-988e-d29d8be77d86" target="_blank">Conv 1</a>
+          <a class="cite-link claude" href="https://claude.ai/share/8f0f8190-132d-4c63-a136-8bf2f8d02b91" target="_blank">Conv 2</a>
+          <a class="cite-link claude" href="https://claude.ai/share/fed341c9-ab17-454f-b1d5-a7fdf3230fc1" target="_blank">Conv 3</a>
+          <a class="cite-link claude" href="https://claude.ai/share/3bc08b45-ab22-433b-b734-deeb99aa9ae4" target="_blank">Conv 4</a>
         </div>
         <div id="wrap-code3" class="code-wrap">
           <div class="code-header">
@@ -410,13 +447,6 @@
             <button class="copy-btn" onclick="copyCode('pre-code3',this)">Copy</button>
           </div>
           <pre id="pre-code3" class="code-pre"></pre>
-        </div>
-        <div id="wrap-prompt3" class="code-wrap">
-          <div class="code-header">
-            <span>🤖 Gemini Prompt — Deep Web Enrichment</span>
-            <button class="copy-btn" onclick="copyCode('pre-prompt3',this)">Copy</button>
-          </div>
-          <pre id="pre-prompt3" class="code-pre"></pre>
         </div>
         <div id="wrap-note3" class="code-wrap">
           <div class="code-header" style="background:rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.3);">
@@ -454,24 +484,15 @@
         </div>
         <div class="step-footer">
           <a href="index.html" class="btn btn-gold">View Report →</a>
-          <div class="toggle-row">
-            <button class="toggle-btn" onclick="toggleBlock('wrap-prompt4','btn-prompt4')" id="btn-prompt4">🤖 Show Claude Code Prompt</button>
-            <button class="toggle-btn" onclick="toggleBlock('wrap-mcp4','btn-mcp4')" id="btn-mcp4">⚡ Show RivalSearchMCP Config</button>
-          </div>
         </div>
-        <div id="wrap-prompt4" class="code-wrap">
-          <div class="code-header">
-            <span>🤖 Claude Code Terminal Prompt — Top 3 Deep Research</span>
-            <button class="copy-btn" onclick="copyCode('pre-prompt4',this)">Copy</button>
-          </div>
-          <pre id="pre-prompt4" class="code-pre"></pre>
-        </div>
-        <div id="wrap-mcp4" class="code-wrap">
-          <div class="code-header" style="background:#0a0f1e;">
-            <span style="color:#a78bfa;">⚡ RivalSearchMCP — MCP Server Setup</span>
-            <button class="copy-btn" onclick="copyCode('pre-mcp4',this)">Copy</button>
-          </div>
-          <pre id="pre-mcp4" class="code-pre" style="color:#a78bfa;"></pre>
+        <div class="cite-row">
+          <span class="cite-label">⚡ Session</span>
+          <a class="cite-link terminal" href="https://github.com/camussicamusica/automated-stalker/blob/main/02_Data/session_transcript.txt" target="_blank">Terminal Session Log</a>
+          <span class="cite-label" style="margin-left:6px;">🤖 Claude</span>
+          <a class="cite-link claude" href="https://claude.ai/share/c7992f5f-f1ce-442d-988e-d29d8be77d86" target="_blank">Conv 1</a>
+          <a class="cite-link claude" href="https://claude.ai/share/8f0f8190-132d-4c63-a136-8bf2f8d02b91" target="_blank">Conv 2</a>
+          <a class="cite-link claude" href="https://claude.ai/share/fed341c9-ab17-454f-b1d5-a7fdf3230fc1" target="_blank">Conv 3</a>
+          <a class="cite-link claude" href="https://claude.ai/share/3bc08b45-ab22-433b-b734-deeb99aa9ae4" target="_blank">Conv 4</a>
         </div>
       </div>
     </div>
@@ -643,7 +664,7 @@
 
 
 <script>
-// ── TOGGLE FUNCTION ──────────────────────────────────────
+// ── TOGGLE ──────────────────────────────────────────────
 function toggleBlock(wrapId, btnId) {
   const wrap = document.getElementById(wrapId);
   const btn  = document.getElementById(btnId);
@@ -659,463 +680,232 @@ function copyCode(preId, btn) {
   if (!pre) return;
   navigator.clipboard.writeText(pre.textContent).then(() => {
     const orig = btn.textContent;
-    btn.textContent = '✓ Copied';
+    btn.textContent = '\u2713 Copied';
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
   });
 }
 
-// ── CODE SNIPPETS ─────────────────────────────────────────
-const SNIPPETS = {};
-
-SNIPPETS['pre-code1'] = `# ─────────────────────────────────────────────────────────
-# STEP 1A: YOUTUBE DATA API v3 — 8-QUERY CANDIDATE DISCOVERY
-# nuno_competition.py
-# ─────────────────────────────────────────────────────────
-from googleapiclient.discovery import build
-import pandas as pd
-
-def get_youtube_candidates(api_key):
-    youtube = build('youtube', 'v3', developerKey=api_key)
-    queries = [
-        "MCP tutorial for beginners",    "Manus AI agent tutorial",
-        "GoHighLevel training 2024",      "AI agents no code tutorial",
-        "vibe coding tutorial",           "n8n automation for business",
-        "Claude Code tutorial",           "marketing automation webinar"
-    ]
-    known_seeds = [
-        "Nick Saraev", "Liam Ottley", "Matt Wolfe", "Keaton Walker",
-        "Jason Wardrop", "Cole Humphus", "Riley Brown", "Corbin Brown"
-    ]
-    candidates = {}
-    for q in queries:
-        request = youtube.search().list(
-            q=q, part="snippet", type="channel", maxResults=3
-        )
-        for item in request.execute().get('items', []):
-            cid = item['snippet']['channelId']
-            candidates[cid] = {'name': item['snippet']['channelTitle'], 'id': cid}
-
-    for name in known_seeds:          # Ensure seeds are always included
-        req = youtube.search().list(q=name, part="snippet",
-                                    type="channel", maxResults=1).execute()
-        if req['items']:
-            cid = req['items'][0]['snippet']['channelId']
-            candidates[cid] = {'name': name, 'id': cid}
-    return candidates   # → ~28 unique channel IDs
-
-# ─────────────────────────────────────────────────────────
-# STEP 1B: DARWINIAN FITNESS SCORING — 7 WEIGHTED DIMENSIONS
-# ─────────────────────────────────────────────────────────
-def calculate_fitness(row):
-    d1 = min(10, (row['subs'] / 100000) * 10)            # Audience Overlap   20%
-    niche_keys = ["mcp","gohighlevel","vibe","claude","agent","n8n","make"]
-    d2 = min(10, sum(1 for k in niche_keys
-                     if k in str(row['bio']).lower()
-                     or k in str(row['top_videos']).lower()) * 1.5) # Niche Density 25%
-    d3 = 10 if row['has_webinar_keyword'] else 3          # Content Format     10%
-    d4 = 10 if row['has_webinar_keyword'] and \
-               row['price_signal'] else (5 if row['has_webinar_keyword'] else 0) # Webinar 25%
-    d5 = 10 if row['price_signal'] else 0                 # Offer Structure    10%
-    d6 = 10 if row['subs'] > 50000 else 5                 # Revenue Scale       5%
-    d7 = min(10, row['authority_count'] * 2)              # Authority Score     5%
-
-    score = (d1*0.2)+(d2*0.25)+(d3*0.1)+(d4*0.25)+(d5*0.1)+(d6*0.05)+(d7*0.05)
-    return pd.Series([d1, d2, d3, d4, d5, d6, d7, score * 10])
-
-# ─────────────────────────────────────────────────────────
-# STEP 1C: 3-GENERATION DARWINIAN ELIMINATION
-# ─────────────────────────────────────────────────────────
-    df[score_labels] = df.apply(calculate_fitness, axis=1)
-    df = df.sort_values(by='Total_Fitness', ascending=False)
-
-    # Generation 1: Eliminate bottom 40%  →  28 → ~17 survive
-    df['Generation'] = "Finalist"
-    cutoff = int(len(df) * 0.4)
-    df.iloc[len(df)-cutoff:,
-            df.columns.get_loc('Generation')] = "Eliminated (Gen 1)"
-
-    # Generation 2: Penalty for no webinar focus → re-sort  →  ~10 survive
-    df.loc[df['has_webinar_keyword'] == False, 'Total_Fitness'] *= 0.8
-    df = df.sort_values(by='Total_Fitness', ascending=False)
-
-    df.to_csv('competitor_analysis.csv', index=False)    # All 28 → CSV`;
-
-SNIPPETS['pre-prompt1'] = `You are building a Darwinian competitor intelligence system
-for Nuno Tavares, an AI automation educator planning a
-webinar launch. His niche: Python automation, MCP, GHL,
-no-code AI tools for entrepreneurs.
-
-Build nuno_competition.py — a complete Python script that:
-
-DISCOVERY:
-- Query YouTube Data API v3 across 8 search terms:
-    "MCP tutorial for beginners", "Manus AI agent tutorial",
-    "GoHighLevel training 2024", "AI agents no code tutorial",
-    "vibe coding tutorial", "n8n automation for business",
-    "Claude Code tutorial", "marketing automation webinar"
-- Seed with known competitors: Nick Saraev, Liam Ottley,
-    Matt Wolfe, Keaton Walker, Jason Wardrop, Riley Brown, Corbin Brown
-- Collect: channel URL, subs, views, video count, bio, top 5 videos
-- Deduplicate by channel ID → target ~28 unique candidates
-
-SCORING — 7 Darwinian dimensions (weights sum to 100%):
-  D1: Audience Overlap (20%)   — normalize subs / 100k
-  D2: Niche Density (25%)      — keyword matches: mcp, ghl, vibe, claude, n8n
-  D3: Content Format (10%)     — webinar/live/workshop in top videos
-  D4: Webinar Strategy (25%)   — webinar keyword AND price signal detected
-  D5: Offer Structure (10%)    — price signal ($, Enroll, Price) on website
-  D6: Revenue Scale (5%)       — subs > 50k = 10 pts, else 5 pts
-  D7: Authority Score (5%)     — Google result count for "[name] review"
-
-ELIMINATION — 3 generations:
-  Gen 1: Score all, eliminate bottom 40% → ~17 survive
-  Gen 2: Apply 0.8x penalty to non-webinar creators → ~10 survive
-  Gen 3: Top 3 finalists extracted for deep report
-
-OUTPUT:
-  competitor_analysis.csv     ← all 28 with D1–D7 + Total_Fitness + Generation
-  top3_competitors.txt        ← structured Top 3 report
-  nuno_vs_competitors.csv     ← Nuno vs Top 3 comparison matrix
-
-Use: pandas, numpy, google-api-python-client, beautifulsoup4
-Rate limit: sleep(1) between API calls, sleep(5) for Google
-Log all errors to errors.log`;
-
-SNIPPETS['pre-code2'] = `# ─────────────────────────────────────────────────────────
-# STEP 2A: LOAD CSV DATA AND INJECT AS JSON INTO HTML
-# 2. report.py
-# ─────────────────────────────────────────────────────────
-import pandas as pd, json, webbrowser
-from datetime import datetime
-
-def generate_report():
-    df_analysis = pd.read_csv('competitor_analysis.csv')  # 28 candidates
-    df_vs       = pd.read_csv('nuno_vs_competitors.csv')   # Nuno benchmark
-    top3_data   = parse_top3_txt('top3_competitors.txt')   # Top 3 profiles
-
-    # Convert DataFrames → JSON strings for JS injection
-    analysis_json = df_analysis.to_json(orient='records')
-    vs_json       = df_vs.to_json(orient='records')
-    top3_json     = json.dumps(top3_data)
-
-# ─────────────────────────────────────────────────────────
-# STEP 2B: HTML TEMPLATE — CSV DATA INJECTED AS JSON
-# ─────────────────────────────────────────────────────────
-html_template = f"""
-<!DOCTYPE html>
-...
-<script>
-    // All CSV data injected at build time — no server required
-    const analysisData = {analysis_json};
-    const vsData       = {vs_json};
-    const top3Data     = {top3_json};
-
-    // Render searchable ranked table with color-coded rows
-    const tbody = document.getElementById('tableBody');
-    analysisData.forEach(row => {{
-        const tr = document.createElement('tr');
-        if (row.Generation === 'Finalist')        tr.className = 'row-finalist';
-        if (row.Generation.includes('Gen 1'))     tr.className = 'row-gen1';
-        const score = row.Total_Fitness || 0;
-        tr.innerHTML = \`
-            <td><strong>\${row.name}</strong></td>
-            <td>\${row.subs?.toLocaleString()}</td>
-            <td>
-                <div class="progress-container">
-                    <div class="progress-bar" style="width:\${score}%"></div>
-                </div>
-                \${parseFloat(score).toFixed(1)}
-            </td>
-            <td>\${row.has_webinar_keyword ? '✅' : '❌'}</td>
-            <td>\${row.Generation}</td>
-        \`;
-        tbody.appendChild(tr);
-    }});
-
-    // Chart.js: Nuno vs Top 3 — fitness score bar chart
-    new Chart(document.getElementById('vsChart'), {{
-        type: 'bar',
-        data: {{
-            labels: ['Nuno', 'Nick Saraev', 'Riley Brown', 'Nate Herk'],
-            datasets: [{{
-                label: 'Fitness Score',
-                data: [88.5, 62.5, 58.75, 58.75],
-                backgroundColor: ['#00d4ff','#ffd700','#e5e7eb','#cd7f32']
-            }}]
-        }}
-    }});
-</script>
-"""
-    with open('competitor_report.html', 'w') as f:
-        f.write(html_template)`;
-
-SNIPPETS['pre-prompt2'] = `Generate report.py — a Python script that reads the output
-of nuno_competition.py and produces a stunning single-file
-HTML intelligence dashboard. No web server needed.
-
-INPUT FILES:
-  competitor_analysis.csv  — 28 candidates with D1–D7 scores
-  nuno_vs_competitors.csv  — Nuno vs Top 3 comparison matrix
-  top3_competitors.txt     — structured Top 3 profiles
-
-OUTPUT: competitor_report.html (100% self-contained)
-
-DESIGN SYSTEM:
-  Background: #0a0f1e  |  Cards: #111827  |  Accent: #00d4ff
-  Gold/Silver/Bronze for rank 1/2/3
-
-REQUIRED SECTIONS:
-1. Hero header with key stats: 28 analyzed, 3 rounds, Top 3
-2. Sticky navigation bar (Overview / Algorithm / Rankings / Profiles)
-3. Section: "The Darwinian Model"
-   — 4 algo cards showing each weighted dimension
-4. Section: "Evolution Matrix"
-   — Searchable table, all 28 candidates
-   — Color-coded rows: Finalist (gold), Eliminated Gen 1 (red)
-   — Progress bar for fitness score column
-   — Webinar ✅/❌ column
-5. Section: "Strategic Profiles — Top 3"
-   — Cards with tabbed deep-dives (Audience / Strategy / Why It Matters)
-   — Radar chart per profile via Chart.js
-6. Section: "Nuno vs The Field"
-   — Chart.js bar chart: subscribers + fitness score comparison
-
-TECHNICAL:
-- Inject all CSV data as JSON via Python f-strings into <script> tags
-- Use Chart.js from CDN — no other external dependencies
-- Add fixed bottom-right "Export to PDF" button
-- All data self-contained — no runtime file reads`;
-
-SNIPPETS['pre-code3'] = `# ─────────────────────────────────────────────────────────
-# STEP 3A: deep_search() — GOOGLE SEARCH WITH RATE LIMITING
-# 3. report2.py
-# ─────────────────────────────────────────────────────────
-from googlesearch import search
-import time, requests
-from bs4 import BeautifulSoup
-
-def deep_search(name, query_suffix, keywords, exclude_keywords=None):
-    query = f"{name} {query_suffix}"
-    try:
-        time.sleep(5)   # Mandatory: prevents Google IP blocks
-        for url in search(query, num_results=5):
-            url_lower = url.lower()
-            if exclude_keywords and any(x in url_lower for x in exclude_keywords):
-                continue
-            if any(k in url_lower for k in keywords):
-                return url   # First matching URL returned
-        return "Not Found"
-    except Exception as e:
-        with open(ERROR_LOG, "a") as log:
-            log.write(f"[{datetime.now()}] Search Error ({query}): {e}\\n")
-        return "Not Found"
-
-# ─────────────────────────────────────────────────────────
-# STEP 3B: ENRICHMENT LOOP — 7 SEARCHES PER CANDIDATE
-# ─────────────────────────────────────────────────────────
-for idx, cand in enumerate(candidates_list, 1):
-    name = cand['name']
-
-    website    = deep_search(name, "official website",
-                    keywords=[".com",".io",".co",".net",".org"],
-                    exclude_keywords=["youtube.com","linkedin.com","instagram.com"])
-
-    linkedin   = deep_search(name, "LinkedIn",
-                    keywords=["linkedin.com/in","linkedin.com/company"])
-
-    instagram  = deep_search(name, "Instagram",
-                    keywords=["instagram.com/"])
-
-    webinar_url = deep_search(name, "webinar register live masterclass",
-                    keywords=["webinar","register","masterclass",
-                              "workshop","bootcamp","live-training"])
-
-    course_url  = deep_search(name, "course buy enroll skool community",
-                    keywords=["skool.com","course","enroll","pricing",
-                              "membership","academy","learn"])
-
-    # ── Scrape discovered website ──────────────────────
-    if website != "Not Found":
-        resp = requests.get(website,
-                            headers={"User-Agent":"Mozilla/5.0"}, timeout=8)
-        if resp.status_code == 429:
-            time.sleep(45)   # Rate limit backoff
-            resp = requests.get(website, headers={"User-Agent":"Mozilla/5.0"}, timeout=8)
-
-        soup         = BeautifulSoup(resp.text, 'html.parser')
-        site_headline = soup.find('h1').get_text().strip() if soup.find('h1') else "Not Found"
-        h2s           = [h.get_text().strip() for h in soup.find_all('h2')[:4]]
-        has_pricing   = "$" in resp.text
-
-    enriched_results.append({**cand,
-        "website": website,       "linkedin": linkedin,
-        "instagram": instagram,   "webinar_url": webinar_url,
-        "has_webinar": webinar_url != "Not Found",
-        "course_url": course_url, "site_headline": site_headline,
-        "has_pricing": has_pricing})
-
-df_enriched = pd.DataFrame(enriched_results)
-df_enriched.to_csv(ENRICHED_CSV, index=False)   # → deep_enriched.csv`;
-
-SNIPPETS['pre-prompt3'] = `Generate report2.py — a deep web enrichment script that
-layers real internet intelligence on top of the 28 YouTube
-candidates discovered in Step 1.
-
-INPUT:  competitor_analysis.csv (28 candidates, subs >= 1000 filter)
-OUTPUT: deep_enriched.csv + competitor_final_report.html
-
-ENRICHMENT — for each qualifying candidate, run 7 searches:
-  1. Official website (exclude all social media domains)
-  2. YouTube channel URL (confirm vs API data)
-  3. LinkedIn profile (linkedin.com/in or /company)
-  4. Instagram profile (instagram.com/)
-  5. Webinar/masterclass/workshop registration page
-  6. Course / Skool / community / membership page
-  7. Twitter/X profile (twitter.com/ or x.com/)
-
-SCRAPING — for each discovered website:
-  - Extract h1 headline text
-  - Extract first 4 h2 section headings, joined with " · "
-  - Find primary CTA button text
-  - Check if "$" pricing appears anywhere on the page
-
-RATE LIMITING (critical — Google will block your IP):
-  - sleep(5) between every Google search call
-  - sleep(2) between page scrapes
-  - Handle 429 errors: wait 45 seconds then retry once
-  - Log ALL failures to errors.log with timestamp
-
-OUTPUT HTML should include:
-  - Filter pills: All / Top 3 / Webinar / Course / Website
-  - Real-time search input by name
-  - Card grid: all discovered links per candidate
-  - Webinar intelligence table (only webinar-active candidates)
-  - Chart.js horizontal bar: digital footprint score per candidate
-    (1 point per platform successfully discovered, max 6)`;
-
-SNIPPETS['pre-note3'] = `WHAT ACTUALLY HAPPENED DURING SCRAPING (HONEST ACCOUNT)
-
-report2.py ran successfully but returned severely limited data:
-
-BLOCKED PLATFORMS (0% success rate):
-  Instagram       ─── login wall on ALL requests
-  LinkedIn        ─── authentication required, all blocked
-  Meta Ad Library ─── JavaScript-rendered, not accessible via requests
-  Most websites   ─── Cloudflare 403 or bot detection on first request
-
-GOOGLE SEARCH LIMITS:
-  googlesearch-python was rate-limited after ~50 queries
-  Error: "429 Too Many Requests" — IP temporarily banned
-  Some niche creators (< 10K subs) returned 0 Google results
-
-SCRAPING RESULTS:
-  deep_enriched.csv shows "Not Found" for the majority of fields
-  Site headlines only captured where Cloudflare was absent
-  Pricing signal ("$") was the most reliably detected field
-
-WHY THIS MATTERS FOR THE METHODOLOGY:
-  Individual candidate report cards reflect only what the Python
-  scraper could access in a single automated pass — not verified
-  intelligence. Cards are algorithmic signals, not confirmed profiles.
-
-WHY STEP 4 EXISTS:
-  The scraping failures are the documented reason the project
-  escalated to Claude Code + RivalSearchMCP for the Top 3.
-  RivalSearchMCP provides:
-    ✅ JavaScript rendering (bypasses Cloudflare)
-    ✅ Authenticated session handling
-    ✅ Meta Ad Library access
-    ✅ Multi-engine fallback (Google + Bing + DuckDuckGo)
-    ✅ No rate limiting issues
-
-  This two-tier approach (Python for 28, MCP for Top 3)
-  is the documented honest methodology of this project.`;
-
-SNIPPETS['pre-prompt4'] = `I need deep competitor intelligence on the Top 3 finalists
-from our Darwinian algorithm. These are Nuno Tavares's
-highest-priority strategic competitors for his webinar launch.
-
-CONTEXT:
-Nuno Tavares (@automatedmarketer) — AI automation educator,
-~20K YouTube subscribers, planning first webinar launch
-in the Python / MCP / GHL automation space for entrepreneurs.
-
-━━━ COMPETITOR 1: Nick Saraev ━━━
-YouTube: youtube.com/@nicksaraev  (377K subscribers)
-Darwinian Fitness Score: 62.5/100  (ranked #1)
-Priority research: Skool community pricing, estimated revenue,
-business model breakdown, webinar history, press/podcast mentions
-
-━━━ COMPETITOR 2: Riley Brown ━━━
-YouTube: youtube.com/@rileybrown.ai  (211K subscribers)
-Darwinian Fitness Score: 58.75/100  (ranked #2)
-Priority research: VibeCode app details, VC funding amount,
-current pricing structure, webinar or live event history
-
-━━━ COMPETITOR 3: Nate Herk ━━━
-YouTube: youtube.com/@nateherk  (648K subscribers)
-Darwinian Fitness Score: 58.75/100  (ranked #3)
-Priority research: community pricing, monthly revenue estimate,
-funnel structure, any live events or webinar launches
-
-FOR EACH COMPETITOR, FIND:
-  1. All current paid products with exact pricing
-  2. Estimated monthly revenue (subs × est. conversion × price)
-  3. Do they run public webinars? (YES/NO + direct evidence)
-  4. Primary monetization funnel: YouTube → ? → purchase
-  5. Skool community: name, price, estimated member count
-  6. Press / podcast appearances in the last 12 months
-  7. GHL or MCP tool connections (if any)
-
-STRATEGIC QUESTION:
-Is there a webinar white space in this market?
-Does any of the Top 3 run a public webinar funnel that would
-directly compete with Nuno's planned launch?
-
-Use RivalSearchMCP for all Cloudflare-protected pages,
-Skool pricing, LinkedIn profiles, and Meta Ad Library.
-Format output as individual competitor reports + strategic summary.`;
-
-SNIPPETS['pre-mcp4'] = `# ─────────────────────────────────────────────────────────
-# RivalSearchMCP — MCP SERVER SETUP FOR CLAUDE CODE
-# Cloudflare bypass + JS rendering + multi-engine search
-# ─────────────────────────────────────────────────────────
-
-# STEP 1: Add the MCP server to Claude Code
-claude mcp add --transport http RivalSearchMCP \\
-  https://RivalSearchMCP.fastmcp.app/mcp
-
-# STEP 2: Verify the connection
-claude mcp list
-# Expected: RivalSearchMCP (http) ✓
-
-# STEP 3: Open Claude Code — the tool is auto-available
-# No API key required. Connects via HTTP transport.
-
-# ─────────────────────────────────────────────────────────
-# WHAT RivalSearchMCP UNLOCKS vs. Python scraping:
-# ─────────────────────────────────────────────────────────
-# ✅  JavaScript-rendered pages (Skool, Meta Ad Library)
-# ✅  Cloudflare-protected websites
-# ✅  Multi-engine search (Google + Bing + DuckDuckGo)
-# ✅  LinkedIn profile data
-# ✅  Real-time pricing page rendering
-# ✅  No rate limiting or IP bans
-#
-# MCP Server URL:   https://RivalSearchMCP.fastmcp.app/mcp
-# Transport:        HTTP  (no stdio, no local process)
-# Auth:             None required
-# GitHub:           github.com/damionrashford/RivalSearchMCP`;
-
-// ── POPULATE ALL CODE BLOCKS ON LOAD ─────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  Object.entries(SNIPPETS).forEach(([id, code]) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = code;
-  });
+// ── PYTHON CODE SNIPPETS (populated directly — no template literal nesting) ──
+const CODE = {
+  'pre-code1': [
+    "# ─────────────────────────────────────────────────────────",
+    "# nuno_competition.py  —  YouTube API + Fitness Scoring + Elimination",
+    "# ─────────────────────────────────────────────────────────",
+    "from googleapiclient.discovery import build",
+    "import pandas as pd",
+    "",
+    "def get_youtube_candidates(api_key):",
+    "    youtube = build('youtube', 'v3', developerKey=api_key)",
+    "    queries = [",
+    '        "MCP tutorial for beginners",    "Manus AI agent tutorial",',
+    '        "GoHighLevel training 2024",      "AI agents no code tutorial",',
+    '        "vibe coding tutorial",           "n8n automation for business",',
+    '        "Claude Code tutorial",           "marketing automation webinar"',
+    "    ]",
+    "    known_seeds = [",
+    '        "Nick Saraev", "Liam Ottley", "Matt Wolfe", "Keaton Walker",',
+    '        "Jason Wardrop", "Cole Humphus", "Riley Brown", "Corbin Brown"',
+    "    ]",
+    "    candidates = {}",
+    "    for q in queries:",
+    "        request = youtube.search().list(",
+    '            q=q, part="snippet", type="channel", maxResults=3',
+    "        )",
+    "        for item in request.execute().get('items', []):",
+    "            cid = item['snippet']['channelId']",
+    "            candidates[cid] = {'name': item['snippet']['channelTitle'], 'id': cid}",
+    "",
+    "    for name in known_seeds:   # ensure seeds always included",
+    "        req = youtube.search().list(q=name, part='snippet',",
+    "                                    type='channel', maxResults=1).execute()",
+    "        if req['items']:",
+    "            cid = req['items'][0]['snippet']['channelId']",
+    "            candidates[cid] = {'name': name, 'id': cid}",
+    "    return candidates  # ~28 unique channel IDs",
+    "",
+    "# ─────────────────────────────────────────────────────────",
+    "# DARWINIAN FITNESS SCORING — 7 WEIGHTED DIMENSIONS",
+    "# ─────────────────────────────────────────────────────────",
+    "def calculate_fitness(row):",
+    "    d1 = min(10, (row['subs'] / 100000) * 10)           # Audience Overlap  20%",
+    '    niche_keys = ["mcp","gohighlevel","vibe","claude","agent","n8n","make"]',
+    "    d2 = min(10, sum(1 for k in niche_keys",
+    "                     if k in str(row['bio']).lower()",
+    "                     or k in str(row['top_videos']).lower()) * 1.5)  # Niche 25%",
+    "    d3 = 10 if row['has_webinar_keyword'] else 3         # Content Format   10%",
+    "    d4 = 10 if row['has_webinar_keyword'] and \",
+    "               row['price_signal'] else (5 if row['has_webinar_keyword'] else 0)  # Webinar 25%",
+    "    d5 = 10 if row['price_signal'] else 0               # Offer Structure  10%",
+    "    d6 = 10 if row['subs'] > 50000 else 5               # Revenue Scale     5%",
+    "    d7 = min(10, row['authority_count'] * 2)            # Authority Score   5%",
+    "    score = (d1*0.2)+(d2*0.25)+(d3*0.1)+(d4*0.25)+(d5*0.1)+(d6*0.05)+(d7*0.05)",
+    "    return pd.Series([d1, d2, d3, d4, d5, d6, d7, score * 10])",
+    "",
+    "# ─────────────────────────────────────────────────────────",
+    "# 3-GENERATION DARWINIAN ELIMINATION",
+    "# ─────────────────────────────────────────────────────────",
+    "    df[score_labels] = df.apply(calculate_fitness, axis=1)",
+    "    df = df.sort_values(by='Total_Fitness', ascending=False)",
+    "",
+    "    # Gen 1: Eliminate bottom 40%  →  28 -> ~17 survive",
+    "    df['Generation'] = \"Finalist\"",
+    "    cutoff = int(len(df) * 0.4)",
+    "    df.iloc[len(df)-cutoff:,",
+    "            df.columns.get_loc('Generation')] = \"Eliminated (Gen 1)\"",
+    "",
+    "    # Gen 2: Penalty for no webinar focus  ->  ~10 survive",
+    "    df.loc[df['has_webinar_keyword'] == False, 'Total_Fitness'] *= 0.8",
+    "    df = df.sort_values(by='Total_Fitness', ascending=False)",
+    "    df.to_csv('competitor_analysis.csv', index=False)   # all 28 -> CSV"
+  ],
+  'pre-code2': [
+    "# ─────────────────────────────────────────────────────────",
+    "# 2. report.py  —  CSV Data Loading + JSON Injection into HTML",
+    "# ─────────────────────────────────────────────────────────",
+    "import pandas as pd, json",
+    "from datetime import datetime",
+    "",
+    "def generate_report():",
+    "    df_analysis = pd.read_csv('competitor_analysis.csv')  # 28 candidates",
+    "    df_vs       = pd.read_csv('nuno_vs_competitors.csv')   # Nuno benchmark",
+    "    top3_data   = parse_top3_txt('top3_competitors.txt')   # Top 3 profiles",
+    "",
+    "    # Convert DataFrames to JSON strings for JS injection",
+    "    analysis_json = df_analysis.to_json(orient='records')  # -> JS array",
+    "    vs_json       = df_vs.to_json(orient='records')",
+    "    top3_json     = json.dumps(top3_data)",
+    "",
+    "# ─────────────────────────────────────────────────────────",
+    "# HTML TEMPLATE PATTERN — data injected as inline JSON",
+    "# (Python f-strings substitute analysis_json, vs_json, top3_json",
+    "#  directly into the HTML at build time — no server needed)",
+    "# ─────────────────────────────────────────────────────────",
+    "html_template = f\"\"\"",
+    "...",
+    "    const analysisData = {analysis_json};   // 28 rows from CSV",
+    "    const vsData       = {vs_json};         // comparison matrix",
+    "",
+    "    // Render ranked table — color-coded by Generation",
+    "    analysisData.forEach(row => {",
+    "        const tr = document.createElement('tr');",
+    "        if (row.Generation === 'Finalist')     tr.className = 'row-finalist';",
+    "        if (row.Generation.includes('Gen 1'))  tr.className = 'row-gen1';",
+    "        const score = row.Total_Fitness || 0;",
+    "        // ... build td cells with progress bar + webinar flag",
+    "        tbody.appendChild(tr);",
+    "    });",
+    "",
+    "    // Chart.js — Nuno vs Top 3 fitness bar chart",
+    "    new Chart(document.getElementById('vsChart'), {",
+    "        type: 'bar',",
+    "        data: { labels: ['Nuno','Nick S.','Riley B.','Nate H.'],",
+    "                datasets: [{ data: [88.5, 62.5, 58.75, 58.75] }] }",
+    "    });",
+    "...",
+    "\"\"\"",
+    "    with open('competitor_report.html', 'w') as f:",
+    "        f.write(html_template)"
+  ],
+  'pre-code3': [
+    "# ─────────────────────────────────────────────────────────",
+    "# 3. report2.py  —  deep_search() + 7-Search Enrichment Loop",
+    "# ─────────────────────────────────────────────────────────",
+    "from googlesearch import search",
+    "import time, requests",
+    "from bs4 import BeautifulSoup",
+    "",
+    "def deep_search(name, query_suffix, keywords, exclude_keywords=None):",
+    "    query = f\"{name} {query_suffix}\"",
+    "    try:",
+    "        time.sleep(5)   # mandatory: prevents Google IP blocks",
+    "        for url in search(query, num_results=5):",
+    "            url_lower = url.lower()",
+    "            if exclude_keywords and any(x in url_lower for x in exclude_keywords):",
+    "                continue",
+    "            if any(k in url_lower for k in keywords):",
+    "                return url   # first matching URL returned",
+    "        return \"Not Found\"",
+    "    except Exception as e:",
+    "        with open(ERROR_LOG, \"a\") as log:",
+    "            log.write(f\"[{datetime.now()}] Search Error ({query}): {e}\\n\")",
+    "        return \"Not Found\"",
+    "",
+    "# ─────────────────────────────────────────────────────────",
+    "# ENRICHMENT LOOP — 7 SEARCHES PER CANDIDATE",
+    "# ─────────────────────────────────────────────────────────",
+    "for idx, cand in enumerate(candidates_list, 1):",
+    "    name = cand['name']",
+    "",
+    "    website    = deep_search(name, \"official website\",",
+    '                    keywords=[".com",".io",".co",".net",".org"],',
+    '                    exclude_keywords=["youtube.com","linkedin.com","instagram.com"])',
+    "",
+    "    linkedin   = deep_search(name, \"LinkedIn\",",
+    '                    keywords=["linkedin.com/in","linkedin.com/company"])',
+    "",
+    "    webinar_url = deep_search(name, \"webinar register live masterclass\",",
+    '                    keywords=["webinar","register","masterclass","workshop","bootcamp"])',
+    "",
+    "    course_url  = deep_search(name, \"course buy enroll skool community\",",
+    '                    keywords=["skool.com","course","enroll","pricing","membership"])',
+    "",
+    "    # Scrape discovered website",
+    "    if website != \"Not Found\":",
+    '        resp = requests.get(website, headers={"User-Agent":"Mozilla/5.0"}, timeout=8)',
+    "        if resp.status_code == 429:",
+    "            time.sleep(45)   # rate limit backoff",
+    "            resp = requests.get(website, headers={...}, timeout=8)",
+    "        soup          = BeautifulSoup(resp.text, 'html.parser')",
+    "        site_headline = soup.find('h1').get_text().strip() if soup.find('h1') else \"Not Found\"",
+    '        has_pricing   = "$" in resp.text',
+    "",
+    "    enriched_results.append({**cand,",
+    '        "website": website, "linkedin": linkedin, "webinar_url": webinar_url,',
+    '        "has_webinar": webinar_url != "Not Found", "course_url": course_url,',
+    '        "site_headline": site_headline, "has_pricing": has_pricing})',
+    "",
+    "df_enriched = pd.DataFrame(enriched_results)",
+    "df_enriched.to_csv(ENRICHED_CSV, index=False)   # -> deep_enriched.csv"
+  ],
+  'pre-note3': [
+    "WHAT ACTUALLY HAPPENED DURING SCRAPING (HONEST ACCOUNT)",
+    "",
+    "report2.py ran successfully but returned severely limited data:",
+    "",
+    "BLOCKED PLATFORMS (0% success rate):",
+    "  Instagram       --- login wall on ALL requests",
+    "  LinkedIn        --- authentication required, all blocked",
+    "  Meta Ad Library --- JavaScript-rendered, not accessible via requests",
+    "  Most websites   --- Cloudflare 403 or bot detection on first request",
+    "",
+    "GOOGLE SEARCH LIMITS:",
+    "  googlesearch-python was rate-limited after ~50 queries",
+    "  Error: '429 Too Many Requests' — IP temporarily banned",
+    "  Some niche creators (< 10K subs) returned 0 Google results",
+    "",
+    "RESULT:",
+    "  deep_enriched.csv shows 'Not Found' for most fields.",
+    "  Individual candidate report cards = algorithmic signals,",
+    "  not verified intelligence.",
+    "",
+    "WHY STEP 4 EXISTS:",
+    "  The scraping failures are the documented reason the project",
+    "  escalated to Claude Code + RivalSearchMCP for the Top 3.",
+    "  RivalSearchMCP provides:",
+    "    + JavaScript rendering (bypasses Cloudflare)",
+    "    + Authenticated session handling",
+    "    + Meta Ad Library access",
+    "    + Multi-engine fallback (Google + Bing + DuckDuckGo)",
+    "    + No rate limiting issues"
+  ]
+};
+
+// Populate all pre elements directly (no DOMContentLoaded needed — script is at page bottom)
+Object.entries(CODE).forEach(([id, lines]) => {
+  const el = document.getElementById(id);
+  if (el) el.textContent = lines.join('\n');
 });
 </script>
 
 </body>
-</html>
