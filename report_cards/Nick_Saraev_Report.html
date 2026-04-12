@@ -13,6 +13,49 @@
         </style>
     </head>
     <body>
+<!-- ═══ UNIVERSAL NAV ═══ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600;9..40,700&family=Syne:wght@400;600;700;800&display=swap');
+.unav{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);z-index:9999;font-family:'Syne',sans-serif;letter-spacing:.06em;font-size:.78rem;text-transform:uppercase}
+.unav-brand{font-weight:800;color:#fff;text-decoration:none;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.unav-brand em{color:#D4AF37;font-style:normal}
+.unav-links{display:flex;gap:1.8rem;align-items:center;list-style:none}
+.unav-links li{position:relative}
+.unav-links a,.unav-drop-trigger{color:rgba(255,255,255,0.65);text-decoration:none;cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:6px;padding:.3rem 0;background:none;border:none;font:inherit;letter-spacing:inherit;text-transform:inherit;font-size:inherit}
+.unav-links a:hover,.unav-drop-trigger:hover{color:#fff}
+.unav-links a.active,.unav-drop-trigger.active{color:#D4AF37}
+.unav-arrow{font-size:.5rem;transition:transform .25s;opacity:.6}
+.unav-links li:hover .unav-arrow{transform:rotate(180deg);opacity:1}
+.unav-drop{position:absolute;top:calc(100% + 12px);right:0;background:rgba(14,14,20,0.97);border:1px solid rgba(255,255,255,0.08);border-radius:10px;min-width:240px;padding:.5rem 0;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .25s cubic-bezier(.16,1,.3,1);box-shadow:0 20px 40px rgba(0,0,0,.7)}
+.unav-drop::before{content:'';position:absolute;top:-5px;right:18px;width:9px;height:9px;background:rgba(14,14,20,.97);border-left:1px solid rgba(255,255,255,.08);border-top:1px solid rgba(255,255,255,.08);transform:rotate(45deg)}
+.unav-links li:hover .unav-drop{opacity:1;visibility:visible;transform:translateY(0)}
+.unav-drop a{color:rgba(255,255,255,.55);text-decoration:none;padding:.75rem 1.4rem;display:flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;text-transform:none;letter-spacing:0;transition:all .2s;border-left:2px solid transparent;white-space:nowrap}
+.unav-drop a:hover{color:#fff;background:rgba(255,255,255,.03);border-left-color:#D4AF37}
+.unav-drop a .di{font-size:.75rem;opacity:.5}
+.unav-cta{background:#D4AF37;color:#0a0a0f;padding:.45rem 1.1rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.72rem;transition:opacity .2s;white-space:nowrap}
+.unav-cta:hover{opacity:.85;color:#0a0a0f}
+.unav-body-pad{padding-top:64px}
+@media(max-width:768px){.unav-links{gap:1rem}.unav{padding:1rem 1.2rem}.unav-drop{right:-60px}}
+</style>
+<nav class="unav">
+  <a href="../hub.html" class="unav-brand">Automated <em>Stalker</em></a>
+  <ul class="unav-links">
+    <li>
+      <button class="unav-drop-trigger">Intelligence <span class="unav-arrow">▼</span></button>
+      <div class="unav-drop">
+        <a href="../hub.html"><span class="di">🏠</span> Intelligence Hub</a>
+        <a href="../index.html"><span class="di">🥇</span> Top 3 Deep Intel</a>
+        <a href="../algorithm_sop.html"><span class="di">🧬</span> Algorithm SOP</a>
+        <a href="../iteration1.html"><span class="di">📊</span> Evolution Matrix</a>
+        <a href="../competitors28.html"><span class="di">👥</span> All 28 Candidates</a>
+      </div>
+    </li>
+    <li><a href="../funnelipc.html">Funnel &amp; ICP</a></li>
+    <li><a href="https://github.com/camussicamusica/automated-stalker" target="_blank">GitHub ↗</a></li>
+    <li><a href="../index.html" class="unav-cta">View Report</a></li>
+  </ul>
+</nav>
+
         <div class="card">
             <h1>Nick Saraev</h1>
             <div class="link-row"><span class="label">OFFICIAL WEBSITE</span><a href="N/A">N/A</a></div>
@@ -31,6 +74,35 @@
                 <a class="btn" style="background: #27ae60;" href="N/A">Check Product Page</a>
             </div>
         </div>
-    </body>
+    <!-- ═══ UNIVERSAL FOOTER ═══ -->
+<footer style="border-top:1px solid rgba(255,255,255,0.06);margin-top:80px;padding:48px 40px 36px;background:rgba(10,10,15,0.8);font-family:'DM Sans',sans-serif">
+  <div style="max-width:1100px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:32px;margin-bottom:36px">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:6px">Automated <span style="color:#D4AF37">Stalker</span></div>
+        <div style="color:rgba(255,255,255,0.35);font-size:0.78rem;line-height:1.7">Darwinian Competitor Intelligence · Built for Nuno Tavares<br>Pareto Talent Final Project · Sofia Renata Camussi · April 2026</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+        <a href="../hub.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Hub</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="../index.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Top 3 Intel</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="../algorithm_sop.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Algorithm SOP</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="../iteration1.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Evolution Matrix</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="../funnelipc.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Funnel &amp; ICP</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="https://github.com/camussicamusica/automated-stalker" target="_blank" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">GitHub ↗</a>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+      <div style="color:rgba(255,255,255,0.2);font-size:0.72rem">Built with Claude Code · Claude Sonnet 4.6 · Google Gemini 2.5 Pro · RivalSearchMCP · YouTube Data API v3</div>
+      <div style="color:rgba(255,255,255,0.15);font-size:0.72rem">© 2026 · MIT License</div>
+    </div>
+  </div>
+</footer>
+
+</body>
     </html>
     
