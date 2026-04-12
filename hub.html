@@ -523,11 +523,11 @@
 
 <!-- ══ ALGORITHM SOP — EXPANDABLE PANEL ══ -->
 <div class="section" style="padding-bottom: 0;">
-  <a href="algorithm_sop.html" style="text-decoration:none;display:block" id="sop-trigger" class="sop-trigger">
+  <div id="sop-trigger" class="sop-trigger" onclick="window.location='algorithm_sop.html'" style="cursor:pointer">
     <div class="sop-trigger-left">
       <div class="sop-eyebrow">Algorithm SOP · Full Technical Breakdown</div>
       <div class="sop-title">The <span>Darwin</span> Engine</div>
-      <div class="sop-desc">The complete methodology behind how we found Nuno's top 3 competitors — 7 weighted dimensions, 3 elimination generations, 28 candidates scored. Click to expand the full SOP.</div>
+      <div class="sop-desc">The complete methodology behind how we found Nuno's top 3 competitors — 7 weighted dimensions, 3 elimination generations, 28 candidates scored. Click to open the full SOP.</div>
       <div class="sop-stats">
         <div class="sop-stat"><div class="sop-stat-n">28</div><div class="sop-stat-l">Candidates</div></div>
         <div class="sop-stat"><div class="sop-stat-n">7</div><div class="sop-stat-l">Dimensions</div></div>
@@ -536,10 +536,10 @@
       </div>
     </div>
     <div class="sop-cta">
-      <a href="algorithm_sop.html" class="sop-btn" style="text-decoration:none">🧬 View Full SOP →</a>
+      <a href="algorithm_sop.html" class="sop-btn" style="text-decoration:none" onclick="event.stopPropagation()">🧬 View Full SOP →</a>
       <div class="sop-chevron">→</div>
     </div>
-  </a>
+  </div>
 
   <div id="sop-panel" class="sop-panel">
     <div class="sop-inner">
