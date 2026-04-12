@@ -6,6 +6,7 @@ Built for **Nuno Tavares (Automated Marketer)** as part of a webinar launch comp
 
 ## 🏆 Live Report
 👉 **[View Interactive HTML Report](https://camussicamusica.github.io/automated-stalker/)**
+👉 **[View Algorithm SOP — The Darwin Engine](https://camussicamusica.github.io/automated-stalker/algorithm_sop.html)**
 
 ## 🧬 What This Does
 A Darwinian evolutionary scoring algorithm that:
