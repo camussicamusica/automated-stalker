@@ -9,7 +9,8 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #0a0f1e; color: #fff; font-family: system-ui, sans-serif; }
   
-  .hero { 
+  .hero {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
     text-align: center; padding: 60px 20px 40px;
     border-bottom: 1px solid #1e293b;
   }
@@ -57,11 +58,11 @@
     94%   { opacity: 0; }
   }
   .hero p { color: #94a3b8; margin-top: 10px; font-size: 1rem; }
-  .hero .tag { 
-    display: inline-block; background: rgba(0,212,255,0.1); 
+  .hero .tag {
+    display: inline-block; background: rgba(0,212,255,0.1);
     border: 1px solid #00d4ff; color: #00d4ff;
     padding: 4px 12px; border-radius: 20px; font-size: 0.75rem;
-    margin-top: 15px; letter-spacing: 1px;
+    letter-spacing: 1px;
   }
 
   .section { padding: 50px 40px; max-width: 1200px; margin: auto; }
@@ -553,8 +554,8 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="tag">PHASE 1 · COMPETITOR INTELLIGENCE</div>
   <h1>🤖 AUTOMATED STALKER</h1>
+  <div class="tag">PHASE 1 · COMPETITOR INTELLIGENCE</div>
   <p>Built for Nuno Tavares (Automated Marketer) · Pareto Talent Final Project · April 2026</p>
   <p style="color:#475569; font-size:0.8rem; margin-top:8px;">
     A Darwinian evolutionary algorithm built with Claude Code, Claude AI & Gemini · 
