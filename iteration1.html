@@ -1,790 +1,193 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuno Tavares | Competitor Intelligence</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --bg-dark: #0a0f1e;
-            --card-bg: #111827;
-            --accent: #00d4ff;
-            --gold: #ffd700;
-            --silver: #e5e7eb;
-            --bronze: #cd7f32;
-            --green: #10b981;
-            --orange: #f59e0b;
-            --red: #ef4444;
-            --text: #ffffff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evolution Matrix — 28 Candidates</title>
+<style>
+  :root { --bg: #0a0f1e; --card: #111827; --accent: #00d4ff; --gold: #ffd700; --red: #ef4444; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: #fff; font-family: system-ui, sans-serif; }
 
-        * { box-sizing: border-box; transition: all 0.3s ease; }
-        body { 
-            background-color: var(--bg-dark); 
-            color: var(--text); 
-            font-family: system-ui, -apple-system, sans-serif;
-            margin: 0;
-            scroll-behavior: smooth;
-        }
+  /* HERO */
+  .hero {
+    text-align: center; padding: 56px 20px 40px;
+    border-bottom: 2px solid var(--accent);
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,255,0.08) 0%, transparent 70%);
+  }
+  .back-link {
+    display: inline-block; margin-bottom: 20px;
+    color: #475569; font-size: 0.78rem; text-decoration: none; letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--accent); }
+  .hero h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900; color: var(--accent); letter-spacing: -0.01em; }
+  .hero p { color: #475569; margin-top: 10px; font-size: 0.9rem; }
+  .hero-stats { display: flex; justify-content: center; gap: 36px; margin-top: 28px; flex-wrap: wrap; }
+  .hs { text-align: center; }
+  .hs-n { font-size: 2.2rem; font-weight: 900; color: var(--accent); line-height: 1; }
+  .hs-l { font-size: 0.65rem; color: #475569; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; }
 
-        /* --- SECTION 1: HERO --- */
-        header {
-            height: 60vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle at center, #1a233a 0%, #0a0f1e 100%);
-            border-bottom: 2px solid var(--accent);
-            text-align: center;
-            padding: 20px;
-        }
+  /* MATRIX SECTION */
+  .section { padding: 48px 32px; max-width: 1200px; margin: auto; }
+  .section-title {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent);
+    border-left: 3px solid var(--accent); padding-left: 12px; margin-bottom: 20px;
+  }
 
-        .hero-title { font-size: 3rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 0; color: var(--text); }
-        .hero-subtitle { color: var(--accent); font-size: 1.2rem; margin-top: 10px; opacity: 0.8; }
-        
-        .stat-container { display: flex; gap: 40px; margin-top: 50px; }
-        .stat-card { text-align: center; }
-        .stat-value { font-size: 2.5rem; font-weight: 800; color: var(--accent); display: block; }
-        .stat-label { font-size: 0.9rem; opacity: 0.6; text-transform: uppercase; }
+  /* SEARCH */
+  .search-wrap { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+  #tableSearch {
+    padding: 10px 16px; width: 300px; border-radius: 8px;
+    border: 1px solid #1e293b; background: #111827; color: #fff;
+    font-size: 0.85rem; outline: none; transition: border-color 0.2s;
+  }
+  #tableSearch:focus { border-color: var(--accent); }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; }
+  .leg { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; color: #64748b; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
 
-        /* --- NAV --- */
-        nav {
-            position: sticky;
-            top: 0;
-            background: rgba(10, 15, 30, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        nav a { color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.9rem; opacity: 0.7; }
-        nav a:hover { opacity: 1; color: var(--accent); }
+  /* TABLE */
+  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid #1e293b; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  thead tr { background: #0d1521; border-bottom: 1px solid #1e293b; }
+  th { padding: 12px 16px; text-align: left; font-size: 0.68rem; font-weight: 700;
+       letter-spacing: 0.12em; text-transform: uppercase; color: #475569; white-space: nowrap; }
+  td { padding: 11px 16px; border-bottom: 1px solid #0d1521; vertical-align: middle; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(0,212,255,0.025); }
 
-        /* --- SECTION 2: ALGORITHM --- */
-        .section { padding: 80px 10%; }
-        .algo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px; }
-        .algo-card { 
-            background: var(--card-bg); 
-            padding: 25px; 
-            border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.05);
-            position: relative;
-            overflow: hidden;
-        }
-        .algo-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 4px 24px rgba(0,212,255,0.15); }
-        .algo-icon { font-size: 2rem; margin-bottom: 15px; display: block; }
-        .algo-weight { position: absolute; top: 15px; right: 15px; color: var(--accent); font-weight: 700; }
+  /* Row types */
+  tr.row-finalist td:first-child { border-left: 3px solid var(--gold); }
+  tr.row-finalist td:first-child .name-text { color: var(--gold); }
+  tr.row-gen1 td:first-child { border-left: 3px solid rgba(239,68,68,0.5); }
+  tr.row-gen1 { opacity: 0.55; }
 
-        /* --- SECTION 3: TABLE --- */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--card-bg); border-radius: 12px; overflow: hidden; }
-        th { background: rgba(255,255,255,0.05); padding: 15px; text-align: left; color: var(--accent); text-transform: uppercase; font-size: 0.8rem; }
-        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        
-        .row-gen1 { background: rgba(239, 68, 68, 0.1); }
-        .row-gen2 { background: rgba(245, 158, 11, 0.1); }
-        .row-survivor { background: rgba(16, 185, 129, 0.1); }
-        .row-finalist { border-left: 4px solid var(--gold); background: rgba(255, 215, 0, 0.05); }
+  /* Fitness bar */
+  .bar-cell { display: flex; align-items: center; gap: 8px; }
+  .bar-bg { width: 80px; height: 5px; background: #1e293b; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+  .bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #0099cc, var(--accent)); }
+  .bar-fill.high { background: linear-gradient(90deg, #b45309, var(--gold)); }
+  .score-val { font-weight: 700; color: #fff; font-size: 0.8rem; min-width: 32px; }
 
-        .progress-container { width: 100%; background: #2d3748; border-radius: 10px; height: 8px; }
-        .progress-bar { height: 100%; border-radius: 10px; background: var(--accent); }
+  /* Badges */
+  .badge { font-size: 0.66rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+  .badge.finalist { background: rgba(245,158,11,0.12); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); }
+  .badge.elim { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+  .webinar-yes { color: #10b981; font-size: 1rem; }
+  .webinar-no  { color: #374151; font-size: 1rem; }
 
-        /* --- SECTION 4: TOP 3 CARDS --- */
-        .top3-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
-        .profile-card { background: var(--card-bg); border-radius: 12px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); }
-        .rank-badge { background: var(--accent); padding: 5px 12px; border-radius: 20px; font-weight: 800; }
-        
-        .tabs { display: flex; gap: 10px; margin: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .tab { padding: 8px 15px; cursor: pointer; opacity: 0.6; font-size: 0.85rem; }
-        .tab.active { opacity: 1; color: var(--accent); border-bottom: 2px solid var(--accent); }
-        .tab-content { display: none; padding-top: 15px; font-size: 0.9rem; line-height: 1.6; }
-        .tab-content.active { display: block; }
+  /* FOOTER */
+  .footer { text-align: center; padding: 32px 20px; border-top: 1px solid #1e293b; color: #334155; font-size: 0.78rem; }
+  .footer a { color: var(--accent); text-decoration: none; }
 
-        /* --- BUTTONS --- */
-        .btn-print { 
-            position: fixed; bottom: 30px; right: 30px; 
-            background: var(--accent); color: var(--bg-dark); 
-            border: none; padding: 15px 25px; border-radius: 30px; 
-            font-weight: 700; cursor: pointer; z-index: 1001; 
-        }
-
-        @media print {
-            .btn-print, nav { display: none; }
-            body { background: white; color: black; }
-            .section { padding: 20px; }
-            .algo-card, .profile-card { border: 1px solid #ccc; }
-        }
-    </style>
+  @media (max-width: 640px) {
+    .section { padding: 32px 16px; }
+    #tableSearch { width: 100%; }
+  }
+</style>
 </head>
 <body>
 
-    <button class="btn-print" onclick="window.print()">📄 Export to PDF</button>
-
-    <header id="hero">
-        <div class="hero-title">NUNO TAVARES</div>
-        <div class="hero-subtitle">COMPETITOR INTELLIGENCE REPORT | 2026 WEBINAR STRATEGY</div>
-        <p style="opacity: 0.5;">Generated on April 11, 2026</p>
-        
-        <div class="stat-container">
-            <div class="stat-card">
-                <span class="stat-value">28</span>
-                <span class="stat-label">Candidates Analyzed</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-value">3</span>
-                <span class="stat-label">Evolutionary Rounds</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-value">Top 3</span>
-                <span class="stat-label">Direct Threats</span>
-            </div>
-        </div>
-    </header>
-
-    <nav>
-        <a href="#hero">Overview</a>
-        <a href="#algo">The Algorithm</a>
-        <a href="#list">Full Rankings</a>
-        <a href="#profiles">Competitor Deep Dives</a>
-        <a href="#darwin">Algorithm SOP</a>
-    </nav>
-
-    <section class="section" id="algo">
-        <h2 style="color: var(--accent)">The Darwinian Model</h2>
-        <p style="opacity: 0.7; max-width: 600px;">How we filtered 28 potential educators down to the most dangerous competitors for Nuno's specific webinar launch.</p>
-        
-        <div class="algo-grid">
-            <div class="algo-card">
-                <span class="algo-icon">👥</span>
-                <span class="algo-weight">20%</span>
-                <h3>Audience Overlap</h3>
-                <p>Measures subscriber count relative to Nuno and audience demographic alignment (non-tech entrepreneurs).</p>
-            </div>
-            <div class="algo-card">
-                <span class="algo-icon">🎯</span>
-                <span class="algo-weight">25%</span>
-                <h3>Niche Density</h3>
-                <p>Counts keyword matches for MCP, GHL, AI Agents, and Vibe Coding content.</p>
-            </div>
-            <div class="algo-card">
-                <span class="algo-icon">🎬</span>
-                <span class="algo-weight">10%</span>
-                <h3>Content Format</h3>
-                <p>Prioritizes creators using live builds, webinars, and technical walkthroughs.</p>
-            </div>
-            <div class="algo-card">
-                <span class="algo-icon">📡</span>
-                <span class="algo-weight">25%</span>
-                <h3>Webinar Strategy</h3>
-                <p>The core metric: identifies active webinar funnels, registration pages, and live events.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="section" id="list">
-        <h2 style="color: var(--accent)">The Evolution Matrix</h2>
-        <div style="margin-bottom: 20px;">
-            <input type="text" id="tableSearch" placeholder="Search competitor name..." style="padding: 10px; width: 300px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: #1f2937; color: white;">
-        </div>
-        <div style="overflow-x: auto;">
-            <table id="compTable">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Subscribers</th>
-                        <th>Fitness Score</th>
-                        <th>Webinar Y/N</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    </tbody>
-            </table>
-        </div>
-    </section>
-
-    <section class="section" id="profiles">
-        <h2 style="color: var(--accent)">Strategic Profiles: Top 3 Finalists</h2>
-        <div class="top3-container" id="profileGrid">
-            </div>
-    </section>
-
-    <script>
-        const analysisData = [{"name":"Nick Saraev","channel_url":"https:\/\/www.youtube.com\/channel\/UCbo-KbSjJDG6JWQ_MTZ_rNA","subs":377000,"total_views":14155392,"video_count":303,"bio":"Hi \ud83d\udc4b I'm Nick. I make money with AI tools like N8N, Claude Code, and Antigravity\u2014and I teach others how they can too.\n\nI'm not the best in the world, nor are my accomplishments the most impressive... but some people think I have interesting things to say! To that end, this channel is a way to organize my thoughts and provide a guidepost for people that want to grow or build an online business. \n\nYou'll find marketing guides, Make.com guides, Integromat guides, Zapier guides, sales guides, and really anything I find interesting on a day-to-day basis. I'm Make.com & N8N certified and use it often as part of my businesses, so you'll see a lot of that too.\n\nIf you have any questions, feel free to ask and I'll happily respond in the comments. Thanks for reading.\n","top_videos":"CLAUDE CODE FULL COURSE 4 HOURS: Build &amp; Sell (2026) | N8N FULL COURSE 6 HOURS (Build &amp; Sell AI Automations + Agents) | What I&#39;d Learn Instead of Automation in 2026 | Watch me start &amp; sell an AI service in 10 hours | $2.4M of Prompt Engineering Hacks in 53 Mins (GPT, Claude)","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":6.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":62.5,"Generation":"Finalist"},{"name":"Riley Brown","channel_url":"https:\/\/www.youtube.com\/channel\/UCMcoud_ZW7cfxeIugBflSBw","subs":211000,"total_views":7861490,"video_count":168,"bio":"The number one vibe coding channel on YouTube. We talk about Claude Code for mobile apps, web apps, and agents. ","top_videos":"Can I Vibecode a $250M App Better Than a Pro Developer? (With No Code) | Create a speaking animated character | Midjourney + other AI Tools | We Made Claude Code Build Lovable in 75 Minutes (With No Code) | Claude Code Replaced Cursor for Me\u2026 Here\u2019s Why | Cursor 2.0 Tutorial for Beginners (Full Course)","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":4.5,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":58.75,"Generation":"Finalist"},{"name":"Nate Herk | AI Automation","channel_url":"https:\/\/www.youtube.com\/channel\/UC2ojq-nuP8ceeHqiroeKhBA","subs":648000,"total_views":30134620,"video_count":385,"bio":"Hi \ud83d\udc4b I'm Nate Herk. I\u2019m passionate about helping businesses unlock the power of AI Automations to save time, cut costs, and stay competitive. \n\nI believe that businesses that don\u2019t adopt AI will struggle to keep up, and I\u2019m here to make sure you\u2019re ahead of the curve. Whether you\u2019re new to AI or looking to refine your workflows, I\u2019m here to guide you through it all.\n\nLet\u2019s build a more efficient future together! Book a call on my website!\n","top_videos":"Build &amp; Sell n8n AI Agents (8+ Hour Course, No Code) | I Built the Ultimate Team of Agents in n8n  #artificialintelligence #n8n #agentgpt  #techtok #coding | I Built a Marketing Team with 1 AI Agent and No Code (free n8n template) | This Invoice Agent Analyzes Images in n8n  #techtok #agentgpt #artificialintelligence #n8n | n8n Masterclass: Build AI Agents &amp; Automate Workflows (Beginner to Pro)","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":4.5,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":58.75,"Generation":"Finalist"},{"name":"n8n","channel_url":"https:\/\/www.youtube.com\/channel\/UCiHVTkJtWSdc9N3h0nUGWLg","subs":230000,"total_views":8248824,"video_count":346,"bio":"n8n gives technical teams a workflow automation platform that uniquely combines AI capabilities with business process automation. Connect any app or API while maintaining the flexibility of code with the speed of no-code.\n","top_videos":"n8n Quick Start Tutorial: Build Your First Workflow [2025] | n8n Beginner Course (1\/9) - Introduction to Automation | Building AI Agents: Chat Trigger, Memory, and System\/User Messages Explained [Part 1] | Install n8n Locally With Docker Desktop | Create Stunning AI-Generated Images with Flux AI + n8n.io","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":3.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":55.0,"Generation":"Finalist"},{"name":"Helena Liu","channel_url":"https:\/\/www.youtube.com\/channel\/UCpM_g95uzZ_OyhgukvrbbiQ","subs":272000,"total_views":8219862,"video_count":295,"bio":"Hi, I\u2019m Helena \ud83d\udc4b \u2014 I teach you how to use AI tools and automation to grow your business, save time, and build new income streams.\n\nOn this channel, you\u2019ll learn practical ways to use ChatGPT, AI agents, and no-code automation to create content faster, launch AI side hustles, and future-proof your career.\n\nWhether you\u2019re an entrepreneur, content creator, or someone just curious about AI, you\u2019ll find step-by-step tutorials, AI business ideas, and real use cases you can apply right away.\n\nSubscribe for weekly videos on AI, automation, and digital entrepreneurship \u2014 and start building your future with AI today. Also, don't forget to sign up for my free AI and automations training: https:\/\/www.productcamps.com\/free\n","top_videos":"This Social Media AI System Creates Unique Content Daily! (100% Automated) | Using ChatGPT to Generate 1000s of Leads in Any Niche (Free + Easy Method) | How to Memorize the 49 Processes from the PMBOK 6th Edition Process Chart | 3 AI &quot;Secrets&quot; 99% of People Don&#39;t Know | How to Make $30,000\/Year Blogging Using AI &amp; Automation (step-by-step course)","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":3.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":55.0,"Generation":"Finalist"},{"name":"HighLevel","channel_url":"https:\/\/www.youtube.com\/channel\/UCXFiV4qDX5ipE-DQcsm1j4g","subs":92100,"total_views":65565013,"video_count":7629,"bio":"The fastest growing white-label marketing platform for digital agencies. Functionality includes: CRM with SmartLists, Email, 2-way SMS, Outbound Calling & Call Recording, Power Dialer, Form Builder, Survey Builder, Funnel Builder, Website Builder, Online Scheduling, Automation Campaigns, Reporting and more!","top_videos":"Ai Agent Action in Workflows is Live! | Day 1 - From Client Acquisition to MRR | The HighLevel Release Radar (April 6th - April 10th 2026) | Contact page customization Live! | Starting an AI Company with HighLevel","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":9.21,"D2":1.5,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":49.67,"Generation":"Finalist"},{"name":"Vibe Coding with Naman","channel_url":"https:\/\/www.youtube.com\/channel\/UCUrnOS0DWudye54XqyDAuXA","subs":8970,"total_views":343976,"video_count":22,"bio":"Hi, my name is Naman Gupta, and I teach you how to develop software with AI technologies, and how to Vibe Code!\n\nOn this channel, I create original, hands-on tutorials and full courses that I teach, record, and produce by myself. I teach you how to build apps, websites, and software using the latest AI technologies, and I break down complex AI concepts through my own explanations, demonstrations, and project walkthroughs.\n\nYouTube is my passion, and so is building software. Each one of my videos and tutorials is crafted from scratch to share what I\u2019m learning, what I\u2019m building, and how you can apply AI to become a better developer. My goal is to help you understand modern AI-driven development in a clear, practical, and enjoyable way, and that\u2019s why I teach on YouTube. \n\nI try my best to teach, I try my best to learn, and I\u2019m happy to share this journey with all of you here on Vibe Coding with Naman. \n\nPeace and Faith \u270c\ufe0f\n","top_videos":"How to Build Apps with Replit AI Agent | Full Beginner Course | Coding with ChatGPT-5 - App Development with AI | Full Tutorial - Vibe Coding | How to Code a ChatBot Using JavaScript, HTML and CSS | Vibe Coding Full Course for Beginners | Lovable Full Course by Naman Gupta -  Vibe Coding Tutorial","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.897,"D2":3.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":34.294,"Generation":"Finalist"},{"name":"GoHighLevel Tutorials - HL Power Hub","channel_url":"https:\/\/www.youtube.com\/channel\/UCgb-hU13CUfZ88jIHiD6BLw","subs":3370,"total_views":265578,"video_count":712,"bio":"Get amazing bonuses & free stuff worth over $ 11k: https:\/\/www.gohighlevel.com\/highlevel-bootcamp?fp_ref=j5pfx\n\nGet a 30 Days Free Trial + Free Live Bootcamp (optional) to Launch HighLevel Together - Launch HighLevel in just 48 minutes without any product, experience, or tech skills:\n\nSign up For GoHighLevel OR Upgrade, I've got a ton of goodies for you https:\/\/gohighleveldoneforyouagency.com\/upgrade\n\nAccess White Label Videos (branded & unbranded) https:\/\/gohighleveldoneforyouagency.com\/white-labelled-support-videos\n\n10 Ways to INSTANTLY Improve Your Funnels (FREE PDF) https:\/\/gohighleveldoneforyouagency.com\/10-ways-improve-funnels\n\nJoin my community & attend weekly Q&A sessions: https:\/\/login.hlpowerhub.com\/communities\/groups\/inside-highlevel \n\nMore awesome stuff below:\n","top_videos":"How to Use the Facebook &amp; Instagram Comment and DM Automation Workflow Trigger Action on Gohighlevel | How to TRACK your visitors \/ guests \/ clients via QR Codes at a LIVE event (or in a restaurant) #ghl | Create Your Webinar Funnels With a Few Clicks on Gohighlevel #ghl #tips #gohighlevelreviews #crm | Set Up Your AI AGENTS Using Voice AI On GOHIGHLEVEL #ghl #gohighlevelreviews #gohighlevelexpert | GoHighlevel CRM: Inbound Call Flow for Voice AI Calls - Let Voice AI Agents Pick Up Your CALLS #ghl","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.337,"D2":3.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":33.174,"Generation":"Finalist"},{"name":"Pragati Kunwer | Claude Code","channel_url":"https:\/\/www.youtube.com\/channel\/UCe4eqh2Rs4bkjDRrjZQWkZw","subs":112000,"total_views":28708,"video_count":99,"bio":"Learn Claude Code Skills \u2014 the #1 AI tool for non-coders. Build anything with AI using plain English. No coding required. New videos 4x every week.\n\nClaude Code just changed everything. One tool. $20\/month. Skills written in plain English. No coding. No expensive tool stacks.\n\nI'm Pragati Kunwer. 20 years building products at IBM Watson and Nike. Now I teach Claude Code Skills \u2014 the AI skills that are transforming how teachers, freelancers, designers, and solopreneurs work without writing a single line of code.\n\nEvery video: one skill demo, one real result, one SKILL.md you can download and use TODAY.\n\n63% of Claude Code users are NOT developers. Teachers, freelancers, solopreneurs, small business owners \u2014 this channel is built for YOU.\n\n\ud83c\udf93 FREE Claude Code Course + Community:\n\u2192 https:\/\/www.skool.com\/agentskillsacademy\/about \n\n\ud83d\udcf8 Instagram: @pragatikunwer\n\n\ud83d\udce5 FREE: 50 AI Business Ideas Cheat Sheet:\n\u2192 https:\/\/payhip.com\/b\/3vSqN\n\nComment SKILL on any video and I'll DM you the course link.\n","top_videos":"Claude Code + Remotion Just Killed Video Editors | 7 Claude Code Skills That Run My Entire Business (No Coding Required) | Prompt Engineering Is Dead. I Have Proof. | How to Make Money Using AI in 2026 (Complete Beginner&#39;s Guide) | ChatGPT for Beginners: Start Earning in 7 Days","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":4.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":31.4,"Generation":"Finalist"},{"name":"Claude Ams - Programming Guru \ud83d\udcbb","channel_url":"https:\/\/www.youtube.com\/channel\/UC1Wn8F-xff2j4hR9ZZ1UsyA","subs":412000,"total_views":485720970,"video_count":6006,"bio":"\ud83d\udc47 | SUBSCRIBE to become a SIGMA Coder \u03a3 | \ud83d\udc47 \n\ud83d\udcbb | Sharing Daily Coding tips.\n\ud83e\uddbe | BF of Developers and Students\n\u2699\ufe0f | Productivity Instructor (study, work, code)\n\n\ud83d\ude80 Are you ready to take your coding skills to the next level? Look no further! Welcome to the channel of Claude Ams, the coding expert who is here to make your journey an exciting and informative one\n\n\ud83d\udcbb With over 7 years of helping more than 1,000,000 people around the world, Claude Ams brings you the latest in coding tutorials, walkthroughs, and tech discussions. Whether you're a beginner or a seasoned pro, Claude Ams has got you covered.\n\n\ud83d\udd25 From web development to data science, Claude Ams has a passion for all things coding and is here to share that passion with you. With Claude Ams's engaging and informative content, you'll be well on your way to improving your coding skills in no time!\n\n\ud83d\udca5 So what are you waiting for? Subscribe now and join the coding community. Let Claude Ams help you reach your coding goals and beyond! \ud83d\ude80\ud83d\udcbb\n","top_videos":"My little sister literally shocked me for a while\ud83d\udc80#siblinggoals #ai #yt #shorts #tricks #funny | She locked herself because students were using AI (Blackbox AI)\ud83e\udd26\ud83c\udffb\u200d\u2640\ufe0f#trending #ai #yt #shorts #web | Why is this coder boy like this?\ud83d\udc40#trending #viral #funny #shorts #ai #yt #tricks #cs #fun #sibling | My little coder brother was doing this in Cinema\ud83d\udc40#trending #coding #ai #viral #shorts #tricks #yt | We came to eat Chole Bhature but\u2026\ud83d\udc40#food #coding #ai #aitools #shorts #trending #viral #tricks","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":3.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":28.4,"Generation":"Finalist"},{"name":"Anthropic","channel_url":"https:\/\/www.youtube.com\/channel\/UCrDwWp7EBBv4NwvScIpBDOA","subs":516000,"total_views":22131153,"video_count":172,"bio":"We\u2019re an AI safety and research company. Talk to our AI assistant Claude on claude.com. Download Claude on desktop, iOS, or Android. \n\nWe believe AI will have a vast impact on the world. Anthropic is dedicated to building systems that people can rely on and generating research about the opportunities and risks of AI.\n\n","top_videos":"Mastering Claude Code in 30 minutes | Introducing Claude Code | What do you think of my business idea? | How can I communicate better with my mom? | Getting started with Claude.ai","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":25.4,"Generation":"Finalist"},{"name":"Corbin Brown","channel_url":"https:\/\/www.youtube.com\/channel\/UCJFMlSxcvlZg5yZUYJT0Pug","subs":165000,"total_views":8260575,"video_count":188,"bio":"a real software engineer making content. I know\u2026 surprising, right?\n\nFounder thumio + techsnif \u00b7 backed by _cafe_ venture in sf \u00b7 host of thelog\n\r\n","top_videos":"How To Use GitHub For Beginners | How To Use Cursor AI For Beginners | How To Use Perplexity AI For Beginners | How to Make a YouTube Thumbnail with AI (thumio) | OpenClaw Explained in 12 Minutes (for beginners)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":25.4,"Generation":"Finalist"},{"name":"Mikey No Code","channel_url":"https:\/\/www.youtube.com\/channel\/UCde0vB0fTwC8AT3sJofFV0w","subs":119000,"total_views":5550701,"video_count":95,"bio":"Build Apps & Websites without coding!\n\nMy channel is your go-to place for the newest, latest, and best no-code tools to build apps and websites without writing a single line of code!\n\n\ud83d\udca1 Whether you're a beginner or an entrepreneur looking to launch fast, I break down step-by-step tutorials, reviews, and tips on the most powerful no-code platforms like Lovable, Base44, Rork, and more.\n\n\ud83d\udfe2 Join the only program that lets you actually starts building apps today: https:\/\/mikeyno-code.com\/Skool\n\n\ud83d\udce9 For inquiries: Mikey (at) ytmedia.group\n","top_videos":"ClawdBot Full Tutorial for Beginners: How to Use &amp; Set up ClawdBot (Openclaw) | How I Built A $10,000 Online Casino App With AI | How I Built an App in 14 minutes With 1 AI tool (2026) | Claude Code Tutorial for Beginners: Build App with AI (2026) | How I Built an App Making $150K with AI UGC (No Coding)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":25.4,"Generation":"Finalist"},{"name":"Liam Ottley","channel_url":"https:\/\/www.youtube.com\/channel\/UCui4jxDaMb53Gdh-AZUTPAg","subs":764000,"total_views":28616316,"video_count":244,"bio":"I\u2019m an AI entrepreneur from New Zealand. In 2023 I created the 'AI Automation Agency' or 'AAA' model based on my learnings at my own agency Morningside AI.\n\nOn this channel I share my learnings from running my own AI Automation Agency, AI SaaS and from helping my community of over 290,000 AI Automation Agency owners to start and scale their own AI business.\n\nMy mission is to inspire others to take advantage of the incredible AI opportunity by documenting my journey as an AI entrepreneur.\n","top_videos":"How to Build &amp; Sell AI Agents: Ultimate Beginner\u2019s Guide | This AI Technology Will Replace Millions (Here&#39;s How to Prepare) | The 8 AI Skills That Will Separate Winners From Losers in 2025 | How to Get Rich with AI: The Complete Beginner\u2019s Blueprint | How to Get Rich with AI Agents in 2025 | Complete Beginner&#39;s Guide (OpenAI Custom GPTs)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":25.4,"Generation":"Finalist"},{"name":"Matt Wolfe","channel_url":"https:\/\/www.youtube.com\/channel\/UChpleBmo18P08aKCIgti38g","subs":927000,"total_views":71732716,"video_count":648,"bio":"Sifting through all the AI noise to share what actually matters - New videos every Friday (and probably some in between too)\n\nDiscover More:\n\ud83d\udee0\ufe0f Explore AI Tools & News: https:\/\/futuretools.io\/\n\ud83d\udcf0 Weekly Newsletter: https:\/\/futuretools.io\/newsletter\n\nSocials:\n\u274c Twiter\/X: https:\/\/x.com\/mreflow\n\ud83d\uddbc\ufe0f Instagram: https:\/\/instagram.com\/mr.eflow\n\ud83e\uddf5 Threads: https:\/\/www.threads.net\/@mr.eflow\n\ud83d\udfe6 LinkedIn: https:\/\/www.linkedin.com\/in\/matt-wolfe-30841712\/\n\ud83d\udc4d Facebook: https:\/\/www.facebook.com\/mattrwolfe\n\nLet\u2019s work together!\n- For brand, sponsorship, and business inquiries: mattwolfe@smoothmedia.co\n","top_videos":"This Method of 3D Printing is Pretty Awesome | 21 Mobile AI Apps You Won&#39;t Believe Are Free | This Is Better Than ChatGPT (With Prompting Guide) | Make A Movie with AI: It&#39;s Crazy What We Can Do! | Install Auto-GPT Locally (Quick Setup Guide)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":25.4,"Generation":"Finalist"},{"name":"WEBINARIS - automatisiertes Webinar-Marketing","channel_url":"https:\/\/www.youtube.com\/channel\/UC7JuR0Qd3eydLKZQERSYpBQ","subs":1440,"total_views":93126,"video_count":46,"bio":"Lerne auf diesem Kanal alles \u00fcber Marketingautomation mit Hilfe von automatisierten Webinaren und Webinaris. Gewinne kampagnen gesteuert neue Kunden und steigere automatisiert Deine Ums\u00e4tze und Gewinne.","top_videos":"&quot;Die Klippensprung Mail&quot; fu\u0308r mehr Verka\u0308ufe in Deinen Webinaren | Die perfekte automatisierte digitale Firma (1:1 Umsetzungsplan) | Webinaris Rundgang (U\u0308berblick aller Funktionen) | WEBINARIS - Interview mit Rainer von Massenbach | Einfu\u0308hrung Webinaris","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.144,"D2":0.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":25.288,"Generation":"Eliminated (Gen 1)"},{"name":"Jason Wardrop","channel_url":"https:\/\/www.youtube.com\/channel\/UCBgPxTfodXMa_zavgl0DX7A","subs":337000,"total_views":3837426,"video_count":108,"bio":"\ud83d\udcb8 Built a multi-7-figure software business (2015 - 2021)\n\u2699\ufe0f #1 HighLevel Affiliate All-Time [+105,000 Referrals] (2021 - Present)\n\ud83d\udcc8 Teaching the exact systems that helped me scale\n\u26a0\ufe0f Real results require work \u2014 yours may vary \n\ud83c\udfa5 Subscribe & let\u2019s build your future\n","top_videos":"How To Start A YouTube Channel For Beginners (Full Tutorial) | Start A Digital Marketing Agency With NO EXPERIENCE! (Beginner Friendly!) | Start A Digital Marketing Agency In 2026 With NO EXPERIENCE! | Sell AI Automation to Local Businesses (Beginner Step-by-Step Guide) | New Side Hustle That\u2019s Working in 2026 (Beginner-Friendly Strategy)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":0.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":22.4,"Generation":"Finalist"},{"name":"Keaton Walker","channel_url":"https:\/\/www.youtube.com\/channel\/UCROsCSoY7I_QZuS4QGQckOA","subs":73800,"total_views":5269388,"video_count":826,"bio":"I build businesses that print money while I sleep.\n\nCurrently running a $100k\/mo+ \u201csemi-passive\u201d business with 6+ income streams all revolving around GoHighLevel.\n\nI\u2019ve also helped hundreds of entrepreneurs get more leverage and better business results\u2014without fake scarcity, cringe bro-marketing, or shady tactics.\n\nFormer agency owner ($80K\/month before I sold to a strategic buyer), now I mostly focus on:\n\nHigh-production content that actually converts\n\nBuilding money babies in AI and software\n\nTeaching people how to scale without burning out\n\nMy work's been featured by HighLevel and has influenced thousands of resellers across the platform.\n\nI live for:\n\n- Building real leverage\n- Traveling with my family\n- Protecting my energy like it\u2019s a second job\n\nIf you want to grow a white-labeled SaaS business, steal my systems, or just see behind the curtain\u2014subscribe and hang out.\nDM on Instagram if you\u2019re serious about scaling.\n\n\n\n","top_videos":"He got 1,000 SaaS Clients in 12 Months Using 5-Minute Looms (No Sales Calls) | Learn Zapier in 7 minutes: Business &amp; Personal Automation Tutorial For Beginners (2025) | DON\u2019T Start a Skool Community Until You Watch This | He Sold 100 AI Receptionists to Local Businesses in ONE Month (\u00a3399\/mo clients) | How to Use GoHighLevel WORKFLOWS (If\/Else, Automations, &amp; More!)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":7.38,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":21.208,"Generation":"Finalist"},{"name":"Manus AI","channel_url":"https:\/\/www.youtube.com\/channel\/UCQgFQdqiFQ_LfFBGP6z9dqQ","subs":65700,"total_views":3681900,"video_count":65,"bio":"Manus from Meta is a general AI agent that turns your thoughts into actions. It excels at various tasks in work and life, getting everything done while you rest.\nFind us at: https:\/\/t.me\/manus_ai_agent_bot","top_videos":"Introducing Manus: The General AI Agent | Introducing Manus Browser Operator : An AI Agent that Browses For You? | Introducing Wide Research | Introducing Manus Slides | Introducing My Computer: When Manus Meets Your Desktop","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":6.57,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":19.912,"Generation":"Eliminated (Gen 1)"},{"name":"Milan Vasarhelyi - Business Automation","channel_url":"https:\/\/www.youtube.com\/channel\/UCAb5hm_79RYKMK2-SVn8JwQ","subs":287,"total_views":17590,"video_count":20,"bio":"Learn about Business Automation, AI, and internal tool building.\n","top_videos":"N8N for QuickBooks tutorial - Easy QuickBooks API Integration | N8N Email Categorizer - Reclaim your attention! (free template) | Supplier Invoice Processing - Automate Invoices with n8n &amp; Airtable! | Simplest way to Connect Make.com with Gmail and Drive - 2025 version | AI Receipt Scanner Agent - N8N Build (Step-by-step + Template)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0287,"D2":4.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":13.44592,"Generation":"Eliminated (Gen 1)"},{"name":"MCP Manager by Usercentrics","channel_url":"https:\/\/www.youtube.com\/channel\/UCinX4gd6Ge-wNhk1ChqnlNA","subs":157,"total_views":15407,"video_count":52,"bio":"MCP Manager by Usercentrics makes it easy to govern and control how data flows to AI. ","top_videos":"MCP Manager Demo: MCP Gateway for Security, Observability, and Identity Management | MCP Security Best Practices: How to Prevent Risks \ud83d\udd12 | MCP Gateways: Why They&#39;re Critical to AI Deployments | Asana MCP Server Tutorial: Connect to Claude Desktop | What Is an MCP Gateway? (Explanation + Demo)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0157,"D2":4.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":13.42512,"Generation":"Eliminated (Gen 1)"},{"name":"Jonathan Ferrell - GoHighLevel Automations","channel_url":"https:\/\/www.youtube.com\/channel\/UCd6wRHbhTkXoF1xSY5bnD2g","subs":731,"total_views":50442,"video_count":62,"bio":"Hey everyone! I'm Jonathan Ferrell, a dedicated GoHighLevel product expert and the Product Manager at Cusell Marketing Group. I'm thrilled to share that our agency recently won the 2024 Gold SAAS Award with GoHighLevel! Here, I document my journey as I build and refine products on the platform, offering you a behind-the-scenes look at high-level product setups, powerful automation tips, and strategies to elevate your business. Subscribe to join me in mastering GoHighLevel!\n\nWant to scale your business? Book your no obligation highlevel consulation with me here: https:\/\/bit.ly\/highlevelgrowth\n","top_videos":"Make Outbound Calls from Your Own Number in GoHighLevel! Verified Caller ID Set Up. | How To Create A Power Dialer Inside Of GoHighLevel with Voicemail Drop | How to Build Conditional Logic Surveys in GoHighLevel | Advanced Lead Qualification | How to Get A2P Approval in GoHighLevel for Sole Proprietors In 2024 | How to Add Users and Set Permissions in GoHighLevel Sub-Accounts","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0731,"D2":3.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":10.51696,"Generation":"Eliminated (Gen 1)"},{"name":"Yazdan","channel_url":"https:\/\/www.youtube.com\/channel\/UCpMyyJym1QU_E1VvMcfMD0Q","subs":149,"total_views":22112,"video_count":25,"bio":"Do what makes you a better person.","top_videos":"Can My AI Mentor Teach Me How to Build AI Agents? | Manus Exposed: AI Hype Busted with DIY Agents Using CLINE | Manus Exposed 1.17 AI Hype Busted with DIY Agents Using CLINE &quot;WATCH THE FULL VIDEO&quot; | Manus Exposed 1.12 AI Hype Busted with DIY Agents Using CLINE &quot;WATCH THE FULL VIDEO&quot; | Manus Exposed 1.20 AI Hype Busted with DIY Agents Using CLINE &quot;WATCH THE FULL VIDEO&quot;","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0149,"D2":3.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":10.42384,"Generation":"Eliminated (Gen 1)"},{"name":"MCP-Builder-ai","channel_url":"https:\/\/www.youtube.com\/channel\/UCNjRp7CEOp-YUmEhQHjt7jA","subs":13,"total_views":2644,"video_count":12,"bio":"Building the AI Infrastructure for the next Decade","top_videos":"Connect Jira with Claude Desktop using MCP-Builder.ai | Create a MCP-Server connected to hubspot in a few minutes with MCP-Builder.ai | Connect Your OAuth 2 API to Claude in 3 Minutes (MCP Tutorial) | Connect Your OAuth 2 API to ChatGPT in 3 Minutes (MCP Tutorial) | Build your MCP-Server in natural language using MCP-Builder.ai","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0013,"D2":3.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":10.40208,"Generation":"Eliminated (Gen 1)"},{"name":"Vibe Coding Tutorials","channel_url":"https:\/\/www.youtube.com\/channel\/UCZDZU6p2EH0GspmT-ahVnCg","subs":1,"total_views":27,"video_count":2,"bio":"\u2728 Coding tutorials for the vibing coders! \ud83d\udcbb\ud83d\ude80\n","top_videos":"No Code Website Tutorial for Beginners (2025 Guide) | What is Vibe Coding?","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0001,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":7.40016,"Generation":"Eliminated (Gen 1)"},{"name":"Marketing Cube | Marketing Automation","channel_url":"https:\/\/www.youtube.com\/channel\/UCdMidTbyXzlAjisuk0wgqGA","subs":762,"total_views":93346,"video_count":195,"bio":"Marketing Cube is a connected capability agency. We help brands and businesses build genuine connections with people in ways that matter most to them.\n\nWe help marketers achieve their marketing & business objectives by harnessing the power of marketing, data and AI technologies to deliver on their brand promise across every touch point of their customer experience.\n\nOur team combines marketing technology and automation expertise with the kind of depth you\u2019d depend on from a certified implementation partner, breadth you\u2019d rely on from a management consultancy and creativity you\u2019d expect from a design agency.\n\nWe are an accredited partner for Oracle Marketing and Salesforce Marketing Cloud, and our multi-award-winning team has been creating unique customer experiences for our clients globally since 2007.\n","top_videos":"The Eloqua Campaign Canvas Basics 101 | The Fundamentals of Marketing Automation - Nov 2016 Eloqua User Group | Eloqua Campaign Canvas - Email Scheduling | Eloqua Email Editor - Easily Build Responsive Emails with Eloqua | Hands-on with Eloqua","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0762,"D2":0.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":4.52192,"Generation":"Eliminated (Gen 1)"},{"name":"Zoho Marketing Automation","channel_url":"https:\/\/www.youtube.com\/channel\/UCOtef2mV58MXef6op1Necrg","subs":694,"total_views":58810,"video_count":16,"bio":"Zoho Marketing Automation is a multichannel marketing automation software tailor-made for marketers looking to elevate their brand's marketing efforts. This versatile software provides in-depth insights, allowing you to decipher the reasons behind website visits, track your leads' progress, and evaluate the success of recent campaigns.\n\nWith Zoho Marketing Automation, marketers can harness the power of advanced lead generation, personalized customer journey planning, web behavior targeting, an all-inclusive marketing planner, and much more, all designed to drive exceptional results.\n\nJoin the ever-growing community of marketers who have expanded their marketing reach and enhanced their funnel with Zoho Marketing Automation.\n\nKnow more - https:\/\/www.zoho.com\/marketingautomation\/\n\n","top_videos":"WhatsApp Marketing made easy with Zoho | Automate your WhatsApp campaigns today | WhatsApp Marketing with Zoho: Exploring New Horizons | Zoho Marketing Automation | Announcing the all-new Zoho Marketing Automation 2.0 | Effective marketing, simplified. | Send bulk WhatsApp messages with Zoho Marketing Automation | Conversations to conversions | Get to know Zoho Marketing Automation | How to automate your marketing | A beginner&#39;s guide","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0694,"D2":0.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":4.51104,"Generation":"Eliminated (Gen 1)"},{"name":"mcp","channel_url":"https:\/\/www.youtube.com\/channel\/UCckL145rQqDmtdDAjelDfVw","subs":176,"total_views":40046,"video_count":7,"bio":"Creative microcontroller based projects involving electronics, mechanics, and programming, & explanations of various engineering concepts.\n","top_videos":"Pickle Rick - 3D Printed with Electronics | DIY Robotic Fish | Design and Assembly | DIY Sound Module (Store and Play Audio) | DIY Watchdog Timer - Simple Explanation | DIY Pocket FM Radio | TEA5767 Tutorial w\/ any MCU\/MPU","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0176,"D2":0.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":4.42816,"Generation":"Eliminated (Gen 1)"}];
-        const vsData = [{"METRIC":"Subscribers","NUNO":"~20k","Nick Saraev":"377000","Riley Brown":"211000","Nate Herk | AI Automation":"648000"},{"METRIC":"Webinar Active","NUNO":"YES","Nick Saraev":"True","Riley Brown":"True","Nate Herk | AI Automation":"True"},{"METRIC":"Fitness Score","NUNO":"88.5","Nick Saraev":"62.5","Riley Brown":"58.75","Nate Herk | AI Automation":"58.75"}];
-        const top3Data = [];
-
-        // --- RENDER TABLE ---
-        const tbody = document.getElementById('tableBody');
-        analysisData.forEach(row => {
-            const tr = document.createElement('tr');
-            if (row.Gen_Eliminated === 'Gen 1') tr.className = 'row-gen1';
-            else if (row.Gen_Eliminated === 'Gen 2') tr.className = 'row-gen2';
-            else if (row.Gen_Eliminated === 'Survivor') tr.className = 'row-survivor';
-            
-            const score = row.Total_Fitness || 0;
-            
-            tr.innerHTML = `
-                <td><strong>${row.name}</strong></td>
-                <td>${row.subs?.toLocaleString() || 'N/A'}</td>
-                <td>
-                    <div style="display:flex; align-items:center; gap: 10px;">
-                        <span style="font-size:0.8rem">${parseFloat(score).toFixed(1)}</span>
-                        <div class="progress-container"><div class="progress-bar" style="width: ${score}%"></div></div>
-                    </div>
-                </td>
-                <td>${row.has_webinar_content ? '✅' : '❌'}</td>
-                <td><small>${row.Gen_Eliminated}</small></td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        // --- RENDER PROFILES ---
-        const profileGrid = document.getElementById('profileGrid');
-        top3Data.forEach((comp, index) => {
-            const card = document.createElement('div');
-            card.className = 'profile-card';
-            const colors = ['var(--gold)', 'var(--silver)', 'var(--bronze)'];
-            card.style.borderColor = colors[index];
-
-            card.innerHTML = `
-                <div style="display:flex; justify-content:between; align-items:center;">
-                    <span class="rank-badge" style="background:${colors[index]}">#${index+1}</span>
-                    <h3 style="margin-left: 15px;">${comp.rank_name.split(':')[1]}</h3>
-                </div>
-                <div style="margin: 20px 0; text-align:center;">
-                    <span style="font-size: 2rem; font-weight: 800; color: ${colors[index]}">${comp.fitness}/100</span>
-                    <p style="font-size: 0.8rem; opacity: 0.6;">FITNESS SCORE</p>
-                </div>
-                
-                <div class="tabs">
-                    <div class="tab active" onclick="switchTab(this, 0)">Audience</div>
-                    <div class="tab" onclick="switchTab(this, 1)">Strategy</div>
-                    <div class="tab" onclick="switchTab(this, 2)">Why It Matters</div>
-                </div>
-                <div class="tab-content active">
-                    <p><strong>Subscribers:</strong> ${comp.audience}</p>
-                    <p><strong>URL:</strong> <a href="${comp.url}" target="_blank" style="color:var(--accent)">Visit Channel</a></p>
-                </div>
-                <div class="tab-content">
-                    <p><strong>Webinar Focus:</strong> ${comp.webinar_focus}</p>
-                    <p><strong>Funnel Signal:</strong> Detected via active training content.</p>
-                </div>
-                <div class="tab-content">
-                    <p>${comp.summary || 'Critical competitor with high overlap in automation training.'}</p>
-                </div>
-                <canvas id="radar-${index}" style="margin-top:20px;"></canvas>
-            `;
-            profileGrid.appendChild(card);
-        });
-
-        function switchTab(el, index) {
-            const container = el.parentElement.parentElement;
-            const tabs = container.querySelectorAll('.tab');
-            const contents = container.querySelectorAll('.tab-content');
-            tabs.forEach(t => t.classList.remove('active'));
-            contents.forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            contents[index].classList.add('active');
-        }
-
-    </script>
-
-<!-- ══════════════════════════════════════════════════════
-     DARWIN ENGINE — ALGORITHM SOP
-══════════════════════════════════════════════════════ -->
-<style>
-  /* Darwin Engine embedded styles (scoped with .de- prefix) */
-  .de-section { padding: 80px 10%; }
-  .de-section-label {
-    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem;
-  }
-  .de-hero {
-    background: linear-gradient(135deg, #0d1526 0%, #0a0f1e 100%);
-    border-top: 2px solid var(--accent);
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    padding: 80px 10% 60px;
-    position: relative;
-    overflow: hidden;
-  }
-  .de-hero::before {
-    content:''; position:absolute; inset:0;
-    background: radial-gradient(ellipse 70% 60% at 60% 40%, rgba(0,212,255,0.06) 0%, transparent 70%);
-    pointer-events:none;
-  }
-  .de-hero-tag {
-    display: inline-block; padding: 0.3rem 0.9rem;
-    border: 1px solid var(--accent); color: var(--accent);
-    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-    border-radius: 2px; margin-bottom: 1.4rem;
-  }
-  .de-hero h2 {
-    font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 900;
-    color: #fff; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 0.8rem;
-  }
-  .de-hero h2 span { color: var(--accent); }
-  .de-hero p { font-size: 1rem; color: rgba(255,255,255,0.5); max-width: 580px; margin-bottom: 2.5rem; }
-  .de-hero-stats { display: flex; gap: 3rem; flex-wrap: wrap; }
-  .de-hstat .dn { font-size: 2.6rem; font-weight: 900; color: var(--accent); line-height: 1; }
-  .de-hstat .dl { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.25rem; }
-
-  /* Problem */
-  .de-prob-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1.2rem; margin-top: 2rem; }
-  .de-prob-card {
-    background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 12px; padding: 1.6rem; position: relative; overflow: hidden;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-  .de-prob-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-2px); }
-  .de-prob-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,#ef4444,transparent); }
-  .de-prob-card .dpi { font-size: 1.6rem; margin-bottom: 0.7rem; }
-  .de-prob-card h4 { font-size: 0.95rem; font-weight: 700; color:#fff; margin-bottom: 0.4rem; }
-  .de-prob-card p { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
-
-  /* Pills */
-  .de-pills { display:flex; flex-wrap:wrap; gap:0.7rem; margin: 1.8rem 0; }
-  .de-pill {
-    background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.28);
-    color: var(--accent); border-radius: 999px; padding: 0.4rem 1rem;
-    font-size: 0.8rem; font-weight: 600;
-  }
-
-  /* API box */
-  .de-api-box {
-    background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 12px; padding: 1.6rem 1.8rem;
-    display: flex; align-items: flex-start; gap: 1.2rem; margin-top: 1.2rem;
-  }
-  .de-api-box .dai { font-size: 2.2rem; flex-shrink: 0; }
-  .de-api-box h4 { font-size: 0.95rem; font-weight:700; color:#fff; margin-bottom: 0.3rem; }
-  .de-api-box p { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
-  .de-stat-row { display:flex; gap:1.2rem; margin-top:1rem; flex-wrap:wrap; }
-  .de-sc {
-    background: rgba(0,212,255,0.07); border:1px solid rgba(0,212,255,0.18);
-    border-radius:8px; padding: 0.5rem 0.9rem; text-align:center;
-  }
-  .de-sc .sn { font-size: 1.3rem; font-weight:800; color:var(--accent); }
-  .de-sc .sl { font-size: 0.68rem; color:rgba(255,255,255,0.4); text-transform:uppercase; }
-
-  /* Dimensions */
-  .de-dims-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:1.1rem; margin-top:2rem; }
-  .de-dim-card {
-    background: var(--card-bg); border:1px solid rgba(255,255,255,0.06);
-    border-radius:12px; padding:1.4rem; position:relative; overflow:hidden;
-    transition:transform 0.2s, border-color 0.2s;
-  }
-  .de-dim-card:hover { transform:translateY(-3px); border-color:rgba(0,212,255,0.35); }
-  .de-dim-card .dwb {
-    position:absolute; top:0.9rem; right:0.9rem;
-    background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.25);
-    color:var(--accent); font-size:0.75rem; font-weight:700; padding:0.18rem 0.55rem; border-radius:5px;
-  }
-  .de-dim-card .dwb.hi { background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.35); color:#f59e0b; }
-  .de-dim-card .dnum { font-size:0.65rem; font-weight:700; letter-spacing:0.15em; color:rgba(255,255,255,0.3); text-transform:uppercase; margin-bottom:0.4rem; }
-  .de-dim-card h4 { font-size:1rem; font-weight:700; color:#fff; margin-bottom:0.5rem; padding-right:4rem; }
-  .de-bar-w { height:3px; background:rgba(255,255,255,0.08); border-radius:2px; margin:0.6rem 0; overflow:hidden; }
-  .de-bar { height:100%; border-radius:2px; background:linear-gradient(90deg,#0099cc,var(--accent)); }
-  .de-bar.hi { background:linear-gradient(90deg,#b45309,#f59e0b); }
-  .de-dim-card .dm { font-size:0.78rem; color:rgba(255,255,255,0.45); margin-bottom:0.4rem; }
-  .de-dim-card .dw { font-size:0.78rem; color:rgba(255,255,255,0.35); font-style:italic; border-top:1px solid rgba(255,255,255,0.06); padding-top:0.5rem; margin-top:0.5rem; }
-
-  /* Funnel */
-  .de-funnel { display:flex; flex-direction:column; align-items:center; gap:0; margin-top:2.5rem; }
-  .de-fstage { display:flex; flex-direction:column; align-items:center; width:100%; max-width:680px; }
-  .de-fbox {
-    width:100%; background:var(--card-bg); border:1px solid rgba(255,255,255,0.06);
-    border-radius:12px; padding:1.6rem 1.8rem; position:relative; overflow:hidden;
-  }
-  .de-fbox::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
-  .de-fbox.dg1::before { background:linear-gradient(90deg,#3b82f6,#06b6d4); }
-  .de-fbox.dg2::before { background:linear-gradient(90deg,#8b5cf6,#06b6d4); }
-  .de-fbox.dg3::before { background:linear-gradient(90deg,#f59e0b,#f97316); }
-  .de-fhdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:0.4rem; }
-  .de-glbl { font-size:0.68rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; }
-  .de-glbl.dg1 { color:#60a5fa; } .de-glbl.dg2 { color:#a78bfa; } .de-glbl.dg3 { color:#f59e0b; }
-  .de-fcut { display:flex; align-items:center; gap:0.4rem; padding:0.4rem 0.8rem; background:rgba(239,68,68,0.08); border:1px dashed rgba(239,68,68,0.28); border-radius:7px; font-size:0.75rem; color:#f87171; }
-  .de-fsteps { display:flex; align-items:center; flex-wrap:wrap; gap:0.5rem; }
-  .de-fnode {
-    display:flex; flex-direction:column; align-items:center;
-    background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07);
-    border-radius:10px; padding:0.8rem 1rem; min-width:100px;
-  }
-  .de-fnode .dc { font-size:1.8rem; font-weight:900; color:#fff; line-height:1; }
-  .de-fnode .dc.c1 { color:#60a5fa; } .de-fnode .dc.c2 { color:#a78bfa; } .de-fnode .dc.c3 { color:#f59e0b; }
-  .de-fnode .dd { font-size:0.7rem; color:rgba(255,255,255,0.35); text-align:center; margin-top:0.2rem; line-height:1.3; }
-  .de-farr { font-size:1.3rem; color:rgba(255,255,255,0.25); flex-shrink:0; }
-  .de-fadown { display:flex; flex-direction:column; align-items:center; padding:0.8rem 0; color:rgba(255,255,255,0.25); font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; }
-  .de-fadown::before { content:''; width:2px; height:24px; background:linear-gradient(to bottom,rgba(255,255,255,0.08),var(--accent)); margin-bottom:0.3rem; }
-
-  /* Amber */
-  .de-amber {
-    background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.3);
-    border-left:4px solid #f59e0b; border-radius:12px; padding:1.8rem 2rem;
-  }
-  .de-amber .dat { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#f59e0b; margin-bottom:0.9rem; }
-  .de-amber p { font-size:0.9rem; color:#d1d5db; line-height:1.75; }
-  .de-amber strong { color:#fff; }
-
-  /* Results */
-  .de-res-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.4rem; margin-top:2rem; }
-  .de-rc {
-    background:var(--card-bg); border:1px solid rgba(255,255,255,0.07);
-    border-radius:14px; padding:1.8rem; position:relative; overflow:hidden;
-    transition:transform 0.2s;
-  }
-  .de-rc:hover { transform:translateY(-4px); }
-  .de-rc.dgold { border-color:rgba(245,158,11,0.35); }
-  .de-rc.dsilver { border-color:rgba(148,163,184,0.35); }
-  .de-rc.dbronze { border-color:rgba(205,124,47,0.35); }
-  .de-rc::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
-  .de-rc.dgold::before { background:linear-gradient(90deg,#b45309,#f59e0b,#fbbf24); }
-  .de-rc.dsilver::before { background:linear-gradient(90deg,#475569,#94a3b8,#cbd5e1); }
-  .de-rc.dbronze::before { background:linear-gradient(90deg,#92400e,#cd7c2f,#d97706); }
-  .de-rc .dmedal { font-size:2.2rem; line-height:1; margin-bottom:0.7rem; }
-  .de-rc h4 { font-size:1.3rem; font-weight:800; color:#fff; margin-bottom:0.2rem; }
-  .de-rc .dhandle { font-size:0.75rem; color:rgba(255,255,255,0.35); margin-bottom:1rem; }
-  .de-rstat { display:flex; justify-content:space-between; align-items:center; padding:0.45rem 0.7rem; background:rgba(255,255,255,0.025); border-radius:7px; border:1px solid rgba(255,255,255,0.05); margin-bottom:0.4rem; }
-  .de-rstat .rk { font-size:0.75rem; color:rgba(255,255,255,0.4); }
-  .de-rstat .rv { font-size:0.82rem; font-weight:600; color:#fff; }
-  .de-rstat .rv.rg { color:#f59e0b; } .de-rstat .rv.rr { color:#f87171; } .de-rstat .rv.rn { color:#10b981; }
-
-  /* Key finding */
-  .de-finding {
-    background:linear-gradient(135deg,rgba(245,158,11,0.09),rgba(251,191,36,0.04));
-    border:1px solid rgba(245,158,11,0.45); border-radius:16px;
-    padding:3rem; text-align:center; position:relative; overflow:hidden;
-  }
-  .de-finding::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(245,158,11,0.07) 0%,transparent 70%); pointer-events:none; }
-  .de-finding .dfi { font-size:2.8rem; margin-bottom:0.8rem; }
-  .de-finding h3 { font-size:clamp(1.1rem,3vw,1.5rem); font-weight:800; color:#fff; line-height:1.4; margin-bottom:0.8rem; }
-  .de-finding h3 span { color:#f59e0b; }
-  .de-finding p { font-size:0.92rem; color:rgba(255,255,255,0.45); max-width:480px; margin:0 auto; }
-
-  /* Tools */
-  .de-tools-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1.1rem; margin-top:2rem; }
-  .de-tc {
-    background:var(--card-bg); border:1px solid rgba(255,255,255,0.06);
-    border-radius:12px; padding:1.4rem; display:flex; gap:1rem; align-items:flex-start;
-    transition:border-color 0.2s, transform 0.2s;
-  }
-  .de-tc:hover { border-color:rgba(0,212,255,0.28); transform:translateY(-2px); }
-  .de-ticon { width:42px; height:42px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
-  .de-tc h4 { font-size:0.88rem; font-weight:700; color:#fff; margin-bottom:0.25rem; }
-  .de-tc p { font-size:0.76rem; color:rgba(255,255,255,0.4); }
-  .de-tbadge { display:inline-block; margin-top:0.4rem; font-size:0.62rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:0.14rem 0.45rem; border-radius:4px; }
-
-  /* Radar chart */
-  .de-chart-wrap {
-    background:var(--card-bg); border:1px solid rgba(255,255,255,0.06);
-    border-radius:12px; padding:2rem; margin-top:2rem; max-width:500px;
-  }
-
-  .de-lead { font-size:0.95rem; color:rgba(255,255,255,0.45); max-width:640px; margin-bottom:2rem; }
-
-  /* Section divider */
-  .de-div { width:100%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.07),transparent); margin:0; }
-</style>
-
-<!-- DARWIN HERO -->
-<div class="de-div"></div>
-<div class="de-hero" id="darwin">
-  <div class="de-hero-tag">Algorithm SOP · How It Works</div>
-  <h2>The <span>Darwin</span> Engine</h2>
-  <p>How we found Nuno's top 3 competitors from 28 candidates using a Darwinian elimination algorithm across 7 weighted dimensions and 3 generations of scoring.</p>
-  <div class="de-hero-stats">
-    <div class="de-hstat"><div class="dn">28</div><div class="dl">Candidates Discovered</div></div>
-    <div class="de-hstat"><div class="dn">7</div><div class="dl">Scoring Dimensions</div></div>
-    <div class="de-hstat"><div class="dn">3</div><div class="dl">Generations</div></div>
-    <div class="de-hstat"><div class="dn">3</div><div class="dl">Finalists Identified</div></div>
+<div class="hero">
+  <a href="hub.html" class="back-link">← Back to Intelligence Hub</a>
+  <h1>The Evolution Matrix</h1>
+  <p>All 28 candidates scored, ranked, and eliminated across 3 Darwinian generations</p>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-n">28</div><div class="hs-l">Candidates</div></div>
+    <div class="hs"><div class="hs-n">7</div><div class="hs-l">Dimensions</div></div>
+    <div class="hs"><div class="hs-n">3</div><div class="hs-l">Generations</div></div>
+    <div class="hs"><div class="hs-n">3</div><div class="hs-l">Finalists</div></div>
   </div>
 </div>
 
-<!-- WHY IT NEEDED AN ALGORITHM -->
-<div class="de-div"></div>
-<section class="de-section">
-  <div class="de-section-label">Why Systematic</div>
-  <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:800; color:#fff; margin-bottom:1rem;">Why Random Research Fails</h2>
-  <p class="de-lead">Without an algorithm, competitor research suffers from confirmation bias, cherry-picking, and surface-level analysis that misses the real strategic threats.</p>
-  <div class="de-prob-grid">
-    <div class="de-prob-card">
-      <div class="dpi">🎯</div>
-      <h4>Confirmation Bias</h4>
-      <p>Manual research gravitates toward already-known names, missing dark-horse competitors who pose greater strategic risk.</p>
-    </div>
-    <div class="de-prob-card">
-      <div class="dpi">📊</div>
-      <h4>No Weighting System</h4>
-      <p>Without weighted dimensions, a creator with 2M subscribers but zero webinar overlap scores equal to a direct competitor with 50K.</p>
-    </div>
-    <div class="de-prob-card">
-      <div class="dpi">🔀</div>
-      <h4>Inconsistent Criteria</h4>
-      <p>Switching criteria mid-analysis means you're not comparing apples to apples. The algorithm forces the same rubric for all 28.</p>
-    </div>
-    <div class="de-prob-card">
-      <div class="dpi">⏳</div>
-      <h4>Scale Impossibility</h4>
-      <p>Deep-diving 28 creators manually would take weeks. Algorithmic scoring collapses that to hours, reserving human intelligence for the Top 3.</p>
+<div class="section">
+  <div class="section-title">Full Candidate Rankings</div>
+  <div class="search-wrap">
+    <input type="text" id="tableSearch" placeholder="Search competitor name..." autocomplete="off">
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--gold)"></div> Finalist (Top 3)</div>
+      <div class="leg"><div class="leg-dot" style="background:#ef4444;opacity:0.5"></div> Eliminated Gen 1</div>
     </div>
   </div>
-</section>
-
-<!-- DATA COLLECTION -->
-<div class="de-div"></div>
-<section class="de-section">
-  <div class="de-section-label">Data Collection</div>
-  <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:800; color:#fff; margin-bottom:1rem;">YouTube API Discovery</h2>
-  <p class="de-lead">The YouTube Data API v3 was queried across 8 targeted search terms designed to surface creators at the intersection of AI automation, workflow tools, and Python education.</p>
-  <div class="de-pills">
-    <span class="de-pill">AI automation tools</span>
-    <span class="de-pill">Python automation tutorial</span>
-    <span class="de-pill">n8n workflow automation</span>
-    <span class="de-pill">Make.com automation</span>
-    <span class="de-pill">AI business automation</span>
-    <span class="de-pill">No-code AI workflow</span>
-    <span class="de-pill">AI tools for entrepreneurs</span>
-    <span class="de-pill">Zapier automation tutorial</span>
+  <div class="table-wrap">
+    <table id="compTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Creator</th>
+          <th>Subscribers</th>
+          <th>Fitness Score</th>
+          <th>Webinar</th>
+          <th>D1 Niche</th>
+          <th>D2 Webinar</th>
+          <th>D3 Audience</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
   </div>
-  <div class="de-api-box">
-    <div class="dai">📡</div>
-    <div>
-      <h4>YouTube Data API v3 · search.list endpoint</h4>
-      <p>Each search term returned up to 50 video results. Channel metadata extracted per result. Deduplication by channel ID collapsed overlapping appearances into unique candidates.</p>
-      <div class="de-stat-row">
-        <div class="de-sc"><div class="sn">8</div><div class="sl">Search Terms</div></div>
-        <div class="de-sc"><div class="sn">~400</div><div class="sl">Raw Results</div></div>
-        <div class="de-sc"><div class="sn">28</div><div class="sl">Unique Candidates</div></div>
-        <div class="de-sc"><div class="sn">100%</div><div class="sl">Programmatic</div></div>
-      </div>
-    </div>
-  </div>
-</section>
+</div>
 
-<!-- 7 DIMENSIONS -->
-<div class="de-div"></div>
-<section class="de-section">
-  <div class="de-section-label">The Scoring Rubric</div>
-  <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:800; color:#fff; margin-bottom:1rem;">The 7 Scoring Dimensions</h2>
-  <p class="de-lead">Each of the 28 candidates was scored 0–10 across seven dimensions, then multiplied by its weight. Weights were calibrated to Nuno's specific competitive threat profile.</p>
-  <div class="de-dims-grid">
-    <div class="de-dim-card"><div class="dnum">Dimension 01</div><div class="dwb hi">25%</div><h4>Niche Density</h4><div class="de-bar-w"><div class="de-bar hi" style="width:100%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> How precisely the creator occupies Nuno's specific niche — AI automation + Python + business workflows.</p><p class="dw">Highest weight because exact-niche creators are maximally threatening regardless of audience size.</p></div>
-    <div class="de-dim-card"><div class="dnum">Dimension 02</div><div class="dwb hi">25%</div><h4>Webinar Strategy</h4><div class="de-bar-w"><div class="de-bar hi" style="width:100%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Whether the creator uses webinars, live events, or cohort launches as a primary monetization channel.</p><p class="dw">Webinar competitors steal Nuno's audience during launch windows. Zero-webinar creators are irrelevant to launch strategy.</p></div>
-    <div class="de-dim-card"><div class="dnum">Dimension 03</div><div class="dwb">20%</div><h4>Audience Overlap</h4><div class="de-bar-w"><div class="de-bar" style="width:80%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Shared subscriber demographics — small business owners, solopreneurs, and no-code/low-code adopters.</p><p class="dw">Perfect niche fit but zero audience overlap means not a real competitor for Nuno's specific buyers.</p></div>
-    <div class="de-dim-card"><div class="dnum">Dimension 04</div><div class="dwb">10%</div><h4>Content Format</h4><div class="de-bar-w"><div class="de-bar" style="width:40%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Alignment with tutorial-style, long-form video content — Nuno's core format on YouTube.</p><p class="dw">Format divergence (short-form only, podcast-first) reduces competitive pressure even if niches overlap.</p></div>
-    <div class="de-dim-card"><div class="dnum">Dimension 05</div><div class="dwb">10%</div><h4>Offer Structure</h4><div class="de-bar-w"><div class="de-bar" style="width:40%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Whether the creator sells courses, communities, templates, or SaaS competing with Nuno's launch.</p><p class="dw">Offer similarity determines whether the competitor will be positioned as an alternative at checkout.</p></div>
-    <div class="de-dim-card"><div class="dnum">Dimension 06</div><div class="dwb">5%</div><h4>Revenue Scale</h4><div class="de-bar-w"><div class="de-bar" style="width:20%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Estimated monthly revenue from communities, courses, sponsorships, and SaaS.</p><p class="dw">Revenue scale signals market validation, not direct threat. Low weight avoids over-indexing on big names.</p></div>
-    <div class="de-dim-card"><div class="dnum">Dimension 07</div><div class="dwb">5%</div><h4>Authority Score</h4><div class="de-bar-w"><div class="de-bar" style="width:20%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Domain authority, press coverage, backlink profile, and industry recognition signals.</p><p class="dw">Authority affects SEO and credibility halo — important context but not a direct proxy for threat to a launch.</p></div>
-  </div>
-  <div class="de-chart-wrap">
-    <canvas id="de-radarChart" height="260"></canvas>
-  </div>
-</section>
-
-<!-- 3 GENERATIONS -->
-<div class="de-div"></div>
-<section class="de-section">
-  <div class="de-section-label">The Elimination Funnel</div>
-  <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:800; color:#fff; margin-bottom:1rem;">The 3 Generations</h2>
-  <p class="de-lead">Inspired by natural selection: each generation scores, penalizes, and eliminates the weakest candidates. Only the strategically fittest survive to the next round.</p>
-  <div class="de-funnel">
-
-    <div class="de-fstage">
-      <div class="de-fbox dg1">
-        <div class="de-fhdr">
-          <div class="de-glbl dg1">Generation 1 · Initial Scoring</div>
-          <div class="de-fcut">✂ Bottom 40% eliminated → 11 removed</div>
-        </div>
-        <div class="de-fsteps">
-          <div class="de-fnode"><div class="dc c1">28</div><div class="dd">Candidates<br>enter scoring</div></div>
-          <div class="de-farr">→</div>
-          <div class="de-fnode"><div class="dc c1" style="font-size:1rem;">7D Score</div><div class="dd">All 7 dimensions<br>scored 0–10</div></div>
-          <div class="de-farr">→</div>
-          <div class="de-fnode"><div class="dc c1" style="font-size:1rem;">Rank</div><div class="dd">Weighted total<br>0–100 pts</div></div>
-          <div class="de-farr">→</div>
-          <div class="de-fnode"><div class="dc c1">17</div><div class="dd">Survivors<br>advance</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="de-fadown">Survivors advance</div>
-
-    <div class="de-fstage">
-      <div class="de-fbox dg2">
-        <div class="de-fhdr">
-          <div class="de-glbl dg2">Generation 2 · Webinar Penalty</div>
-          <div class="de-fcut">✂ Bottom 40% eliminated → 7 removed</div>
-        </div>
-        <div class="de-fsteps">
-          <div class="de-fnode"><div class="dc c2">17</div><div class="dd">Survivors<br>re-evaluated</div></div>
-          <div class="de-farr">→</div>
-          <div class="de-fnode"><div class="dc c2" style="font-size:1rem;">Penalty</div><div class="dd">Non-webinar creators<br>score penalized</div></div>
-          <div class="de-farr">→</div>
-          <div class="de-fnode"><div class="dc c2" style="font-size:1rem;">Re-rank</div><div class="dd">Adjusted scores<br>re-sorted</div></div>
-          <div class="de-farr">→</div>
-          <div class="de-fnode"><div class="dc c2">10</div><div class="dd">Survivors<br>advance</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="de-fadown">Final selection</div>
-
-    <div class="de-fstage">
-      <div class="de-fbox dg3">
-        <div class="de-fhdr">
-          <div class="de-glbl dg3">Generation 3 · Benchmark Comparison</div>
-          <div class="de-fcut">✂ 7 candidates eliminated → Top 3 identified</div>
-        </div>
-        <div class="de-fsteps">
-          <div class="de-fnode"><div class="dc c3">10</div><div class="dd">Finalists<br>benchmarked</div></div>
-          <div class="de-farr">→</div>
-          <div class="de-fnode"><div class="dc c3" style="font-size:0.9rem;">Deep Intel</div><div class="dd">Claude Code +<br>RivalSearchMCP</div></div>
-          <div class="de-farr">→</div>
-          <div class="de-fnode"><div class="dc c3" style="font-size:0.9rem;">vs Nuno</div><div class="dd">Head-to-head<br>comparison</div></div>
-          <div class="de-farr">→</div>
-          <div class="de-fnode"><div class="dc c3">🏆 3</div><div class="dd">Strategic<br>competitors</div></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- HONEST METHODOLOGY NOTE -->
-<div class="de-div"></div>
-<section class="de-section">
-  <div class="de-section-label">Transparency</div>
-  <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:800; color:#fff; margin-bottom:1rem;">Honest Methodology Note</h2>
-  <div class="de-amber">
-    <div class="dat">⚠ Transparency Notice</div>
-    <p>The automated web scraping phase (<strong>report2.py</strong>) returned limited results — most websites blocked requests, Instagram and LinkedIn rejected scrapers, and Meta Ad Library is JavaScript-rendered and inaccessible to standard HTTP clients.<br><br>
-    <strong>Individual candidate cards reflect only publicly accessible data</strong> (YouTube API metadata, publicly indexed pages). Real deep intelligence was only achievable on the <strong>Top 3 finalists</strong> using <strong>Claude Code + RivalSearchMCP</strong> with Cloudflare bypass, which enabled full website rendering, ad library access, community pricing visibility, and revenue estimation.<br><br>
-    The 28-candidate cards are algorithmic signals, not verified profiles. The Top 3 reports are high-confidence intelligence.</p>
-  </div>
-</section>
-
-<!-- RESULTS -->
-<div class="de-div"></div>
-<section class="de-section">
-  <div class="de-section-label">The Finalists</div>
-  <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:800; color:#fff; margin-bottom:1rem;">Top 3 Competitors</h2>
-  <p class="de-lead">After 3 generations of scoring and elimination, these three creators represent Nuno's highest-priority strategic competitors in the AI automation education space.</p>
-  <div class="de-res-grid">
-    <div class="de-rc dgold">
-      <div class="dmedal">🥇</div>
-      <h4>Nick Saraev</h4>
-      <div class="dhandle">@nicksaraev · AI Automation</div>
-      <div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv rg">377K</span></div>
-      <div class="de-rstat"><span class="rk">Community Pricing</span><span class="rv">$184 / mo · Skool</span></div>
-      <div class="de-rstat"><span class="rk">Est. Monthly Revenue</span><span class="rv rn">~$441K / mo</span></div>
-      <div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div>
-    </div>
-    <div class="de-rc dsilver">
-      <div class="dmedal">🥈</div>
-      <h4>Riley Brown</h4>
-      <div class="dhandle">@rileybrown.ai · VibeCode</div>
-      <div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv" style="color:#94a3b8;">211K</span></div>
-      <div class="de-rstat"><span class="rk">Funding</span><span class="rv">$9.4M VC Funded</span></div>
-      <div class="de-rstat"><span class="rk">Product</span><span class="rv">VibeCode App (SaaS)</span></div>
-      <div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div>
-    </div>
-    <div class="de-rc dbronze">
-      <div class="dmedal">🥉</div>
-      <h4>Nate Herk</h4>
-      <div class="dhandle">@nateherk · AI Automation</div>
-      <div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv" style="color:#cd7c2f;">648K</span></div>
-      <div class="de-rstat"><span class="rk">Community Pricing</span><span class="rv">$99 / month</span></div>
-      <div class="de-rstat"><span class="rk">Est. Monthly Revenue</span><span class="rv rn">~$320K / mo</span></div>
-      <div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- KEY FINDING -->
-<div class="de-div"></div>
-<section class="de-section">
-  <div class="de-section-label">Strategic Insight</div>
-  <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:800; color:#fff; margin-bottom:1.5rem;">The Key Finding</h2>
-  <div class="de-finding">
-    <div class="dfi">🎯</div>
-    <h3><span>NONE</span> of the top 3 competitors run public webinars.<br>Nuno's webinar is completely <span>uncontested</span> in this space.</h3>
-    <p>Every major player monetizes through communities, SaaS, and courses — not live webinar launches. This is a genuine strategic white space that Nuno can own without fighting established players on their home turf.</p>
-  </div>
-</section>
-
-<!-- TOOLS -->
-<div class="de-div"></div>
-<section class="de-section">
-  <div class="de-section-label">Stack</div>
-  <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:800; color:#fff; margin-bottom:1rem;">Tools Used</h2>
-  <p class="de-lead">This intelligence system was built using a layered stack of AI models, APIs, and specialized tools — each assigned to the task it handles best.</p>
-  <div class="de-tools-grid">
-    <div class="de-tc">
-      <div class="de-ticon" style="background:rgba(100,116,139,0.12);">🤖</div>
-      <div>
-        <h4>Claude Sonnet 4.6</h4>
-        <p>Prompt engineering, algorithm architecture, scoring rubric design, and strategic synthesis.</p>
-        <span class="de-tbadge" style="background:rgba(0,212,255,0.1);color:var(--accent);border:1px solid rgba(0,212,255,0.2);">Anthropic</span>
-      </div>
-    </div>
-    <div class="de-tc">
-      <div class="de-ticon" style="background:rgba(59,130,246,0.1);">✨</div>
-      <div>
-        <h4>Google Gemini 2.5 Pro</h4>
-        <p>Python code generation for the scraping pipeline, API integration, and data processing logic.</p>
-        <span class="de-tbadge" style="background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);">Google DeepMind</span>
-      </div>
-    </div>
-    <div class="de-tc">
-      <div class="de-ticon" style="background:rgba(16,185,129,0.1);">🔍</div>
-      <div>
-        <h4>Claude Code + RivalSearchMCP</h4>
-        <p>Deep intel on Top 3 — Cloudflare bypass, full site rendering, ad library access, revenue estimation.</p>
-        <span class="de-tbadge" style="background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.2);">Anthropic · MCP</span>
-      </div>
-    </div>
-    <div class="de-tc">
-      <div class="de-ticon" style="background:rgba(239,68,68,0.1);">📡</div>
-      <div>
-        <h4>YouTube Data API v3</h4>
-        <p>Programmatic candidate discovery across 8 search terms. 28 unique channels extracted and deduplicated.</p>
-        <span class="de-tbadge" style="background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);">Google Cloud</span>
-      </div>
-    </div>
-  </div>
-</section>
+<div class="footer">
+  Evolution Matrix · Automated Stalker · April 2026 ·
+  <a href="hub.html">Intelligence Hub</a> ·
+  Built with Claude Code + Gemini + YouTube Data API v3
+</div>
 
 <script>
-  // Darwin Engine Radar Chart
-  (function() {
-    const rCtx = document.getElementById('de-radarChart').getContext('2d');
-    new Chart(rCtx, {
-      type: 'radar',
-      data: {
-        labels: ['Niche Density (25%)', 'Webinar Strategy (25%)', 'Audience Overlap (20%)', 'Content Format (10%)', 'Offer Structure (10%)', 'Revenue Scale (5%)', 'Authority Score (5%)'],
-        datasets: [
-          { label: 'Nick Saraev', data: [9,3,8,9,8,9,7], borderColor:'rgba(245,158,11,0.9)', backgroundColor:'rgba(245,158,11,0.07)', pointBackgroundColor:'rgba(245,158,11,1)', borderWidth:2, pointRadius:3 },
-          { label: 'Riley Brown',  data: [7,2,7,7,6,8,8], borderColor:'rgba(148,163,184,0.9)', backgroundColor:'rgba(148,163,184,0.05)', pointBackgroundColor:'rgba(148,163,184,1)', borderWidth:2, pointRadius:3 },
-          { label: 'Nate Herk',   data: [8,2,9,8,7,8,8], borderColor:'rgba(205,124,47,0.9)',  backgroundColor:'rgba(205,124,47,0.05)',  pointBackgroundColor:'rgba(205,124,47,1)',  borderWidth:2, pointRadius:3 }
-        ]
-      },
-      options: {
-        responsive:true,
-        scales: { r: { min:0, max:10, ticks:{ stepSize:2, color:'rgba(100,116,139,0.8)', font:{size:9}, backdropColor:'transparent' }, grid:{color:'rgba(30,41,59,0.8)'}, angleLines:{color:'rgba(30,41,59,0.8)'}, pointLabels:{color:'#64748b', font:{size:9, weight:'600'}} } },
-        plugins: {
-          legend:{ labels:{ color:'#94a3b8', font:{size:10}, boxWidth:10, padding:12 } },
-          title:{ display:true, text:'Top 3 · Dimension Score Comparison', color:'#e2e8f0', font:{size:12, weight:'700'}, padding:{bottom:14} }
-        }
-      }
-    });
-  })();
-</script>
+const analysisData = [{"name":"Nick Saraev","channel_url":"https:\/\/www.youtube.com\/channel\/UCbo-KbSjJDG6JWQ_MTZ_rNA","subs":377000,"total_views":14155392,"video_count":303,"bio":"Hi \ud83d\udc4b I'm Nick. I make money with AI tools like N8N, Claude Code, and Antigravity\u2014and I teach others how they can too.\n\nI'm not the best in the world, nor are my accomplishments the most impressive... but some people think I have interesting things to say! To that end, this channel is a way to organize my thoughts and provide a guidepost for people that want to grow or build an online business. \n\nYou'll find marketing guides, Make.com guides, Integromat guides, Zapier guides, sales guides, and really anything I find interesting on a day-to-day basis. I'm Make.com & N8N certified and use it often as part of my businesses, so you'll see a lot of that too.\n\nIf you have any questions, feel free to ask and I'll happily respond in the comments. Thanks for reading.\n","top_videos":"CLAUDE CODE FULL COURSE 4 HOURS: Build &amp; Sell (2026) | N8N FULL COURSE 6 HOURS (Build &amp; Sell AI Automations + Agents) | What I&#39;d Learn Instead of Automation in 2026 | Watch me start &amp; sell an AI service in 10 hours | $2.4M of Prompt Engineering Hacks in 53 Mins (GPT, Claude)","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":6.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":62.5,"Generation":"Finalist"},{"name":"Riley Brown","channel_url":"https:\/\/www.youtube.com\/channel\/UCMcoud_ZW7cfxeIugBflSBw","subs":211000,"total_views":7861490,"video_count":168,"bio":"The number one vibe coding channel on YouTube. We talk about Claude Code for mobile apps, web apps, and agents. ","top_videos":"Can I Vibecode a $250M App Better Than a Pro Developer? (With No Code) | Create a speaking animated character | Midjourney + other AI Tools | We Made Claude Code Build Lovable in 75 Minutes (With No Code) | Claude Code Replaced Cursor for Me\u2026 Here\u2019s Why | Cursor 2.0 Tutorial for Beginners (Full Course)","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":4.5,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":58.75,"Generation":"Finalist"},{"name":"Nate Herk | AI Automation","channel_url":"https:\/\/www.youtube.com\/channel\/UC2ojq-nuP8ceeHqiroeKhBA","subs":648000,"total_views":30134620,"video_count":385,"bio":"Hi \ud83d\udc4b I'm Nate Herk. I\u2019m passionate about helping businesses unlock the power of AI Automations to save time, cut costs, and stay competitive. \n\nI believe that businesses that don\u2019t adopt AI will struggle to keep up, and I\u2019m here to make sure you\u2019re ahead of the curve. Whether you\u2019re new to AI or looking to refine your workflows, I\u2019m here to guide you through it all.\n\nLet\u2019s build a more efficient future together! Book a call on my website!\n","top_videos":"Build &amp; Sell n8n AI Agents (8+ Hour Course, No Code) | I Built the Ultimate Team of Agents in n8n  #artificialintelligence #n8n #agentgpt  #techtok #coding | I Built a Marketing Team with 1 AI Agent and No Code (free n8n template) | This Invoice Agent Analyzes Images in n8n  #techtok #agentgpt #artificialintelligence #n8n | n8n Masterclass: Build AI Agents &amp; Automate Workflows (Beginner to Pro)","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":4.5,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":58.75,"Generation":"Finalist"},{"name":"n8n","channel_url":"https:\/\/www.youtube.com\/channel\/UCiHVTkJtWSdc9N3h0nUGWLg","subs":230000,"total_views":8248824,"video_count":346,"bio":"n8n gives technical teams a workflow automation platform that uniquely combines AI capabilities with business process automation. Connect any app or API while maintaining the flexibility of code with the speed of no-code.\n","top_videos":"n8n Quick Start Tutorial: Build Your First Workflow [2025] | n8n Beginner Course (1\/9) - Introduction to Automation | Building AI Agents: Chat Trigger, Memory, and System\/User Messages Explained [Part 1] | Install n8n Locally With Docker Desktop | Create Stunning AI-Generated Images with Flux AI + n8n.io","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":3.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":55.0,"Generation":"Finalist"},{"name":"Helena Liu","channel_url":"https:\/\/www.youtube.com\/channel\/UCpM_g95uzZ_OyhgukvrbbiQ","subs":272000,"total_views":8219862,"video_count":295,"bio":"Hi, I\u2019m Helena \ud83d\udc4b \u2014 I teach you how to use AI tools and automation to grow your business, save time, and build new income streams.\n\nOn this channel, you\u2019ll learn practical ways to use ChatGPT, AI agents, and no-code automation to create content faster, launch AI side hustles, and future-proof your career.\n\nWhether you\u2019re an entrepreneur, content creator, or someone just curious about AI, you\u2019ll find step-by-step tutorials, AI business ideas, and real use cases you can apply right away.\n\nSubscribe for weekly videos on AI, automation, and digital entrepreneurship \u2014 and start building your future with AI today. Also, don't forget to sign up for my free AI and automations training: https:\/\/www.productcamps.com\/free\n","top_videos":"This Social Media AI System Creates Unique Content Daily! (100% Automated) | Using ChatGPT to Generate 1000s of Leads in Any Niche (Free + Easy Method) | How to Memorize the 49 Processes from the PMBOK 6th Edition Process Chart | 3 AI &quot;Secrets&quot; 99% of People Don&#39;t Know | How to Make $30,000\/Year Blogging Using AI &amp; Automation (step-by-step course)","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":3.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":55.0,"Generation":"Finalist"},{"name":"HighLevel","channel_url":"https:\/\/www.youtube.com\/channel\/UCXFiV4qDX5ipE-DQcsm1j4g","subs":92100,"total_views":65565013,"video_count":7629,"bio":"The fastest growing white-label marketing platform for digital agencies. Functionality includes: CRM with SmartLists, Email, 2-way SMS, Outbound Calling & Call Recording, Power Dialer, Form Builder, Survey Builder, Funnel Builder, Website Builder, Online Scheduling, Automation Campaigns, Reporting and more!","top_videos":"Ai Agent Action in Workflows is Live! | Day 1 - From Client Acquisition to MRR | The HighLevel Release Radar (April 6th - April 10th 2026) | Contact page customization Live! | Starting an AI Company with HighLevel","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":9.21,"D2":1.5,"D3":10.0,"D4":5.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":49.67,"Generation":"Finalist"},{"name":"Vibe Coding with Naman","channel_url":"https:\/\/www.youtube.com\/channel\/UCUrnOS0DWudye54XqyDAuXA","subs":8970,"total_views":343976,"video_count":22,"bio":"Hi, my name is Naman Gupta, and I teach you how to develop software with AI technologies, and how to Vibe Code!\n\nOn this channel, I create original, hands-on tutorials and full courses that I teach, record, and produce by myself. I teach you how to build apps, websites, and software using the latest AI technologies, and I break down complex AI concepts through my own explanations, demonstrations, and project walkthroughs.\n\nYouTube is my passion, and so is building software. Each one of my videos and tutorials is crafted from scratch to share what I\u2019m learning, what I\u2019m building, and how you can apply AI to become a better developer. My goal is to help you understand modern AI-driven development in a clear, practical, and enjoyable way, and that\u2019s why I teach on YouTube. \n\nI try my best to teach, I try my best to learn, and I\u2019m happy to share this journey with all of you here on Vibe Coding with Naman. \n\nPeace and Faith \u270c\ufe0f\n","top_videos":"How to Build Apps with Replit AI Agent | Full Beginner Course | Coding with ChatGPT-5 - App Development with AI | Full Tutorial - Vibe Coding | How to Code a ChatBot Using JavaScript, HTML and CSS | Vibe Coding Full Course for Beginners | Lovable Full Course by Naman Gupta -  Vibe Coding Tutorial","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.897,"D2":3.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":34.294,"Generation":"Finalist"},{"name":"GoHighLevel Tutorials - HL Power Hub","channel_url":"https:\/\/www.youtube.com\/channel\/UCgb-hU13CUfZ88jIHiD6BLw","subs":3370,"total_views":265578,"video_count":712,"bio":"Get amazing bonuses & free stuff worth over $ 11k: https:\/\/www.gohighlevel.com\/highlevel-bootcamp?fp_ref=j5pfx\n\nGet a 30 Days Free Trial + Free Live Bootcamp (optional) to Launch HighLevel Together - Launch HighLevel in just 48 minutes without any product, experience, or tech skills:\n\nSign up For GoHighLevel OR Upgrade, I've got a ton of goodies for you https:\/\/gohighleveldoneforyouagency.com\/upgrade\n\nAccess White Label Videos (branded & unbranded) https:\/\/gohighleveldoneforyouagency.com\/white-labelled-support-videos\n\n10 Ways to INSTANTLY Improve Your Funnels (FREE PDF) https:\/\/gohighleveldoneforyouagency.com\/10-ways-improve-funnels\n\nJoin my community & attend weekly Q&A sessions: https:\/\/login.hlpowerhub.com\/communities\/groups\/inside-highlevel \n\nMore awesome stuff below:\n","top_videos":"How to Use the Facebook &amp; Instagram Comment and DM Automation Workflow Trigger Action on Gohighlevel | How to TRACK your visitors \/ guests \/ clients via QR Codes at a LIVE event (or in a restaurant) #ghl | Create Your Webinar Funnels With a Few Clicks on Gohighlevel #ghl #tips #gohighlevelreviews #crm | Set Up Your AI AGENTS Using Voice AI On GOHIGHLEVEL #ghl #gohighlevelreviews #gohighlevelexpert | GoHighlevel CRM: Inbound Call Flow for Voice AI Calls - Let Voice AI Agents Pick Up Your CALLS #ghl","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.337,"D2":3.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":33.174,"Generation":"Finalist"},{"name":"Pragati Kunwer | Claude Code","channel_url":"https:\/\/www.youtube.com\/channel\/UCe4eqh2Rs4bkjDRrjZQWkZw","subs":112000,"total_views":28708,"video_count":99,"bio":"Learn Claude Code Skills \u2014 the #1 AI tool for non-coders. Build anything with AI using plain English. No coding required. New videos 4x every week.\n\nClaude Code just changed everything. One tool. $20\/month. Skills written in plain English. No coding. No expensive tool stacks.\n\nI'm Pragati Kunwer. 20 years building products at IBM Watson and Nike. Now I teach Claude Code Skills \u2014 the AI skills that are transforming how teachers, freelancers, designers, and solopreneurs work without writing a single line of code.\n\nEvery video: one skill demo, one real result, one SKILL.md you can download and use TODAY.\n\n63% of Claude Code users are NOT developers. Teachers, freelancers, solopreneurs, small business owners \u2014 this channel is built for YOU.\n\n\ud83c\udf93 FREE Claude Code Course + Community:\n\u2192 https:\/\/www.skool.com\/agentskillsacademy\/about \n\n\ud83d\udcf8 Instagram: @pragatikunwer\n\n\ud83d\udce5 FREE: 50 AI Business Ideas Cheat Sheet:\n\u2192 https:\/\/payhip.com\/b\/3vSqN\n\nComment SKILL on any video and I'll DM you the course link.\n","top_videos":"Claude Code + Remotion Just Killed Video Editors | 7 Claude Code Skills That Run My Entire Business (No Coding Required) | Prompt Engineering Is Dead. I Have Proof. | How to Make Money Using AI in 2026 (Complete Beginner&#39;s Guide) | ChatGPT for Beginners: Start Earning in 7 Days","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":4.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":31.4,"Generation":"Finalist"},{"name":"Claude Ams - Programming Guru \ud83d\udcbb","channel_url":"https:\/\/www.youtube.com\/channel\/UC1Wn8F-xff2j4hR9ZZ1UsyA","subs":412000,"total_views":485720970,"video_count":6006,"bio":"\ud83d\udc47 | SUBSCRIBE to become a SIGMA Coder \u03a3 | \ud83d\udc47 \n\ud83d\udcbb | Sharing Daily Coding tips.\n\ud83e\uddbe | BF of Developers and Students\n\u2699\ufe0f | Productivity Instructor (study, work, code)\n\n\ud83d\ude80 Are you ready to take your coding skills to the next level? Look no further! Welcome to the channel of Claude Ams, the coding expert who is here to make your journey an exciting and informative one\n\n\ud83d\udcbb With over 7 years of helping more than 1,000,000 people around the world, Claude Ams brings you the latest in coding tutorials, walkthroughs, and tech discussions. Whether you're a beginner or a seasoned pro, Claude Ams has got you covered.\n\n\ud83d\udd25 From web development to data science, Claude Ams has a passion for all things coding and is here to share that passion with you. With Claude Ams's engaging and informative content, you'll be well on your way to improving your coding skills in no time!\n\n\ud83d\udca5 So what are you waiting for? Subscribe now and join the coding community. Let Claude Ams help you reach your coding goals and beyond! \ud83d\ude80\ud83d\udcbb\n","top_videos":"My little sister literally shocked me for a while\ud83d\udc80#siblinggoals #ai #yt #shorts #tricks #funny | She locked herself because students were using AI (Blackbox AI)\ud83e\udd26\ud83c\udffb\u200d\u2640\ufe0f#trending #ai #yt #shorts #web | Why is this coder boy like this?\ud83d\udc40#trending #viral #funny #shorts #ai #yt #tricks #cs #fun #sibling | My little coder brother was doing this in Cinema\ud83d\udc40#trending #coding #ai #viral #shorts #tricks #yt | We came to eat Chole Bhature but\u2026\ud83d\udc40#food #coding #ai #aitools #shorts #trending #viral #tricks","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":3.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":28.4,"Generation":"Finalist"},{"name":"Anthropic","channel_url":"https:\/\/www.youtube.com\/channel\/UCrDwWp7EBBv4NwvScIpBDOA","subs":516000,"total_views":22131153,"video_count":172,"bio":"We\u2019re an AI safety and research company. Talk to our AI assistant Claude on claude.com. Download Claude on desktop, iOS, or Android. \n\nWe believe AI will have a vast impact on the world. Anthropic is dedicated to building systems that people can rely on and generating research about the opportunities and risks of AI.\n\n","top_videos":"Mastering Claude Code in 30 minutes | Introducing Claude Code | What do you think of my business idea? | How can I communicate better with my mom? | Getting started with Claude.ai","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":25.4,"Generation":"Finalist"},{"name":"Corbin Brown","channel_url":"https:\/\/www.youtube.com\/channel\/UCJFMlSxcvlZg5yZUYJT0Pug","subs":165000,"total_views":8260575,"video_count":188,"bio":"a real software engineer making content. I know\u2026 surprising, right?\n\nFounder thumio + techsnif \u00b7 backed by _cafe_ venture in sf \u00b7 host of thelog\n\r\n","top_videos":"How To Use GitHub For Beginners | How To Use Cursor AI For Beginners | How To Use Perplexity AI For Beginners | How to Make a YouTube Thumbnail with AI (thumio) | OpenClaw Explained in 12 Minutes (for beginners)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":25.4,"Generation":"Finalist"},{"name":"Mikey No Code","channel_url":"https:\/\/www.youtube.com\/channel\/UCde0vB0fTwC8AT3sJofFV0w","subs":119000,"total_views":5550701,"video_count":95,"bio":"Build Apps & Websites without coding!\n\nMy channel is your go-to place for the newest, latest, and best no-code tools to build apps and websites without writing a single line of code!\n\n\ud83d\udca1 Whether you're a beginner or an entrepreneur looking to launch fast, I break down step-by-step tutorials, reviews, and tips on the most powerful no-code platforms like Lovable, Base44, Rork, and more.\n\n\ud83d\udfe2 Join the only program that lets you actually starts building apps today: https:\/\/mikeyno-code.com\/Skool\n\n\ud83d\udce9 For inquiries: Mikey (at) ytmedia.group\n","top_videos":"ClawdBot Full Tutorial for Beginners: How to Use &amp; Set up ClawdBot (Openclaw) | How I Built A $10,000 Online Casino App With AI | How I Built an App in 14 minutes With 1 AI tool (2026) | Claude Code Tutorial for Beginners: Build App with AI (2026) | How I Built an App Making $150K with AI UGC (No Coding)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":25.4,"Generation":"Finalist"},{"name":"Liam Ottley","channel_url":"https:\/\/www.youtube.com\/channel\/UCui4jxDaMb53Gdh-AZUTPAg","subs":764000,"total_views":28616316,"video_count":244,"bio":"I\u2019m an AI entrepreneur from New Zealand. In 2023 I created the 'AI Automation Agency' or 'AAA' model based on my learnings at my own agency Morningside AI.\n\nOn this channel I share my learnings from running my own AI Automation Agency, AI SaaS and from helping my community of over 290,000 AI Automation Agency owners to start and scale their own AI business.\n\nMy mission is to inspire others to take advantage of the incredible AI opportunity by documenting my journey as an AI entrepreneur.\n","top_videos":"How to Build &amp; Sell AI Agents: Ultimate Beginner\u2019s Guide | This AI Technology Will Replace Millions (Here&#39;s How to Prepare) | The 8 AI Skills That Will Separate Winners From Losers in 2025 | How to Get Rich with AI: The Complete Beginner\u2019s Blueprint | How to Get Rich with AI Agents in 2025 | Complete Beginner&#39;s Guide (OpenAI Custom GPTs)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":25.4,"Generation":"Finalist"},{"name":"Matt Wolfe","channel_url":"https:\/\/www.youtube.com\/channel\/UChpleBmo18P08aKCIgti38g","subs":927000,"total_views":71732716,"video_count":648,"bio":"Sifting through all the AI noise to share what actually matters - New videos every Friday (and probably some in between too)\n\nDiscover More:\n\ud83d\udee0\ufe0f Explore AI Tools & News: https:\/\/futuretools.io\/\n\ud83d\udcf0 Weekly Newsletter: https:\/\/futuretools.io\/newsletter\n\nSocials:\n\u274c Twiter\/X: https:\/\/x.com\/mreflow\n\ud83d\uddbc\ufe0f Instagram: https:\/\/instagram.com\/mr.eflow\n\ud83e\uddf5 Threads: https:\/\/www.threads.net\/@mr.eflow\n\ud83d\udfe6 LinkedIn: https:\/\/www.linkedin.com\/in\/matt-wolfe-30841712\/\n\ud83d\udc4d Facebook: https:\/\/www.facebook.com\/mattrwolfe\n\nLet\u2019s work together!\n- For brand, sponsorship, and business inquiries: mattwolfe@smoothmedia.co\n","top_videos":"This Method of 3D Printing is Pretty Awesome | 21 Mobile AI Apps You Won&#39;t Believe Are Free | This Is Better Than ChatGPT (With Prompting Guide) | Make A Movie with AI: It&#39;s Crazy What We Can Do! | Install Auto-GPT Locally (Quick Setup Guide)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":25.4,"Generation":"Finalist"},{"name":"WEBINARIS - automatisiertes Webinar-Marketing","channel_url":"https:\/\/www.youtube.com\/channel\/UC7JuR0Qd3eydLKZQERSYpBQ","subs":1440,"total_views":93126,"video_count":46,"bio":"Lerne auf diesem Kanal alles \u00fcber Marketingautomation mit Hilfe von automatisierten Webinaren und Webinaris. Gewinne kampagnen gesteuert neue Kunden und steigere automatisiert Deine Ums\u00e4tze und Gewinne.","top_videos":"&quot;Die Klippensprung Mail&quot; fu\u0308r mehr Verka\u0308ufe in Deinen Webinaren | Die perfekte automatisierte digitale Firma (1:1 Umsetzungsplan) | Webinaris Rundgang (U\u0308berblick aller Funktionen) | WEBINARIS - Interview mit Rainer von Massenbach | Einfu\u0308hrung Webinaris","has_webinar_keyword":true,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.144,"D2":0.0,"D3":10.0,"D4":5.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":25.288,"Generation":"Eliminated (Gen 1)"},{"name":"Jason Wardrop","channel_url":"https:\/\/www.youtube.com\/channel\/UCBgPxTfodXMa_zavgl0DX7A","subs":337000,"total_views":3837426,"video_count":108,"bio":"\ud83d\udcb8 Built a multi-7-figure software business (2015 - 2021)\n\u2699\ufe0f #1 HighLevel Affiliate All-Time [+105,000 Referrals] (2021 - Present)\n\ud83d\udcc8 Teaching the exact systems that helped me scale\n\u26a0\ufe0f Real results require work \u2014 yours may vary \n\ud83c\udfa5 Subscribe & let\u2019s build your future\n","top_videos":"How To Start A YouTube Channel For Beginners (Full Tutorial) | Start A Digital Marketing Agency With NO EXPERIENCE! (Beginner Friendly!) | Start A Digital Marketing Agency In 2026 With NO EXPERIENCE! | Sell AI Automation to Local Businesses (Beginner Step-by-Step Guide) | New Side Hustle That\u2019s Working in 2026 (Beginner-Friendly Strategy)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":10.0,"D2":0.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":22.4,"Generation":"Finalist"},{"name":"Keaton Walker","channel_url":"https:\/\/www.youtube.com\/channel\/UCROsCSoY7I_QZuS4QGQckOA","subs":73800,"total_views":5269388,"video_count":826,"bio":"I build businesses that print money while I sleep.\n\nCurrently running a $100k\/mo+ \u201csemi-passive\u201d business with 6+ income streams all revolving around GoHighLevel.\n\nI\u2019ve also helped hundreds of entrepreneurs get more leverage and better business results\u2014without fake scarcity, cringe bro-marketing, or shady tactics.\n\nFormer agency owner ($80K\/month before I sold to a strategic buyer), now I mostly focus on:\n\nHigh-production content that actually converts\n\nBuilding money babies in AI and software\n\nTeaching people how to scale without burning out\n\nMy work's been featured by HighLevel and has influenced thousands of resellers across the platform.\n\nI live for:\n\n- Building real leverage\n- Traveling with my family\n- Protecting my energy like it\u2019s a second job\n\nIf you want to grow a white-labeled SaaS business, steal my systems, or just see behind the curtain\u2014subscribe and hang out.\nDM on Instagram if you\u2019re serious about scaling.\n\n\n\n","top_videos":"He got 1,000 SaaS Clients in 12 Months Using 5-Minute Looms (No Sales Calls) | Learn Zapier in 7 minutes: Business &amp; Personal Automation Tutorial For Beginners (2025) | DON\u2019T Start a Skool Community Until You Watch This | He Sold 100 AI Receptionists to Local Businesses in ONE Month (\u00a3399\/mo clients) | How to Use GoHighLevel WORKFLOWS (If\/Else, Automations, &amp; More!)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":7.38,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":21.208,"Generation":"Finalist"},{"name":"Manus AI","channel_url":"https:\/\/www.youtube.com\/channel\/UCQgFQdqiFQ_LfFBGP6z9dqQ","subs":65700,"total_views":3681900,"video_count":65,"bio":"Manus from Meta is a general AI agent that turns your thoughts into actions. It excels at various tasks in work and life, getting everything done while you rest.\nFind us at: https:\/\/t.me\/manus_ai_agent_bot","top_videos":"Introducing Manus: The General AI Agent | Introducing Manus Browser Operator : An AI Agent that Browses For You? | Introducing Wide Research | Introducing Manus Slides | Introducing My Computer: When Manus Meets Your Desktop","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":6.57,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":10.0,"D7":0.0,"Total_Fitness":19.912,"Generation":"Eliminated (Gen 1)"},{"name":"Milan Vasarhelyi - Business Automation","channel_url":"https:\/\/www.youtube.com\/channel\/UCAb5hm_79RYKMK2-SVn8JwQ","subs":287,"total_views":17590,"video_count":20,"bio":"Learn about Business Automation, AI, and internal tool building.\n","top_videos":"N8N for QuickBooks tutorial - Easy QuickBooks API Integration | N8N Email Categorizer - Reclaim your attention! (free template) | Supplier Invoice Processing - Automate Invoices with n8n &amp; Airtable! | Simplest way to Connect Make.com with Gmail and Drive - 2025 version | AI Receipt Scanner Agent - N8N Build (Step-by-step + Template)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0287,"D2":4.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":13.44592,"Generation":"Eliminated (Gen 1)"},{"name":"MCP Manager by Usercentrics","channel_url":"https:\/\/www.youtube.com\/channel\/UCinX4gd6Ge-wNhk1ChqnlNA","subs":157,"total_views":15407,"video_count":52,"bio":"MCP Manager by Usercentrics makes it easy to govern and control how data flows to AI. ","top_videos":"MCP Manager Demo: MCP Gateway for Security, Observability, and Identity Management | MCP Security Best Practices: How to Prevent Risks \ud83d\udd12 | MCP Gateways: Why They&#39;re Critical to AI Deployments | Asana MCP Server Tutorial: Connect to Claude Desktop | What Is an MCP Gateway? (Explanation + Demo)","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0157,"D2":4.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":13.42512,"Generation":"Eliminated (Gen 1)"},{"name":"Jonathan Ferrell - GoHighLevel Automations","channel_url":"https:\/\/www.youtube.com\/channel\/UCd6wRHbhTkXoF1xSY5bnD2g","subs":731,"total_views":50442,"video_count":62,"bio":"Hey everyone! I'm Jonathan Ferrell, a dedicated GoHighLevel product expert and the Product Manager at Cusell Marketing Group. I'm thrilled to share that our agency recently won the 2024 Gold SAAS Award with GoHighLevel! Here, I document my journey as I build and refine products on the platform, offering you a behind-the-scenes look at high-level product setups, powerful automation tips, and strategies to elevate your business. Subscribe to join me in mastering GoHighLevel!\n\nWant to scale your business? Book your no obligation highlevel consulation with me here: https:\/\/bit.ly\/highlevelgrowth\n","top_videos":"Make Outbound Calls from Your Own Number in GoHighLevel! Verified Caller ID Set Up. | How To Create A Power Dialer Inside Of GoHighLevel with Voicemail Drop | How to Build Conditional Logic Surveys in GoHighLevel | Advanced Lead Qualification | How to Get A2P Approval in GoHighLevel for Sole Proprietors In 2024 | How to Add Users and Set Permissions in GoHighLevel Sub-Accounts","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0731,"D2":3.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":10.51696,"Generation":"Eliminated (Gen 1)"},{"name":"Yazdan","channel_url":"https:\/\/www.youtube.com\/channel\/UCpMyyJym1QU_E1VvMcfMD0Q","subs":149,"total_views":22112,"video_count":25,"bio":"Do what makes you a better person.","top_videos":"Can My AI Mentor Teach Me How to Build AI Agents? | Manus Exposed: AI Hype Busted with DIY Agents Using CLINE | Manus Exposed 1.17 AI Hype Busted with DIY Agents Using CLINE &quot;WATCH THE FULL VIDEO&quot; | Manus Exposed 1.12 AI Hype Busted with DIY Agents Using CLINE &quot;WATCH THE FULL VIDEO&quot; | Manus Exposed 1.20 AI Hype Busted with DIY Agents Using CLINE &quot;WATCH THE FULL VIDEO&quot;","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0149,"D2":3.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":10.42384,"Generation":"Eliminated (Gen 1)"},{"name":"MCP-Builder-ai","channel_url":"https:\/\/www.youtube.com\/channel\/UCNjRp7CEOp-YUmEhQHjt7jA","subs":13,"total_views":2644,"video_count":12,"bio":"Building the AI Infrastructure for the next Decade","top_videos":"Connect Jira with Claude Desktop using MCP-Builder.ai | Create a MCP-Server connected to hubspot in a few minutes with MCP-Builder.ai | Connect Your OAuth 2 API to Claude in 3 Minutes (MCP Tutorial) | Connect Your OAuth 2 API to ChatGPT in 3 Minutes (MCP Tutorial) | Build your MCP-Server in natural language using MCP-Builder.ai","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0013,"D2":3.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":10.40208,"Generation":"Eliminated (Gen 1)"},{"name":"Vibe Coding Tutorials","channel_url":"https:\/\/www.youtube.com\/channel\/UCZDZU6p2EH0GspmT-ahVnCg","subs":1,"total_views":27,"video_count":2,"bio":"\u2728 Coding tutorials for the vibing coders! \ud83d\udcbb\ud83d\ude80\n","top_videos":"No Code Website Tutorial for Beginners (2025 Guide) | What is Vibe Coding?","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0001,"D2":1.5,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":7.40016,"Generation":"Eliminated (Gen 1)"},{"name":"Marketing Cube | Marketing Automation","channel_url":"https:\/\/www.youtube.com\/channel\/UCdMidTbyXzlAjisuk0wgqGA","subs":762,"total_views":93346,"video_count":195,"bio":"Marketing Cube is a connected capability agency. We help brands and businesses build genuine connections with people in ways that matter most to them.\n\nWe help marketers achieve their marketing & business objectives by harnessing the power of marketing, data and AI technologies to deliver on their brand promise across every touch point of their customer experience.\n\nOur team combines marketing technology and automation expertise with the kind of depth you\u2019d depend on from a certified implementation partner, breadth you\u2019d rely on from a management consultancy and creativity you\u2019d expect from a design agency.\n\nWe are an accredited partner for Oracle Marketing and Salesforce Marketing Cloud, and our multi-award-winning team has been creating unique customer experiences for our clients globally since 2007.\n","top_videos":"The Eloqua Campaign Canvas Basics 101 | The Fundamentals of Marketing Automation - Nov 2016 Eloqua User Group | Eloqua Campaign Canvas - Email Scheduling | Eloqua Email Editor - Easily Build Responsive Emails with Eloqua | Hands-on with Eloqua","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0762,"D2":0.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":4.52192,"Generation":"Eliminated (Gen 1)"},{"name":"Zoho Marketing Automation","channel_url":"https:\/\/www.youtube.com\/channel\/UCOtef2mV58MXef6op1Necrg","subs":694,"total_views":58810,"video_count":16,"bio":"Zoho Marketing Automation is a multichannel marketing automation software tailor-made for marketers looking to elevate their brand's marketing efforts. This versatile software provides in-depth insights, allowing you to decipher the reasons behind website visits, track your leads' progress, and evaluate the success of recent campaigns.\n\nWith Zoho Marketing Automation, marketers can harness the power of advanced lead generation, personalized customer journey planning, web behavior targeting, an all-inclusive marketing planner, and much more, all designed to drive exceptional results.\n\nJoin the ever-growing community of marketers who have expanded their marketing reach and enhanced their funnel with Zoho Marketing Automation.\n\nKnow more - https:\/\/www.zoho.com\/marketingautomation\/\n\n","top_videos":"WhatsApp Marketing made easy with Zoho | Automate your WhatsApp campaigns today | WhatsApp Marketing with Zoho: Exploring New Horizons | Zoho Marketing Automation | Announcing the all-new Zoho Marketing Automation 2.0 | Effective marketing, simplified. | Send bulk WhatsApp messages with Zoho Marketing Automation | Conversations to conversions | Get to know Zoho Marketing Automation | How to automate your marketing | A beginner&#39;s guide","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0694,"D2":0.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":4.51104,"Generation":"Eliminated (Gen 1)"},{"name":"mcp","channel_url":"https:\/\/www.youtube.com\/channel\/UCckL145rQqDmtdDAjelDfVw","subs":176,"total_views":40046,"video_count":7,"bio":"Creative microcontroller based projects involving electronics, mechanics, and programming, & explanations of various engineering concepts.\n","top_videos":"Pickle Rick - 3D Printed with Electronics | DIY Robotic Fish | Design and Assembly | DIY Sound Module (Store and Play Audio) | DIY Watchdog Timer - Simple Explanation | DIY Pocket FM Radio | TEA5767 Tutorial w\/ any MCU\/MPU","has_webinar_keyword":false,"website":null,"h1":null,"price_signal":false,"authority_count":0,"D1":0.0176,"D2":0.0,"D3":3.0,"D4":0.0,"D5":0.0,"D6":5.0,"D7":0.0,"Total_Fitness":4.42816,"Generation":"Eliminated (Gen 1)"}];
 
+// Sort by Total_Fitness descending
+analysisData.sort((a, b) => (b.Total_Fitness || 0) - (a.Total_Fitness || 0));
+
+function formatSubs(n) {
+  if (!n) return '—';
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n/1000).toFixed(n >= 100000 ? 0 : 1) + 'K';
+  return n;
+}
+
+function renderTable(data) {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  data.forEach((row, i) => {
+    const score = row.Total_Fitness || 0;
+    const isFinalist = row.Generation === 'Finalist';
+    const isElim = (row.Generation || '').includes('Gen 1');
+    const tr = document.createElement('tr');
+    if (isFinalist) tr.className = 'row-finalist';
+    if (isElim) tr.className = 'row-gen1';
+    const pct = Math.min(100, score / 100 * 100);
+    const barClass = score >= 55 ? 'high' : '';
+    tr.innerHTML = `
+      <td style="color:#334155;font-size:0.75rem">${i+1}</td>
+      <td><a href="${row.channel_url || '#'}" target="_blank" style="text-decoration:none">
+        <span class="name-text" style="font-weight:600">${row.name}</span>
+      </a></td>
+      <td style="color:#94a3b8">${formatSubs(row.subs)}</td>
+      <td><div class="bar-cell">
+        <div class="bar-bg"><div class="bar-fill ${barClass}" style="width:${pct}%"></div></div>
+        <span class="score-val">${score.toFixed(1)}</span>
+      </div></td>
+      <td>${row.has_webinar_keyword ? '<span class="webinar-yes" title="Has webinar">✅</span>' : '<span class="webinar-no" title="No webinar">❌</span>'}</td>
+      <td style="color:#64748b">${(row.D2 || 0).toFixed(0)}</td>
+      <td style="color:#64748b">${(row.D4 || 0).toFixed(0)}</td>
+      <td style="color:#64748b">${(row.D1 || 0).toFixed(0)}</td>
+      <td><span class="badge ${isFinalist ? 'finalist' : 'elim'}">${isFinalist ? '🏆 Finalist' : 'Eliminated'}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+renderTable(analysisData);
+
+document.getElementById('tableSearch').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  renderTable(q ? analysisData.filter(r => r.name.toLowerCase().includes(q)) : analysisData);
+});
+</script>
 </body>
 </html>
-    
