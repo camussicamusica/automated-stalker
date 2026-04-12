@@ -1,0 +1,85 @@
+================================================================================
+RAW INTELLIGENCE REPORT — TOP 3 COMPETITORS
+Research Date: April 11, 2026
+Methodology: RivalSearchMCP, website traversal, social media analysis
+================================================================================
+
+--------------------------------------------------------------------------------
+RANK 1 — NICK SARAEV (GOLD)
+--------------------------------------------------------------------------------
+Niche:              AI Automation Agency Building
+YouTube:            370K+ subscribers
+Instagram:          479K followers
+Community:          Maker School (Skool) — $184/month
+Est. Monthly Rev:   $160K–$300K+
+Funding:            Bootstrapped
+Key Products:       Maker School, LeftClick AI agency, Gumroad templates
+Tools:              Make.com, n8n, Claude Code
+Press:              Bloomberg, Popular Mechanics, Apple News
+
+Notable: Highest ticket price in the space at $184/mo. Agency-hybrid model
+combining course revenue with active client work. Strong press footprint.
+
+--------------------------------------------------------------------------------
+RANK 2 — RILEY BROWN (SILVER)
+--------------------------------------------------------------------------------
+Niche:              Vibe Coding, AI App Development
+YouTube:            202K subscribers
+Instagram:          328K followers
+Community:          Vibe Coders (Skool)
+Main Product:       VibeCode App (SaaS)
+Funding:            $9.4M Seed Round
+Est. Monthly Rev:   Pre-revenue SaaS (VC model)
+Podcast:            "A New Vibe"
+Press:              Grit Daily, AI Daily Brief
+
+Notable: Only VC-backed competitor. SaaS product still pre-revenue but
+well-funded. Podcast differentiates content strategy. Different monetization
+pathway from others.
+
+--------------------------------------------------------------------------------
+RANK 3 — NATE HERK (BRONZE)
+--------------------------------------------------------------------------------
+Niche:              AI Automation, n8n Expert
+YouTube:            640K+ subscribers (largest audience)
+Instagram:          149K followers
+Community:          AI Automation Society
+  - Free tier:      310K+ members
+  - Paid Plus:      $94–99/month
+Est. Monthly Rev:   $200K–$350K
+Funding:            Bootstrapped
+Key Product:        Uppit AI (SaaS)
+Achievements:       4x Skool Games Winner, Microsoft Learn Partner
+Press:              Apify Blog, Microsoft Learn
+
+Notable: Largest YouTube audience in the group. Freemium community funnel
+converts from 310K free to paid tier — highest volume conversion model.
+
+================================================================================
+COMPETITIVE POSITIONING — NUNO (YOU)
+================================================================================
+YouTube:            15K subscribers
+Revenue Model:      GHL SaaS + Courses
+Unique Advantage:   Only competitor with GHL specialization (3x Award Winner)
+Webinar:            Active infrastructure
+Community:          Active
+
+================================================================================
+PRICING BENCHMARKS
+================================================================================
+Industry Range:     $97–$197/month
+Nick Saraev:        $184/mo  (highest ticket)
+Nate Herk:          $94–99/mo (largest conversion funnel)
+Riley Brown:        SaaS-based pricing (VC pathway)
+
+================================================================================
+REVENUE MODEL COMPARISON
+================================================================================
+Nick Saraev:        Agency + Course hybrid model
+Riley Brown:        VC-backed SaaS platform
+Nate Herk:          Freemium community with paid tier
+Nuno:               Most diversified (GHL SaaS + multiple courses)
+
+================================================================================
+END OF REPORT
+================================================================================
