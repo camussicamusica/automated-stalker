@@ -76,6 +76,27 @@
         footer { text-align: center; padding: 60px; color: #4b5563; border-top: 1px solid var(--grey); margin-top: 100px; }
     </style>
 <style>body{padding-top:64px!important}</style>
+<style>
+/* ── RESPONSIVE PATCH ── competitors28 ─────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { max-width: 100vw; overflow-x: hidden; margin: 0; padding: 0; }
+body > *, main, .container, .report-container, .intelligence-container, section, article { max-width: 100%; }
+table { width: 100%; border-collapse: collapse; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+@media (min-width: 900px) { table { display: table; white-space: normal; } }
+.cards-grid, .competitor-grid, .candidates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; padding: 0 1rem; }
+.card, .competitor-card, .candidate-card { width: 100%; max-width: 100%; overflow: hidden; }
+nav, .nav, .navbar { flex-wrap: wrap; gap: 0.5rem; }
+.stats-row, .counters, .metrics { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+.filters, .filter-row, .badge-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+td a { word-break: break-all; }
+@media (max-width: 600px) {
+  h1 { font-size: clamp(1.4rem, 5vw, 2.5rem); }
+  h2 { font-size: clamp(1.1rem, 4vw, 1.8rem); }
+  h3 { font-size: clamp(1rem, 3.5vw, 1.4rem); }
+  .stats-row .stat, .counter { min-width: 120px; text-align: center; }
+}
+/* ── END RESPONSIVE PATCH ─────────────────────────────────────── */
+</style>
 </head>
 <body>
 <!-- ═══ UNIVERSAL NAV ═══ -->
