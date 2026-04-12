@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Darwin Engine — Full Technical SOP</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0f1e;color:#fff;font-family:system-ui,sans-serif}
@@ -528,6 +529,22 @@ nvm install node</code>
   </div>
 </div>
 
+
+<!-- RADAR CHART — Top 3 Dimension Comparison -->
+<div class="phase" style="margin-top:0">
+  <div class="phase-left">
+    <div class="phase-dot" style="border-color:#ffd700;color:#ffd700">★</div>
+  </div>
+  <div class="phase-right">
+    <div class="phase-label" style="color:#ffd700">Dimension Comparison</div>
+    <div class="phase-title">Top 3 Finalists — Radar Chart</div>
+    <div class="phase-desc">Multi-layer view of how Nick Saraev, Riley Brown, and Nate Herk scored across all 7 weighted dimensions. Confirms niche density and audience overlap as the dominant axes — webinar strategy scores low for all three, which is the strategic gap Nuno can own.</div>
+    <div style="background:#111827;border:1px solid #1e293b;border-radius:10px;padding:24px;margin-top:16px;max-width:560px">
+      <canvas id="radarChart" height="300"></canvas>
+    </div>
+  </div>
+</div>
+
 </div><!-- end timeline -->
 
 <!-- CITATIONS FOOTER -->
@@ -545,7 +562,7 @@ nvm install node</code>
   <div style="background:#111827;border:1px solid #1e293b;border-radius:10px;padding:16px">
     <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:#00d4ff;margin-bottom:8px">⚡ Claude Code + RivalSearchMCP</div>
     <div style="color:#64748b;font-size:0.78rem;line-height:1.5;margin-bottom:8px">Deep intelligence on Top 3. Cloudflare bypass, multi-engine search, website traversal.</div>
-    <div style="font-size:0.65rem;color:#334155;font-style:italic">Anthropic + <a href="https://github.com/damionrashford/RivalSearchMCP" style="color:#00d4ff">github.com/damionrashford/RivalSearchMCP</a> (MIT)</div>
+    <div style="font-size:0.65rem;color:#64748b;font-style:italic">Anthropic + <a href="https://github.com/damionrashford/RivalSearchMCP" style="color:#00d4ff">github.com/damionrashford/RivalSearchMCP</a> (MIT)</div>
   </div>
   <div style="background:#111827;border:1px solid #1e293b;border-radius:10px;padding:16px">
     <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:#00d4ff;margin-bottom:8px">📺 YouTube Data API v3</div>
@@ -571,5 +588,90 @@ function copyEl(id){
   }).catch(()=>{});
 }
 </script>
+
+<script>
+(function(){
+  const ctx = document.getElementById('radarChart');
+  if (!ctx) return;
+  new Chart(ctx.getContext('2d'), {
+    type: 'radar',
+    data: {
+      labels: [
+        'Niche Density\n(25%)',
+        'Webinar Strategy\n(25%)',
+        'Audience Overlap\n(20%)',
+        'Content Format\n(10%)',
+        'Offer Structure\n(10%)',
+        'Revenue Scale\n(5%)',
+        'Authority Score\n(5%)'
+      ],
+      datasets: [
+        {
+          label: '🥇 Nick Saraev',
+          data: [9, 3, 8, 9, 8, 9, 7],
+          borderColor: 'rgba(245,158,11,0.9)',
+          backgroundColor: 'rgba(245,158,11,0.08)',
+          pointBackgroundColor: 'rgba(245,158,11,1)',
+          borderWidth: 2, pointRadius: 4
+        },
+        {
+          label: '🥈 Riley Brown',
+          data: [7, 2, 7, 7, 6, 8, 8],
+          borderColor: 'rgba(192,192,192,0.9)',
+          backgroundColor: 'rgba(192,192,192,0.05)',
+          pointBackgroundColor: 'rgba(192,192,192,1)',
+          borderWidth: 2, pointRadius: 4
+        },
+        {
+          label: '🥉 Nate Herk',
+          data: [8, 2, 9, 8, 7, 8, 8],
+          borderColor: 'rgba(205,127,50,0.9)',
+          backgroundColor: 'rgba(205,127,50,0.05)',
+          pointBackgroundColor: 'rgba(205,127,50,1)',
+          borderWidth: 2, pointRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          min: 0, max: 10,
+          ticks: {
+            stepSize: 2,
+            color: 'rgba(100,116,139,0.8)',
+            font: { size: 9 },
+            backdropColor: 'transparent'
+          },
+          grid: { color: 'rgba(30,41,59,0.9)' },
+          angleLines: { color: 'rgba(30,41,59,0.9)' },
+          pointLabels: {
+            color: '#64748b',
+            font: { size: 9, weight: '600' }
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: '#94a3b8',
+            font: { size: 11 },
+            boxWidth: 12,
+            padding: 16
+          }
+        },
+        title: {
+          display: true,
+          text: 'Top 3 Finalists · All 7 Dimensions (0–10)',
+          color: '#e2e8f0',
+          font: { size: 12, weight: '700' },
+          padding: { bottom: 16 }
+        }
+      }
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
