@@ -355,7 +355,10 @@
     border-bottom-right-radius: 16px;
     background: #0a0f1e;
   }
-  .sop-panel.open { max-height: 9999px; }
+  .sop-panel.open {
+    max-height: 12000px;
+    overflow: visible;
+  }
   .sop-inner { padding-bottom: 20px; }
 
   /* Darwin Engine embedded styles (namespaced .de-) */
@@ -473,6 +476,218 @@
     Powered by YouTube Data API v3 + RivalSearchMCP
   </p>
 </div>
+
+<!-- ══ ALGORITHM SOP — EXPANDABLE PANEL ══ -->
+<div class="section" style="padding-bottom: 0;">
+  <div id="sop-trigger" class="sop-trigger" onclick="toggleSOP()" role="button" aria-expanded="false">
+    <div class="sop-trigger-left">
+      <div class="sop-eyebrow">Algorithm SOP · Full Technical Breakdown</div>
+      <div class="sop-title">The <span>Darwin</span> Engine</div>
+      <div class="sop-desc">The complete methodology behind how we found Nuno's top 3 competitors — 7 weighted dimensions, 3 elimination generations, 28 candidates scored. Click to expand the full SOP.</div>
+      <div class="sop-stats">
+        <div class="sop-stat"><div class="sop-stat-n">28</div><div class="sop-stat-l">Candidates</div></div>
+        <div class="sop-stat"><div class="sop-stat-n">7</div><div class="sop-stat-l">Dimensions</div></div>
+        <div class="sop-stat"><div class="sop-stat-n">3</div><div class="sop-stat-l">Generations</div></div>
+        <div class="sop-stat"><div class="sop-stat-n">3</div><div class="sop-stat-l">Finalists</div></div>
+      </div>
+    </div>
+    <div class="sop-cta">
+      <button class="sop-btn" id="sop-btn-label" onclick="toggleSOP();event.stopPropagation()">🧬 View Full SOP</button>
+      <div class="sop-chevron" id="sop-chevron">⌄</div>
+    </div>
+  </div>
+
+  <div id="sop-panel" class="sop-panel">
+    <div class="sop-inner">
+
+      <!-- DARWIN HERO -->
+      <div class="de-div"></div>
+      <div class="de-hero">
+        <div class="de-hero-tag">Algorithm SOP · How It Works</div>
+        <h2>The <span>Darwin</span> Engine</h2>
+        <p>How we found Nuno's top 3 competitors from 28 candidates using a Darwinian elimination algorithm across 7 weighted dimensions and 3 generations of scoring.</p>
+        <div class="de-hero-stats">
+          <div class="de-hstat"><div class="dn">28</div><div class="dl">Candidates Discovered</div></div>
+          <div class="de-hstat"><div class="dn">7</div><div class="dl">Scoring Dimensions</div></div>
+          <div class="de-hstat"><div class="dn">3</div><div class="dl">Generations</div></div>
+          <div class="de-hstat"><div class="dn">3</div><div class="dl">Finalists Identified</div></div>
+        </div>
+      </div>
+
+      <!-- WHY AN ALGORITHM -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">Why Systematic</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Why Random Research Fails</h2>
+        <p class="de-lead">Without an algorithm, competitor research suffers from confirmation bias, cherry-picking, and surface-level analysis that misses the real strategic threats.</p>
+        <div class="de-prob-grid">
+          <div class="de-prob-card"><div class="dpi">🎯</div><h4>Confirmation Bias</h4><p>Manual research gravitates toward already-known names, missing dark-horse competitors who pose greater strategic risk.</p></div>
+          <div class="de-prob-card"><div class="dpi">📊</div><h4>No Weighting System</h4><p>Without weighted dimensions, a creator with 2M subscribers but zero webinar overlap scores equal to a direct competitor with 50K.</p></div>
+          <div class="de-prob-card"><div class="dpi">🔀</div><h4>Inconsistent Criteria</h4><p>Switching criteria mid-analysis means you're not comparing apples to apples. The algorithm forces the same rubric for all 28.</p></div>
+          <div class="de-prob-card"><div class="dpi">⏳</div><h4>Scale Impossibility</h4><p>Deep-diving 28 creators manually would take weeks. Algorithmic scoring collapses that to hours, reserving human intelligence for the Top 3.</p></div>
+        </div>
+      </section>
+
+      <!-- DATA COLLECTION -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">Data Collection</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">YouTube API Discovery</h2>
+        <p class="de-lead">The YouTube Data API v3 was queried across 8 targeted search terms designed to surface creators at the intersection of AI automation, workflow tools, and Python education.</p>
+        <div class="de-pills">
+          <span class="de-pill">AI automation tools</span>
+          <span class="de-pill">Python automation tutorial</span>
+          <span class="de-pill">n8n workflow automation</span>
+          <span class="de-pill">Make.com automation</span>
+          <span class="de-pill">AI business automation</span>
+          <span class="de-pill">No-code AI workflow</span>
+          <span class="de-pill">AI tools for entrepreneurs</span>
+          <span class="de-pill">Zapier automation tutorial</span>
+        </div>
+        <div class="de-api-box">
+          <div class="dai">📡</div>
+          <div>
+            <h4>YouTube Data API v3 · search.list endpoint</h4>
+            <p>Each search term returned up to 50 video results. Channel metadata extracted per result. Deduplication by channel ID collapsed overlapping appearances into unique candidates.</p>
+            <div class="de-stat-row">
+              <div class="de-sc"><div class="sn">8</div><div class="sl">Search Terms</div></div>
+              <div class="de-sc"><div class="sn">~400</div><div class="sl">Raw Results</div></div>
+              <div class="de-sc"><div class="sn">28</div><div class="sl">Unique Candidates</div></div>
+              <div class="de-sc"><div class="sn">100%</div><div class="sl">Programmatic</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 DIMENSIONS -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">The Scoring Rubric</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">The 7 Scoring Dimensions</h2>
+        <p class="de-lead">Each of the 28 candidates was scored 0–10 across seven dimensions, then multiplied by its weight. Weights were calibrated to Nuno's specific competitive threat profile.</p>
+        <div class="de-dims-grid">
+          <div class="de-dim-card"><div class="dnum">Dimension 01</div><div class="dwb hi">25%</div><h4>Niche Density</h4><div class="de-bar-w"><div class="de-bar hi" style="width:100%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> How precisely the creator occupies Nuno's specific niche — AI automation + Python + business workflows.</p><p class="dw">Highest weight because exact-niche creators are maximally threatening regardless of audience size.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 02</div><div class="dwb hi">25%</div><h4>Webinar Strategy</h4><div class="de-bar-w"><div class="de-bar hi" style="width:100%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Whether the creator uses webinars, live events, or cohort launches as a primary monetization channel.</p><p class="dw">Webinar competitors steal Nuno's audience during launch windows. Zero-webinar creators are irrelevant to launch strategy.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 03</div><div class="dwb">20%</div><h4>Audience Overlap</h4><div class="de-bar-w"><div class="de-bar" style="width:80%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Shared subscriber demographics — small business owners, solopreneurs, and no-code/low-code adopters.</p><p class="dw">Perfect niche fit but zero audience overlap means not a real competitor for Nuno's specific buyers.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 04</div><div class="dwb">10%</div><h4>Content Format</h4><div class="de-bar-w"><div class="de-bar" style="width:40%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Alignment with tutorial-style, long-form video content — Nuno's core format on YouTube.</p><p class="dw">Format divergence (short-form only, podcast-first) reduces competitive pressure even if niches overlap.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 05</div><div class="dwb">10%</div><h4>Offer Structure</h4><div class="de-bar-w"><div class="de-bar" style="width:40%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Whether the creator sells courses, communities, templates, or SaaS competing with Nuno's launch.</p><p class="dw">Offer similarity determines whether the competitor will be positioned as an alternative at checkout.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 06</div><div class="dwb">5%</div><h4>Revenue Scale</h4><div class="de-bar-w"><div class="de-bar" style="width:20%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Estimated monthly revenue from communities, courses, sponsorships, and SaaS.</p><p class="dw">Revenue scale signals market validation, not direct threat. Low weight avoids over-indexing on big names.</p></div>
+          <div class="de-dim-card"><div class="dnum">Dimension 07</div><div class="dwb">5%</div><h4>Authority Score</h4><div class="de-bar-w"><div class="de-bar" style="width:20%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Domain authority, press coverage, backlink profile, and industry recognition signals.</p><p class="dw">Authority affects SEO and credibility halo — important context but not a direct proxy for threat to a launch.</p></div>
+        </div>
+        <div class="de-chart-wrap">
+          <canvas id="de-radarChart" height="260"></canvas>
+        </div>
+      </section>
+
+      <!-- 3 GENERATIONS -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">The Elimination Funnel</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">The 3 Generations</h2>
+        <p class="de-lead">Inspired by natural selection: each generation scores, penalizes, and eliminates the weakest candidates. Only the strategically fittest survive to the next round.</p>
+        <div class="de-funnel">
+          <div class="de-fstage">
+            <div class="de-fbox dg1">
+              <div class="de-fhdr"><div class="de-glbl dg1">Generation 1 · Initial Scoring</div><div class="de-fcut">✂ Bottom 40% eliminated → 11 removed</div></div>
+              <div class="de-fsteps">
+                <div class="de-fnode"><div class="dc c1">28</div><div class="dd">Candidates<br>enter scoring</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c1" style="font-size:1rem;">7D Score</div><div class="dd">All 7 dimensions<br>scored 0–10</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c1" style="font-size:1rem;">Rank</div><div class="dd">Weighted total<br>0–100 pts</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c1">17</div><div class="dd">Survivors<br>advance</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="de-fadown">Survivors advance</div>
+          <div class="de-fstage">
+            <div class="de-fbox dg2">
+              <div class="de-fhdr"><div class="de-glbl dg2">Generation 2 · Webinar Penalty</div><div class="de-fcut">✂ Bottom 40% eliminated → 7 removed</div></div>
+              <div class="de-fsteps">
+                <div class="de-fnode"><div class="dc c2">17</div><div class="dd">Survivors<br>re-evaluated</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c2" style="font-size:1rem;">Penalty</div><div class="dd">Non-webinar creators<br>score penalized</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c2" style="font-size:1rem;">Re-rank</div><div class="dd">Adjusted scores<br>re-sorted</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c2">10</div><div class="dd">Survivors<br>advance</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="de-fadown">Final selection</div>
+          <div class="de-fstage">
+            <div class="de-fbox dg3">
+              <div class="de-fhdr"><div class="de-glbl dg3">Generation 3 · Benchmark Comparison</div><div class="de-fcut">✂ 7 candidates eliminated → Top 3 identified</div></div>
+              <div class="de-fsteps">
+                <div class="de-fnode"><div class="dc c3">10</div><div class="dd">Finalists<br>benchmarked</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c3" style="font-size:0.9rem;">Deep Intel</div><div class="dd">Claude Code +<br>RivalSearchMCP</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c3" style="font-size:0.9rem;">vs Nuno</div><div class="dd">Head-to-head<br>comparison</div></div>
+                <div class="de-farr">→</div>
+                <div class="de-fnode"><div class="dc c3">🏆 3</div><div class="dd">Strategic<br>competitors</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HONEST METHODOLOGY -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">Transparency</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Honest Methodology Note</h2>
+        <div class="de-amber">
+          <div class="dat">⚠ Transparency Notice</div>
+          <p>The automated web scraping phase (<strong>report2.py</strong>) returned limited results — most websites blocked requests, Instagram and LinkedIn rejected scrapers, and Meta Ad Library is JavaScript-rendered and inaccessible to standard HTTP clients.<br><br>
+          <strong>Individual candidate cards reflect only publicly accessible data</strong> (YouTube API metadata, publicly indexed pages). Real deep intelligence was only achievable on the <strong>Top 3 finalists</strong> using <strong>Claude Code + RivalSearchMCP</strong> with Cloudflare bypass, which enabled full website rendering, ad library access, community pricing visibility, and revenue estimation.<br><br>
+          The 28-candidate cards are algorithmic signals, not verified profiles. The Top 3 reports are high-confidence intelligence.</p>
+        </div>
+      </section>
+
+      <!-- RESULTS -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">The Finalists</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Top 3 Competitors</h2>
+        <p class="de-lead">After 3 generations of scoring and elimination, these three creators represent Nuno's highest-priority strategic competitors in the AI automation education space.</p>
+        <div class="de-res-grid">
+          <div class="de-rc dgold"><div class="dmedal">🥇</div><h4>Nick Saraev</h4><div class="dhandle">@nicksaraev · AI Automation</div><div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv rg">377K</span></div><div class="de-rstat"><span class="rk">Community Pricing</span><span class="rv">$184 / mo · Skool</span></div><div class="de-rstat"><span class="rk">Est. Monthly Revenue</span><span class="rv rn">~$441K / mo</span></div><div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div></div>
+          <div class="de-rc dsilver"><div class="dmedal">🥈</div><h4>Riley Brown</h4><div class="dhandle">@rileybrown.ai · VibeCode</div><div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv" style="color:#94a3b8;">211K</span></div><div class="de-rstat"><span class="rk">Funding</span><span class="rv">$9.4M VC Funded</span></div><div class="de-rstat"><span class="rk">Product</span><span class="rv">VibeCode App (SaaS)</span></div><div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div></div>
+          <div class="de-rc dbronze"><div class="dmedal">🥉</div><h4>Nate Herk</h4><div class="dhandle">@nateherk · AI Automation</div><div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv" style="color:#cd7c2f;">648K</span></div><div class="de-rstat"><span class="rk">Community Pricing</span><span class="rv">$99 / month</span></div><div class="de-rstat"><span class="rk">Est. Monthly Revenue</span><span class="rv rn">~$320K / mo</span></div><div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div></div>
+        </div>
+      </section>
+
+      <!-- KEY FINDING -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">Strategic Insight</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1.5rem;">The Key Finding</h2>
+        <div class="de-finding">
+          <div class="dfi">🎯</div>
+          <h3><span>NONE</span> of the top 3 competitors run public webinars.<br>Nuno's webinar is completely <span>uncontested</span> in this space.</h3>
+          <p>Every major player monetizes through communities, SaaS, and courses — not live webinar launches. This is a genuine strategic white space that Nuno can own without fighting established players on their home turf.</p>
+        </div>
+      </section>
+
+      <!-- TOOLS -->
+      <div class="de-div"></div>
+      <section class="de-section">
+        <div class="de-section-label">Stack</div>
+        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Tools Used</h2>
+        <p class="de-lead">This intelligence system was built using a layered stack of AI models, APIs, and specialized tools — each assigned to the task it handles best.</p>
+        <div class="de-tools-grid">
+          <div class="de-tc"><div class="de-ticon" style="background:rgba(100,116,139,0.12);">🤖</div><div><h4>Claude Sonnet 4.6</h4><p>Prompt engineering, algorithm architecture, scoring rubric design, and strategic synthesis.</p><span class="de-tbadge" style="background:rgba(0,212,255,0.1);color:#00d4ff;border:1px solid rgba(0,212,255,0.2);">Anthropic</span></div></div>
+          <div class="de-tc"><div class="de-ticon" style="background:rgba(59,130,246,0.1);">✨</div><div><h4>Google Gemini 2.5 Pro</h4><p>Python code generation for the scraping pipeline, API integration, and data processing logic.</p><span class="de-tbadge" style="background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);">Google DeepMind</span></div></div>
+          <div class="de-tc"><div class="de-ticon" style="background:rgba(16,185,129,0.1);">🔍</div><div><h4>Claude Code + RivalSearchMCP</h4><p>Deep intel on Top 3 — Cloudflare bypass, full site rendering, ad library access, revenue estimation.</p><span class="de-tbadge" style="background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.2);">Anthropic · MCP</span></div></div>
+          <div class="de-tc"><div class="de-ticon" style="background:rgba(239,68,68,0.1);">📡</div><div><h4>YouTube Data API v3</h4><p>Programmatic candidate discovery across 8 search terms. 28 unique channels extracted and deduplicated.</p><span class="de-tbadge" style="background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);">Google Cloud</span></div></div>
+        </div>
+      </section>
+
+    </div><!-- /sop-inner -->
+  </div><!-- /sop-panel -->
+</div><!-- /section -->
 
 <!-- ALGORITHM TIMELINE -->
 <div class="section">
@@ -672,218 +887,6 @@
 
   </div><!-- /timeline-outer -->
 </div>
-
-<!-- ══ ALGORITHM SOP — EXPANDABLE PANEL ══ -->
-<div class="section" style="padding-bottom: 0;">
-  <div id="sop-trigger" class="sop-trigger" onclick="toggleSOP()" role="button" aria-expanded="false">
-    <div class="sop-trigger-left">
-      <div class="sop-eyebrow">Algorithm SOP · Full Technical Breakdown</div>
-      <div class="sop-title">The <span>Darwin</span> Engine</div>
-      <div class="sop-desc">The complete methodology behind how we found Nuno's top 3 competitors — 7 weighted dimensions, 3 elimination generations, 28 candidates scored. Click to expand the full SOP.</div>
-      <div class="sop-stats">
-        <div class="sop-stat"><div class="sop-stat-n">28</div><div class="sop-stat-l">Candidates</div></div>
-        <div class="sop-stat"><div class="sop-stat-n">7</div><div class="sop-stat-l">Dimensions</div></div>
-        <div class="sop-stat"><div class="sop-stat-n">3</div><div class="sop-stat-l">Generations</div></div>
-        <div class="sop-stat"><div class="sop-stat-n">3</div><div class="sop-stat-l">Finalists</div></div>
-      </div>
-    </div>
-    <div class="sop-cta">
-      <button class="sop-btn" id="sop-btn-label">🧬 View Full SOP</button>
-      <div class="sop-chevron" id="sop-chevron">⌄</div>
-    </div>
-  </div>
-
-  <div id="sop-panel" class="sop-panel">
-    <div class="sop-inner">
-
-      <!-- DARWIN HERO -->
-      <div class="de-div"></div>
-      <div class="de-hero">
-        <div class="de-hero-tag">Algorithm SOP · How It Works</div>
-        <h2>The <span>Darwin</span> Engine</h2>
-        <p>How we found Nuno's top 3 competitors from 28 candidates using a Darwinian elimination algorithm across 7 weighted dimensions and 3 generations of scoring.</p>
-        <div class="de-hero-stats">
-          <div class="de-hstat"><div class="dn">28</div><div class="dl">Candidates Discovered</div></div>
-          <div class="de-hstat"><div class="dn">7</div><div class="dl">Scoring Dimensions</div></div>
-          <div class="de-hstat"><div class="dn">3</div><div class="dl">Generations</div></div>
-          <div class="de-hstat"><div class="dn">3</div><div class="dl">Finalists Identified</div></div>
-        </div>
-      </div>
-
-      <!-- WHY AN ALGORITHM -->
-      <div class="de-div"></div>
-      <section class="de-section">
-        <div class="de-section-label">Why Systematic</div>
-        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Why Random Research Fails</h2>
-        <p class="de-lead">Without an algorithm, competitor research suffers from confirmation bias, cherry-picking, and surface-level analysis that misses the real strategic threats.</p>
-        <div class="de-prob-grid">
-          <div class="de-prob-card"><div class="dpi">🎯</div><h4>Confirmation Bias</h4><p>Manual research gravitates toward already-known names, missing dark-horse competitors who pose greater strategic risk.</p></div>
-          <div class="de-prob-card"><div class="dpi">📊</div><h4>No Weighting System</h4><p>Without weighted dimensions, a creator with 2M subscribers but zero webinar overlap scores equal to a direct competitor with 50K.</p></div>
-          <div class="de-prob-card"><div class="dpi">🔀</div><h4>Inconsistent Criteria</h4><p>Switching criteria mid-analysis means you're not comparing apples to apples. The algorithm forces the same rubric for all 28.</p></div>
-          <div class="de-prob-card"><div class="dpi">⏳</div><h4>Scale Impossibility</h4><p>Deep-diving 28 creators manually would take weeks. Algorithmic scoring collapses that to hours, reserving human intelligence for the Top 3.</p></div>
-        </div>
-      </section>
-
-      <!-- DATA COLLECTION -->
-      <div class="de-div"></div>
-      <section class="de-section">
-        <div class="de-section-label">Data Collection</div>
-        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">YouTube API Discovery</h2>
-        <p class="de-lead">The YouTube Data API v3 was queried across 8 targeted search terms designed to surface creators at the intersection of AI automation, workflow tools, and Python education.</p>
-        <div class="de-pills">
-          <span class="de-pill">AI automation tools</span>
-          <span class="de-pill">Python automation tutorial</span>
-          <span class="de-pill">n8n workflow automation</span>
-          <span class="de-pill">Make.com automation</span>
-          <span class="de-pill">AI business automation</span>
-          <span class="de-pill">No-code AI workflow</span>
-          <span class="de-pill">AI tools for entrepreneurs</span>
-          <span class="de-pill">Zapier automation tutorial</span>
-        </div>
-        <div class="de-api-box">
-          <div class="dai">📡</div>
-          <div>
-            <h4>YouTube Data API v3 · search.list endpoint</h4>
-            <p>Each search term returned up to 50 video results. Channel metadata extracted per result. Deduplication by channel ID collapsed overlapping appearances into unique candidates.</p>
-            <div class="de-stat-row">
-              <div class="de-sc"><div class="sn">8</div><div class="sl">Search Terms</div></div>
-              <div class="de-sc"><div class="sn">~400</div><div class="sl">Raw Results</div></div>
-              <div class="de-sc"><div class="sn">28</div><div class="sl">Unique Candidates</div></div>
-              <div class="de-sc"><div class="sn">100%</div><div class="sl">Programmatic</div></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 7 DIMENSIONS -->
-      <div class="de-div"></div>
-      <section class="de-section">
-        <div class="de-section-label">The Scoring Rubric</div>
-        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">The 7 Scoring Dimensions</h2>
-        <p class="de-lead">Each of the 28 candidates was scored 0–10 across seven dimensions, then multiplied by its weight. Weights were calibrated to Nuno's specific competitive threat profile.</p>
-        <div class="de-dims-grid">
-          <div class="de-dim-card"><div class="dnum">Dimension 01</div><div class="dwb hi">25%</div><h4>Niche Density</h4><div class="de-bar-w"><div class="de-bar hi" style="width:100%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> How precisely the creator occupies Nuno's specific niche — AI automation + Python + business workflows.</p><p class="dw">Highest weight because exact-niche creators are maximally threatening regardless of audience size.</p></div>
-          <div class="de-dim-card"><div class="dnum">Dimension 02</div><div class="dwb hi">25%</div><h4>Webinar Strategy</h4><div class="de-bar-w"><div class="de-bar hi" style="width:100%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Whether the creator uses webinars, live events, or cohort launches as a primary monetization channel.</p><p class="dw">Webinar competitors steal Nuno's audience during launch windows. Zero-webinar creators are irrelevant to launch strategy.</p></div>
-          <div class="de-dim-card"><div class="dnum">Dimension 03</div><div class="dwb">20%</div><h4>Audience Overlap</h4><div class="de-bar-w"><div class="de-bar" style="width:80%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Shared subscriber demographics — small business owners, solopreneurs, and no-code/low-code adopters.</p><p class="dw">Perfect niche fit but zero audience overlap means not a real competitor for Nuno's specific buyers.</p></div>
-          <div class="de-dim-card"><div class="dnum">Dimension 04</div><div class="dwb">10%</div><h4>Content Format</h4><div class="de-bar-w"><div class="de-bar" style="width:40%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Alignment with tutorial-style, long-form video content — Nuno's core format on YouTube.</p><p class="dw">Format divergence (short-form only, podcast-first) reduces competitive pressure even if niches overlap.</p></div>
-          <div class="de-dim-card"><div class="dnum">Dimension 05</div><div class="dwb">10%</div><h4>Offer Structure</h4><div class="de-bar-w"><div class="de-bar" style="width:40%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Whether the creator sells courses, communities, templates, or SaaS competing with Nuno's launch.</p><p class="dw">Offer similarity determines whether the competitor will be positioned as an alternative at checkout.</p></div>
-          <div class="de-dim-card"><div class="dnum">Dimension 06</div><div class="dwb">5%</div><h4>Revenue Scale</h4><div class="de-bar-w"><div class="de-bar" style="width:20%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Estimated monthly revenue from communities, courses, sponsorships, and SaaS.</p><p class="dw">Revenue scale signals market validation, not direct threat. Low weight avoids over-indexing on big names.</p></div>
-          <div class="de-dim-card"><div class="dnum">Dimension 07</div><div class="dwb">5%</div><h4>Authority Score</h4><div class="de-bar-w"><div class="de-bar" style="width:20%"></div></div><p class="dm"><strong style="color:#fff">Measures:</strong> Domain authority, press coverage, backlink profile, and industry recognition signals.</p><p class="dw">Authority affects SEO and credibility halo — important context but not a direct proxy for threat to a launch.</p></div>
-        </div>
-        <div class="de-chart-wrap">
-          <canvas id="de-radarChart" height="260"></canvas>
-        </div>
-      </section>
-
-      <!-- 3 GENERATIONS -->
-      <div class="de-div"></div>
-      <section class="de-section">
-        <div class="de-section-label">The Elimination Funnel</div>
-        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">The 3 Generations</h2>
-        <p class="de-lead">Inspired by natural selection: each generation scores, penalizes, and eliminates the weakest candidates. Only the strategically fittest survive to the next round.</p>
-        <div class="de-funnel">
-          <div class="de-fstage">
-            <div class="de-fbox dg1">
-              <div class="de-fhdr"><div class="de-glbl dg1">Generation 1 · Initial Scoring</div><div class="de-fcut">✂ Bottom 40% eliminated → 11 removed</div></div>
-              <div class="de-fsteps">
-                <div class="de-fnode"><div class="dc c1">28</div><div class="dd">Candidates<br>enter scoring</div></div>
-                <div class="de-farr">→</div>
-                <div class="de-fnode"><div class="dc c1" style="font-size:1rem;">7D Score</div><div class="dd">All 7 dimensions<br>scored 0–10</div></div>
-                <div class="de-farr">→</div>
-                <div class="de-fnode"><div class="dc c1" style="font-size:1rem;">Rank</div><div class="dd">Weighted total<br>0–100 pts</div></div>
-                <div class="de-farr">→</div>
-                <div class="de-fnode"><div class="dc c1">17</div><div class="dd">Survivors<br>advance</div></div>
-              </div>
-            </div>
-          </div>
-          <div class="de-fadown">Survivors advance</div>
-          <div class="de-fstage">
-            <div class="de-fbox dg2">
-              <div class="de-fhdr"><div class="de-glbl dg2">Generation 2 · Webinar Penalty</div><div class="de-fcut">✂ Bottom 40% eliminated → 7 removed</div></div>
-              <div class="de-fsteps">
-                <div class="de-fnode"><div class="dc c2">17</div><div class="dd">Survivors<br>re-evaluated</div></div>
-                <div class="de-farr">→</div>
-                <div class="de-fnode"><div class="dc c2" style="font-size:1rem;">Penalty</div><div class="dd">Non-webinar creators<br>score penalized</div></div>
-                <div class="de-farr">→</div>
-                <div class="de-fnode"><div class="dc c2" style="font-size:1rem;">Re-rank</div><div class="dd">Adjusted scores<br>re-sorted</div></div>
-                <div class="de-farr">→</div>
-                <div class="de-fnode"><div class="dc c2">10</div><div class="dd">Survivors<br>advance</div></div>
-              </div>
-            </div>
-          </div>
-          <div class="de-fadown">Final selection</div>
-          <div class="de-fstage">
-            <div class="de-fbox dg3">
-              <div class="de-fhdr"><div class="de-glbl dg3">Generation 3 · Benchmark Comparison</div><div class="de-fcut">✂ 7 candidates eliminated → Top 3 identified</div></div>
-              <div class="de-fsteps">
-                <div class="de-fnode"><div class="dc c3">10</div><div class="dd">Finalists<br>benchmarked</div></div>
-                <div class="de-farr">→</div>
-                <div class="de-fnode"><div class="dc c3" style="font-size:0.9rem;">Deep Intel</div><div class="dd">Claude Code +<br>RivalSearchMCP</div></div>
-                <div class="de-farr">→</div>
-                <div class="de-fnode"><div class="dc c3" style="font-size:0.9rem;">vs Nuno</div><div class="dd">Head-to-head<br>comparison</div></div>
-                <div class="de-farr">→</div>
-                <div class="de-fnode"><div class="dc c3">🏆 3</div><div class="dd">Strategic<br>competitors</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- HONEST METHODOLOGY -->
-      <div class="de-div"></div>
-      <section class="de-section">
-        <div class="de-section-label">Transparency</div>
-        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Honest Methodology Note</h2>
-        <div class="de-amber">
-          <div class="dat">⚠ Transparency Notice</div>
-          <p>The automated web scraping phase (<strong>report2.py</strong>) returned limited results — most websites blocked requests, Instagram and LinkedIn rejected scrapers, and Meta Ad Library is JavaScript-rendered and inaccessible to standard HTTP clients.<br><br>
-          <strong>Individual candidate cards reflect only publicly accessible data</strong> (YouTube API metadata, publicly indexed pages). Real deep intelligence was only achievable on the <strong>Top 3 finalists</strong> using <strong>Claude Code + RivalSearchMCP</strong> with Cloudflare bypass, which enabled full website rendering, ad library access, community pricing visibility, and revenue estimation.<br><br>
-          The 28-candidate cards are algorithmic signals, not verified profiles. The Top 3 reports are high-confidence intelligence.</p>
-        </div>
-      </section>
-
-      <!-- RESULTS -->
-      <div class="de-div"></div>
-      <section class="de-section">
-        <div class="de-section-label">The Finalists</div>
-        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Top 3 Competitors</h2>
-        <p class="de-lead">After 3 generations of scoring and elimination, these three creators represent Nuno's highest-priority strategic competitors in the AI automation education space.</p>
-        <div class="de-res-grid">
-          <div class="de-rc dgold"><div class="dmedal">🥇</div><h4>Nick Saraev</h4><div class="dhandle">@nicksaraev · AI Automation</div><div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv rg">377K</span></div><div class="de-rstat"><span class="rk">Community Pricing</span><span class="rv">$184 / mo · Skool</span></div><div class="de-rstat"><span class="rk">Est. Monthly Revenue</span><span class="rv rn">~$441K / mo</span></div><div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div></div>
-          <div class="de-rc dsilver"><div class="dmedal">🥈</div><h4>Riley Brown</h4><div class="dhandle">@rileybrown.ai · VibeCode</div><div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv" style="color:#94a3b8;">211K</span></div><div class="de-rstat"><span class="rk">Funding</span><span class="rv">$9.4M VC Funded</span></div><div class="de-rstat"><span class="rk">Product</span><span class="rv">VibeCode App (SaaS)</span></div><div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div></div>
-          <div class="de-rc dbronze"><div class="dmedal">🥉</div><h4>Nate Herk</h4><div class="dhandle">@nateherk · AI Automation</div><div class="de-rstat"><span class="rk">YouTube Subscribers</span><span class="rv" style="color:#cd7c2f;">648K</span></div><div class="de-rstat"><span class="rk">Community Pricing</span><span class="rv">$99 / month</span></div><div class="de-rstat"><span class="rk">Est. Monthly Revenue</span><span class="rv rn">~$320K / mo</span></div><div class="de-rstat"><span class="rk">Webinar Activity</span><span class="rv rr">None detected</span></div></div>
-        </div>
-      </section>
-
-      <!-- KEY FINDING -->
-      <div class="de-div"></div>
-      <section class="de-section">
-        <div class="de-section-label">Strategic Insight</div>
-        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1.5rem;">The Key Finding</h2>
-        <div class="de-finding">
-          <div class="dfi">🎯</div>
-          <h3><span>NONE</span> of the top 3 competitors run public webinars.<br>Nuno's webinar is completely <span>uncontested</span> in this space.</h3>
-          <p>Every major player monetizes through communities, SaaS, and courses — not live webinar launches. This is a genuine strategic white space that Nuno can own without fighting established players on their home turf.</p>
-        </div>
-      </section>
-
-      <!-- TOOLS -->
-      <div class="de-div"></div>
-      <section class="de-section">
-        <div class="de-section-label">Stack</div>
-        <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">Tools Used</h2>
-        <p class="de-lead">This intelligence system was built using a layered stack of AI models, APIs, and specialized tools — each assigned to the task it handles best.</p>
-        <div class="de-tools-grid">
-          <div class="de-tc"><div class="de-ticon" style="background:rgba(100,116,139,0.12);">🤖</div><div><h4>Claude Sonnet 4.6</h4><p>Prompt engineering, algorithm architecture, scoring rubric design, and strategic synthesis.</p><span class="de-tbadge" style="background:rgba(0,212,255,0.1);color:#00d4ff;border:1px solid rgba(0,212,255,0.2);">Anthropic</span></div></div>
-          <div class="de-tc"><div class="de-ticon" style="background:rgba(59,130,246,0.1);">✨</div><div><h4>Google Gemini 2.5 Pro</h4><p>Python code generation for the scraping pipeline, API integration, and data processing logic.</p><span class="de-tbadge" style="background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);">Google DeepMind</span></div></div>
-          <div class="de-tc"><div class="de-ticon" style="background:rgba(16,185,129,0.1);">🔍</div><div><h4>Claude Code + RivalSearchMCP</h4><p>Deep intel on Top 3 — Cloudflare bypass, full site rendering, ad library access, revenue estimation.</p><span class="de-tbadge" style="background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.2);">Anthropic · MCP</span></div></div>
-          <div class="de-tc"><div class="de-ticon" style="background:rgba(239,68,68,0.1);">📡</div><div><h4>YouTube Data API v3</h4><p>Programmatic candidate discovery across 8 search terms. 28 unique channels extracted and deduplicated.</p><span class="de-tbadge" style="background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);">Google Cloud</span></div></div>
-        </div>
-      </section>
-
-    </div><!-- /sop-inner -->
-  </div><!-- /sop-panel -->
-</div><!-- /section -->
 
 
 <!-- 28 INDIVIDUAL CARDS -->
