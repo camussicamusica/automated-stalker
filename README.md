@@ -73,4 +73,30 @@ This project was built as Phase 1 of a full webinar launch strategy for the Auto
 ### ⚡ Claude Code + RivalSearchMCP
 - [Terminal Session Log](https://github.com/camussicamusica/automated-stalker/blob/main/02_Data/session_transcript.txt)
 
-*All conversations conducted by Sofia Renata Camussi, April 11, 2026*
+*All conversations conducted by Sofia Renata Camussi, April 11–12, 2026*
+
+---
+
+## 🖥️ Claude Code Session Logs
+
+Full terminal session transcripts are stored in `02_Data/`:
+
+- [`session_transcript.txt`](02_Data/session_transcript.txt) — Session 1: algorithm build, scraping, deep intel, report generation
+- [`session_transcript_2.txt`](02_Data/session_transcript_2.txt) — Session 2: UI polish, animations, nav, repo restructure
+
+### Session 2 Summary — April 12, 2026
+
+| Task | What was done |
+|------|---------------|
+| CSS glitch animation | Added `@keyframes` RGB-split glitch to all 5 hero titles (hub, index, sop, iteration1, funnelipc) |
+| Nav reorder | Moved "View Report" to first position across all 36 HTML files via Python bulk-replace |
+| Nav cleanup | Removed "Evolution Matrix" from Intelligence dropdown (36 files) |
+| Content removal | Removed Digital Footprint Discovery section from competitors28 |
+| Hero layout fix | Fixed hub.html tag stacking (flex column) after inline-block glitch broke layout |
+| Script execution | Ran `reorganize_repo.sh`, `fix_links.sh`, `fix_competitors28_responsive.sh` (with macOS compat fixes) |
+| Repo restructure | `pages/` → `06_Presentation/` · `assets/` + `report_cards/` + `brain/` → `05_Assets/` · scripts → `01_Scripts/` |
+| Link fixing | Two rounds of bulk link repair across 36+ files after each folder move |
+| Glitch speed | Animation duration 4s → 2s on all titles |
+| GitHub Pages | Root redirect stubs for all old URLs (hub, funnelipc, algorithm_sop, etc.) |
+
+*Built with Claude Code (claude-sonnet-4-6) · All terminal work by Sofia Renata Camussi*
