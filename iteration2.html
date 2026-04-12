@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NunoBrain Competitor Intelligence</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #0a0f1e; --card-bg: #111827; --blue: #00d4ff; --gold: #ffd700;
+            --silver: #c0c0c0; --bronze: #cd7f32; --green: #10b981; --orange: #f59e0b;
+            --red: #ef4444; --grey: #374151; --text: #f3f4f6;
+        }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; margin: 0; line-height: 1.5; }
+        
+        /* HERO */
+        header { padding: 60px 20px; text-align: center; background: linear-gradient(180deg, #111827 0%, #0a0f1e 100%); border-bottom: 1px solid var(--grey); }
+        header h1 { font-size: 3.5rem; margin: 0; letter-spacing: -2px; text-transform: uppercase; }
+        header h2 { color: var(--blue); font-size: 1.2rem; margin: 10px 0; letter-spacing: 2px; }
+        .stats-row { display: flex; justify-content: center; gap: 30px; margin-top: 40px; flex-wrap: wrap; }
+        .stat-item { text-align: center; min-width: 150px; }
+        .stat-val { font-size: 2.5rem; font-weight: 800; color: var(--text); display: block; }
+        .stat-label { color: var(--blue); font-size: 0.8rem; text-transform: uppercase; font-weight: bold; }
+
+        /* FILTER BAR */
+        .filter-bar { position: sticky; top: 0; z-index: 100; background: rgba(10, 15, 30, 0.9); backdrop-filter: blur(10px); 
+                       padding: 15px 20px; border-bottom: 1px solid var(--grey); display: flex; justify-content: space-between; align-items: center; }
+        .pills { display: flex; gap: 10px; }
+        .pill { padding: 8px 16px; border-radius: 20px; border: 1px solid var(--grey); background: none; color: white; cursor: pointer; transition: 0.2s; }
+        .pill.active { background: var(--blue); border-color: var(--blue); color: #000; font-weight: bold; }
+        #searchInput { padding: 8px 15px; border-radius: 20px; border: 1px solid var(--grey); background: var(--card-bg); color: white; width: 250px; }
+
+        /* GRID */
+        .container { max-width: 1400px; margin: 40px auto; padding: 0 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 25px; }
+        
+        /* CARDS */
+        .card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--grey); padding: 25px; position: relative; transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        
+        /* TOP 3 SPECIAL */
+        .top3-section { grid-column: 1 / -1; display: flex; gap: 25px; margin-bottom: 50px; flex-wrap: wrap; }
+        .top3-card { flex: 1; min-width: 400px; border-width: 3px !important; }
+        .gold { border-color: var(--gold) !important; box-shadow: 0 0 30px rgba(255,215,0,0.15); }
+        .silver { border-color: var(--silver) !important; box-shadow: 0 0 30px rgba(192,192,192,0.1); }
+        .bronze { border-color: var(--bronze) !important; box-shadow: 0 0 30px rgba(205,127,50,0.1); }
+        .rank-badge { font-size: 2rem; position: absolute; top: -15px; left: -15px; background: var(--card-bg); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border: 2px solid inherit; }
+
+        /* CARD INTERNALS */
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .card-header h3 { margin: 0; font-size: 1.4rem; }
+        .fitness { background: var(--blue); color: black; padding: 2px 10px; border-radius: 5px; font-weight: 800; font-size: 0.9rem; }
+        .stats { color: var(--silver); font-size: 0.9rem; margin-bottom: 20px; }
+        .links-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; font-size: 0.85rem; }
+        .links-row a { color: var(--blue); text-decoration: none; }
+        .links-row .not-found { color: #4b5563; }
+        
+        .webinar-box { padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid transparent; }
+        .has-web { background: rgba(16,185,129,0.1); border-color: var(--green); }
+        .no-web { background: rgba(55,65,81,0.2); border-color: var(--grey); color: #9ca3af; }
+        
+        .site-intel { background: #1f2937; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 0.85rem; }
+        .headline { font-style: italic; color: var(--silver); display: block; margin-bottom: 8px; }
+        
+        .collapsible { cursor: pointer; color: var(--blue); font-size: 0.8rem; margin-top: 10px; }
+        .content { display: none; margin-top: 10px; font-size: 0.8rem; color: #9ca3af; }
+        
+        /* TABLE & CHART */
+        .section-title { font-size: 1.8rem; margin: 60px 0 30px; border-left: 5px solid var(--blue); padding-left: 15px; }
+        table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 10px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--grey); }
+        th { background: #1f2937; color: var(--blue); }
+        .chart-container { background: var(--card-bg); padding: 30px; border-radius: 12px; height: 500px; }
+        
+        footer { text-align: center; padding: 60px; color: #4b5563; border-top: 1px solid var(--grey); margin-top: 100px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2>COMPETITOR INTELLIGENCE REPORT</h2>
+    <h1>NUNO TAVARES</h1>
+    <p>AI & No-Code Webinar Space · Generated 2026-04-11</p>
+    <div class="stats-row">
+        <div class="stat-item"><span class="stat-val" id="count-total">0</span><span class="stat-label">Analyzed</span></div>
+        <div class="stat-item"><span class="stat-val" id="count-webs">0</span><span class="stat-label">Websites Found</span></div>
+        <div class="stat-item"><span class="stat-val" id="count-master">0</span><span class="stat-label">Webinars Active</span></div>
+        <div class="stat-item"><span class="stat-val" id="count-course">0</span><span class="stat-label">Course Hubs</span></div>
+    </div>
+</header>
+
+<div class="filter-bar">
+    <div class="pills">
+        <button class="pill active" onclick="filterCards('all', this)">👥 All</button>
+        <button class="pill" onclick="filterCards('top3', this)">⭐ Top 3</button>
+        <button class="pill" onclick="filterCards('webinar', this)">✅ Webinar</button>
+        <button class="pill" onclick="filterCards('course', this)">🎓 Course</button>
+        <button class="pill" onclick="filterCards('website', this)">🌐 Website</button>
+    </div>
+    <input type="text" id="searchInput" placeholder="Search by name..." onkeyup="searchNames()">
+</div>
+
+<div class="container">
+    <div id="top3-grid" class="top3-section"></div>
+    <div id="main-grid" class="grid"></div>
+
+    <h2 class="section-title">🎯 Webinar Intelligence — Active Events Found</h2>
+    <table id="webinarTable">
+        <thead>
+            <tr><th>Rank</th><th>Name</th><th>Subscribers</th><th>Webinar Link</th><th>Course Link</th></tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2 class="section-title">Digital Footprint Discovery</h2>
+    <div class="chart-container">
+        <canvas id="footprintChart"></canvas>
+    </div>
+</div>
+
+<footer>
+    Generated by NunoBrain Intelligence System · 2026-04-11<br>
+    Data sourced via automated public web search for Nuno Tavares's 2026 Webinar Launch Strategy
+</footer>
+
+<script>
+    const candidates = [{"name": "Nick Saraev", "rank": 1, "isTop3": true, "fitness": 62.5, "subs": 377000, "bio": "Hi \ud83d\udc4b I'm Nick. I make money with AI tools like N8N, Claude Code, and Antigravity\u2014and I teach others how they can too.\n\nI'm not the best in the world, nor are my accomplishments the most impressive... but some people think I have interesting things to say! To that end, this channel is a way to organize my thoughts and provide a guidepost for people that want to grow or build an online business. \n\nYou'll find marketing guides, Make.com guides, Integromat guides, Zapier guides, sales guides, and really anything I find interesting on a day-to-day basis. I'm Make.com & N8N certified and use it often as part of my businesses, so you'll see a lot of that too.\n\nIf you have any questions, feel free to ask and I'll happily respond in the comments. Thanks for reading.\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCbo-KbSjJDG6JWQ_MTZ_rNA", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "CLAUDE CODE FULL COURSE 4 HOURS: Build &amp; Sell (2026) | N8N FULL COURSE 6 HOURS (Build &amp; Sell AI Automations + Agents) | What I&#39;d Learn Instead of Automation in 2026 | Watch me start &amp; sell an AI service in 10 hours | $2.4M of Prompt Engineering Hacks in 53 Mins (GPT, Claude)", "video_count": 303, "ghl_connected": false}, {"name": "Riley Brown", "rank": 2, "isTop3": true, "fitness": 58.75, "subs": 211000, "bio": "The number one vibe coding channel on YouTube. We talk about Claude Code for mobile apps, web apps, and agents. ", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCMcoud_ZW7cfxeIugBflSBw", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "Can I Vibecode a $250M App Better Than a Pro Developer? (With No Code) | Create a speaking animated character | Midjourney + other AI Tools | We Made Claude Code Build Lovable in 75 Minutes (With No Code) | Claude Code Replaced Cursor for Me\u2026 Here\u2019s Why | Cursor 2.0 Tutorial for Beginners (Full Course)", "video_count": 168, "ghl_connected": false}, {"name": "Nate Herk | AI Automation", "rank": 3, "isTop3": true, "fitness": 58.75, "subs": 648000, "bio": "Hi \ud83d\udc4b I'm Nate Herk. I\u2019m passionate about helping businesses unlock the power of AI Automations to save time, cut costs, and stay competitive. \n\nI believe that businesses that don\u2019t adopt AI will struggle to keep up, and I\u2019m here to make sure you\u2019re ahead of the curve. Whether you\u2019re new to AI or looking to refine your workflows, I\u2019m here to guide you through it all.\n\nLet\u2019s build a more efficient future together! Book a call on my website!\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UC2ojq-nuP8ceeHqiroeKhBA", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "Build &amp; Sell n8n AI Agents (8+ Hour Course, No Code) | I Built the Ultimate Team of Agents in n8n  #artificialintelligence #n8n #agentgpt  #techtok #coding | I Built a Marketing Team with 1 AI Agent and No Code (free n8n template) | This Invoice Agent Analyzes Images in n8n  #techtok #agentgpt #artificialintelligence #n8n | n8n Masterclass: Build AI Agents &amp; Automate Workflows (Beginner to Pro)", "video_count": 385, "ghl_connected": false}, {"name": "n8n", "rank": 4, "isTop3": false, "fitness": 55.0, "subs": 230000, "bio": "n8n gives technical teams a workflow automation platform that uniquely combines AI capabilities with business process automation. Connect any app or API while maintaining the flexibility of code with the speed of no-code.\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCiHVTkJtWSdc9N3h0nUGWLg", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "n8n Quick Start Tutorial: Build Your First Workflow [2025] | n8n Beginner Course (1/9) - Introduction to Automation | Building AI Agents: Chat Trigger, Memory, and System/User Messages Explained [Part 1] | Install n8n Locally With Docker Desktop | Create Stunning AI-Generated Images with Flux AI + n8n.io", "video_count": 346, "ghl_connected": false}, {"name": "Helena Liu", "rank": 5, "isTop3": false, "fitness": 55.0, "subs": 272000, "bio": "Hi, I\u2019m Helena \ud83d\udc4b \u2014 I teach you how to use AI tools and automation to grow your business, save time, and build new income streams.\n\nOn this channel, you\u2019ll learn practical ways to use ChatGPT, AI agents, and no-code automation to create content faster, launch AI side hustles, and future-proof your career.\n\nWhether you\u2019re an entrepreneur, content creator, or someone just curious about AI, you\u2019ll find step-by-step tutorials, AI business ideas, and real use cases you can apply right away.\n\nSubscribe for weekly videos on AI, automation, and digital entrepreneurship \u2014 and start building your future with AI today. Also, don't forget to sign up for my free AI and automations training: https://www.productcamps.com/free\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCpM_g95uzZ_OyhgukvrbbiQ", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "This Social Media AI System Creates Unique Content Daily! (100% Automated) | Using ChatGPT to Generate 1000s of Leads in Any Niche (Free + Easy Method) | How to Memorize the 49 Processes from the PMBOK 6th Edition Process Chart | 3 AI &quot;Secrets&quot; 99% of People Don&#39;t Know | How to Make $30,000/Year Blogging Using AI &amp; Automation (step-by-step course)", "video_count": 295, "ghl_connected": false}, {"name": "HighLevel", "rank": 6, "isTop3": false, "fitness": 49.67, "subs": 92100, "bio": "The fastest growing white-label marketing platform for digital agencies. Functionality includes: CRM with SmartLists, Email, 2-way SMS, Outbound Calling & Call Recording, Power Dialer, Form Builder, Survey Builder, Funnel Builder, Website Builder, Online Scheduling, Automation Campaigns, Reporting and more!", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCXFiV4qDX5ipE-DQcsm1j4g", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "Ai Agent Action in Workflows is Live! | Day 1 - From Client Acquisition to MRR | The HighLevel Release Radar (April 6th - April 10th 2026) | Contact page customization Live! | Starting an AI Company with HighLevel", "video_count": 7629, "ghl_connected": false}, {"name": "Vibe Coding with Naman", "rank": 7, "isTop3": false, "fitness": 34.294000000000004, "subs": 8970, "bio": "Hi, my name is Naman Gupta, and I teach you how to develop software with AI technologies, and how to Vibe Code!\n\nOn this channel, I create original, hands-on tutorials and full courses that I teach, record, and produce by myself. I teach you how to build apps, websites, and software using the latest AI technologies, and I break down complex AI concepts through my own explanations, demonstrations, and project walkthroughs.\n\nYouTube is my passion, and so is building software. Each one of my videos and tutorials is crafted from scratch to share what I\u2019m learning, what I\u2019m building, and how you can apply AI to become a better developer. My goal is to help you understand modern AI-driven development in a clear, practical, and enjoyable way, and that\u2019s why I teach on YouTube. \n\nI try my best to teach, I try my best to learn, and I\u2019m happy to share this journey with all of you here on Vibe Coding with Naman. \n\nPeace and Faith \u270c\ufe0f\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCUrnOS0DWudye54XqyDAuXA", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "How to Build Apps with Replit AI Agent | Full Beginner Course | Coding with ChatGPT-5 - App Development with AI | Full Tutorial - Vibe Coding | How to Code a ChatBot Using JavaScript, HTML and CSS | Vibe Coding Full Course for Beginners | Lovable Full Course by Naman Gupta -  Vibe Coding Tutorial", "video_count": 22, "ghl_connected": false}, {"name": "GoHighLevel Tutorials - HL Power Hub", "rank": 8, "isTop3": false, "fitness": 33.174, "subs": 3370, "bio": "Get amazing bonuses & free stuff worth over $ 11k: https://www.gohighlevel.com/highlevel-bootcamp?fp_ref=j5pfx\n\nGet a 30 Days Free Trial + Free Live Bootcamp (optional) to Launch HighLevel Together - Launch HighLevel in just 48 minutes without any product, experience, or tech skills:\n\nSign up For GoHighLevel OR Upgrade, I've got a ton of goodies for you https://gohighleveldoneforyouagency.com/upgrade\n\nAccess White Label Videos (branded & unbranded) https://gohighleveldoneforyouagency.com/white-labelled-support-videos\n\n10 Ways to INSTANTLY Improve Your Funnels (FREE PDF) https://gohighleveldoneforyouagency.com/10-ways-improve-funnels\n\nJoin my community & attend weekly Q&A sessions: https://login.hlpowerhub.com/communities/groups/inside-highlevel \n\nMore awesome stuff below:\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCgb-hU13CUfZ88jIHiD6BLw", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "How to Use the Facebook &amp; Instagram Comment and DM Automation Workflow Trigger Action on Gohighlevel | How to TRACK your visitors / guests / clients via QR Codes at a LIVE event (or in a restaurant) #ghl | Create Your Webinar Funnels With a Few Clicks on Gohighlevel #ghl #tips #gohighlevelreviews #crm | Set Up Your AI AGENTS Using Voice AI On GOHIGHLEVEL #ghl #gohighlevelreviews #gohighlevelexpert | GoHighlevel CRM: Inbound Call Flow for Voice AI Calls - Let Voice AI Agents Pick Up Your CALLS #ghl", "video_count": 712, "ghl_connected": false}, {"name": "Pragati Kunwer | Claude Code", "rank": 9, "isTop3": false, "fitness": 31.4, "subs": 112000, "bio": "Learn Claude Code Skills \u2014 the #1 AI tool for non-coders. Build anything with AI using plain English. No coding required. New videos 4x every week.\n\nClaude Code just changed everything. One tool. $20/month. Skills written in plain English. No coding. No expensive tool stacks.\n\nI'm Pragati Kunwer. 20 years building products at IBM Watson and Nike. Now I teach Claude Code Skills \u2014 the AI skills that are transforming how teachers, freelancers, designers, and solopreneurs work without writing a single line of code.\n\nEvery video: one skill demo, one real result, one SKILL.md you can download and use TODAY.\n\n63% of Claude Code users are NOT developers. Teachers, freelancers, solopreneurs, small business owners \u2014 this channel is built for YOU.\n\n\ud83c\udf93 FREE Claude Code Course + Community:\n\u2192 https://www.skool.com/agentskillsacademy/about \n\n\ud83d\udcf8 Instagram: @pragatikunwer\n\n\ud83d\udce5 FREE: 50 AI Business Ideas Cheat Sheet:\n\u2192 https://payhip.com/b/3vSqN\n\nComment SKILL on any video and I'll DM you the course link.\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCe4eqh2Rs4bkjDRrjZQWkZw", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "Claude Code + Remotion Just Killed Video Editors | 7 Claude Code Skills That Run My Entire Business (No Coding Required) | Prompt Engineering Is Dead. I Have Proof. | How to Make Money Using AI in 2026 (Complete Beginner&#39;s Guide) | ChatGPT for Beginners: Start Earning in 7 Days", "video_count": 99, "ghl_connected": false}, {"name": "Claude Ams - Programming Guru \ud83d\udcbb", "rank": 10, "isTop3": false, "fitness": 28.4, "subs": 412000, "bio": "\ud83d\udc47 | SUBSCRIBE to become a SIGMA Coder \u03a3 | \ud83d\udc47 \n\ud83d\udcbb | Sharing Daily Coding tips.\n\ud83e\uddbe | BF of Developers and Students\n\u2699\ufe0f | Productivity Instructor (study, work, code)\n\n\ud83d\ude80 Are you ready to take your coding skills to the next level? Look no further! Welcome to the channel of Claude Ams, the coding expert who is here to make your journey an exciting and informative one\n\n\ud83d\udcbb With over 7 years of helping more than 1,000,000 people around the world, Claude Ams brings you the latest in coding tutorials, walkthroughs, and tech discussions. Whether you're a beginner or a seasoned pro, Claude Ams has got you covered.\n\n\ud83d\udd25 From web development to data science, Claude Ams has a passion for all things coding and is here to share that passion with you. With Claude Ams's engaging and informative content, you'll be well on your way to improving your coding skills in no time!\n\n\ud83d\udca5 So what are you waiting for? Subscribe now and join the coding community. Let Claude Ams help you reach your coding goals and beyond! \ud83d\ude80\ud83d\udcbb\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UC1Wn8F-xff2j4hR9ZZ1UsyA", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "My little sister literally shocked me for a while\ud83d\udc80#siblinggoals #ai #yt #shorts #tricks #funny | She locked herself because students were using AI (Blackbox AI)\ud83e\udd26\ud83c\udffb\u200d\u2640\ufe0f#trending #ai #yt #shorts #web | Why is this coder boy like this?\ud83d\udc40#trending #viral #funny #shorts #ai #yt #tricks #cs #fun #sibling | My little coder brother was doing this in Cinema\ud83d\udc40#trending #coding #ai #viral #shorts #tricks #yt | We came to eat Chole Bhature but\u2026\ud83d\udc40#food #coding #ai #aitools #shorts #trending #viral #tricks", "video_count": 6006, "ghl_connected": false}, {"name": "Anthropic", "rank": 11, "isTop3": false, "fitness": 25.4, "subs": 516000, "bio": "We\u2019re an AI safety and research company. Talk to our AI assistant Claude on claude.com. Download Claude on desktop, iOS, or Android. \n\nWe believe AI will have a vast impact on the world. Anthropic is dedicated to building systems that people can rely on and generating research about the opportunities and risks of AI.\n\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCrDwWp7EBBv4NwvScIpBDOA", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "Mastering Claude Code in 30 minutes | Introducing Claude Code | What do you think of my business idea? | How can I communicate better with my mom? | Getting started with Claude.ai", "video_count": 172, "ghl_connected": false}, {"name": "Corbin Brown", "rank": 12, "isTop3": false, "fitness": 25.4, "subs": 165000, "bio": "a real software engineer making content. I know\u2026 surprising, right?\n\nFounder thumio + techsnif \u00b7 backed by _cafe_ venture in sf \u00b7 host of thelog\n\r\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCJFMlSxcvlZg5yZUYJT0Pug", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "How To Use GitHub For Beginners | How To Use Cursor AI For Beginners | How To Use Perplexity AI For Beginners | How to Make a YouTube Thumbnail with AI (thumio) | OpenClaw Explained in 12 Minutes (for beginners)", "video_count": 188, "ghl_connected": false}, {"name": "Mikey No Code", "rank": 13, "isTop3": false, "fitness": 25.4, "subs": 119000, "bio": "Build Apps & Websites without coding!\n\nMy channel is your go-to place for the newest, latest, and best no-code tools to build apps and websites without writing a single line of code!\n\n\ud83d\udca1 Whether you're a beginner or an entrepreneur looking to launch fast, I break down step-by-step tutorials, reviews, and tips on the most powerful no-code platforms like Lovable, Base44, Rork, and more.\n\n\ud83d\udfe2 Join the only program that lets you actually starts building apps today: https://mikeyno-code.com/Skool\n\n\ud83d\udce9 For inquiries: Mikey (at) ytmedia.group\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCde0vB0fTwC8AT3sJofFV0w", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "ClawdBot Full Tutorial for Beginners: How to Use &amp; Set up ClawdBot (Openclaw) | How I Built A $10,000 Online Casino App With AI | How I Built an App in 14 minutes With 1 AI tool (2026) | Claude Code Tutorial for Beginners: Build App with AI (2026) | How I Built an App Making $150K with AI UGC (No Coding)", "video_count": 95, "ghl_connected": false}, {"name": "Liam Ottley", "rank": 14, "isTop3": false, "fitness": 25.4, "subs": 764000, "bio": "I\u2019m an AI entrepreneur from New Zealand. In 2023 I created the 'AI Automation Agency' or 'AAA' model based on my learnings at my own agency Morningside AI.\n\nOn this channel I share my learnings from running my own AI Automation Agency, AI SaaS and from helping my community of over 290,000 AI Automation Agency owners to start and scale their own AI business.\n\nMy mission is to inspire others to take advantage of the incredible AI opportunity by documenting my journey as an AI entrepreneur.\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCui4jxDaMb53Gdh-AZUTPAg", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "How to Build &amp; Sell AI Agents: Ultimate Beginner\u2019s Guide | This AI Technology Will Replace Millions (Here&#39;s How to Prepare) | The 8 AI Skills That Will Separate Winners From Losers in 2025 | How to Get Rich with AI: The Complete Beginner\u2019s Blueprint | How to Get Rich with AI Agents in 2025 | Complete Beginner&#39;s Guide (OpenAI Custom GPTs)", "video_count": 244, "ghl_connected": false}, {"name": "Matt Wolfe", "rank": 15, "isTop3": false, "fitness": 25.4, "subs": 927000, "bio": "Sifting through all the AI noise to share what actually matters - New videos every Friday (and probably some in between too)\n\nDiscover More:\n\ud83d\udee0\ufe0f Explore AI Tools & News: https://futuretools.io/\n\ud83d\udcf0 Weekly Newsletter: https://futuretools.io/newsletter\n\nSocials:\n\u274c Twiter/X: https://x.com/mreflow\n\ud83d\uddbc\ufe0f Instagram: https://instagram.com/mr.eflow\n\ud83e\uddf5 Threads: https://www.threads.net/@mr.eflow\n\ud83d\udfe6 LinkedIn: https://www.linkedin.com/in/matt-wolfe-30841712/\n\ud83d\udc4d Facebook: https://www.facebook.com/mattrwolfe\n\nLet\u2019s work together!\n- For brand, sponsorship, and business inquiries: mattwolfe@smoothmedia.co\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UChpleBmo18P08aKCIgti38g", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "This Method of 3D Printing is Pretty Awesome | 21 Mobile AI Apps You Won&#39;t Believe Are Free | This Is Better Than ChatGPT (With Prompting Guide) | Make A Movie with AI: It&#39;s Crazy What We Can Do! | Install Auto-GPT Locally (Quick Setup Guide)", "video_count": 648, "ghl_connected": false}, {"name": "WEBINARIS - automatisiertes Webinar-Marketing", "rank": 16, "isTop3": false, "fitness": 25.288, "subs": 1440, "bio": "Lerne auf diesem Kanal alles \u00fcber Marketingautomation mit Hilfe von automatisierten Webinaren und Webinaris. Gewinne kampagnen gesteuert neue Kunden und steigere automatisiert Deine Ums\u00e4tze und Gewinne.", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UC7JuR0Qd3eydLKZQERSYpBQ", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "&quot;Die Klippensprung Mail&quot; fu\u0308r mehr Verka\u0308ufe in Deinen Webinaren | Die perfekte automatisierte digitale Firma (1:1 Umsetzungsplan) | Webinaris Rundgang (U\u0308berblick aller Funktionen) | WEBINARIS - Interview mit Rainer von Massenbach | Einfu\u0308hrung Webinaris", "video_count": 46, "ghl_connected": false}, {"name": "Jason Wardrop", "rank": 17, "isTop3": false, "fitness": 22.4, "subs": 337000, "bio": "\ud83d\udcb8 Built a multi-7-figure software business (2015 - 2021)\n\u2699\ufe0f #1 HighLevel Affiliate All-Time [+105,000 Referrals] (2021 - Present)\n\ud83d\udcc8 Teaching the exact systems that helped me scale\n\u26a0\ufe0f Real results require work \u2014 yours may vary \n\ud83c\udfa5 Subscribe & let\u2019s build your future\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCBgPxTfodXMa_zavgl0DX7A", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "How To Start A YouTube Channel For Beginners (Full Tutorial) | Start A Digital Marketing Agency With NO EXPERIENCE! (Beginner Friendly!) | Start A Digital Marketing Agency In 2026 With NO EXPERIENCE! | Sell AI Automation to Local Businesses (Beginner Step-by-Step Guide) | New Side Hustle That\u2019s Working in 2026 (Beginner-Friendly Strategy)", "video_count": 108, "ghl_connected": false}, {"name": "Keaton Walker", "rank": 18, "isTop3": false, "fitness": 21.208, "subs": 73800, "bio": "I build businesses that print money while I sleep.\n\nCurrently running a $100k/mo+ \u201csemi-passive\u201d business with 6+ income streams all revolving around GoHighLevel.\n\nI\u2019ve also helped hundreds of entrepreneurs get more leverage and better business results\u2014without fake scarcity, cringe bro-marketing, or shady tactics.\n\nFormer agency owner ($80K/month before I sold to a strategic buyer), now I mostly focus on:\n\nHigh-production content that actually converts\n\nBuilding money babies in AI and software\n\nTeaching people how to scale without burning out\n\nMy work's been featured by HighLevel and has influenced thousands of resellers across the platform.\n\nI live for:\n\n- Building real leverage\n- Traveling with my family\n- Protecting my energy like it\u2019s a second job\n\nIf you want to grow a white-labeled SaaS business, steal my systems, or just see behind the curtain\u2014subscribe and hang out.\nDM on Instagram if you\u2019re serious about scaling.\n\n\n\n", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCROsCSoY7I_QZuS4QGQckOA", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "He got 1,000 SaaS Clients in 12 Months Using 5-Minute Looms (No Sales Calls) | Learn Zapier in 7 minutes: Business &amp; Personal Automation Tutorial For Beginners (2025) | DON\u2019T Start a Skool Community Until You Watch This | He Sold 100 AI Receptionists to Local Businesses in ONE Month (\u00a3399/mo clients) | How to Use GoHighLevel WORKFLOWS (If/Else, Automations, &amp; More!)", "video_count": 826, "ghl_connected": false}, {"name": "Manus AI", "rank": 19, "isTop3": false, "fitness": 19.912000000000003, "subs": 65700, "bio": "Manus from Meta is a general AI agent that turns your thoughts into actions. It excels at various tasks in work and life, getting everything done while you rest.\nFind us at: https://t.me/manus_ai_agent_bot", "website": "Not Found", "youtube": "https://www.youtube.com/channel/UCQgFQdqiFQ_LfFBGP6z9dqQ", "linkedin": "Not Found", "instagram": "Not Found", "twitter": "Not Found", "webinar_url": "Not Found", "has_webinar": false, "course_url": "Not Found", "site_headline": "Not Found", "site_sections": "Not Found", "has_pricing": false, "top_videos": "Introducing Manus: The General AI Agent | Introducing Manus Browser Operator : An AI Agent that Browses For You? | Introducing Wide Research | Introducing Manus Slides | Introducing My Computer: When Manus Meets Your Desktop", "video_count": 65, "ghl_connected": false}];
+
+    function renderCards() {
+        const mainGrid = document.getElementById('main-grid');
+        const top3Grid = document.getElementById('top3-grid');
+        const tableBody = document.querySelector('#webinarTable tbody');
+        
+        mainGrid.innerHTML = '';
+        top3Grid.innerHTML = '';
+        tableBody.innerHTML = '';
+
+        candidates.forEach(c => {
+            const isWeb = c.has_webinar;
+            const isCourse = c.course_url !== "Not Found";
+            const isSite = c.website !== "Not Found";
+            
+            let borderStyle = 'border: 1px solid var(--grey)';
+            if(isWeb && isCourse) borderStyle = 'border: 1px solid var(--blue); box-shadow: 0 0 15px rgba(0,212,255,0.2)';
+            else if(isWeb) borderStyle = 'border: 1px solid var(--green)';
+            else if(isCourse) borderStyle = 'border: 1px solid var(--orange)';
+
+            const cardHtml = `
+                <div class="card ${c.isTop3 ? 'top3-card ' + (c.rank==1?'gold':c.rank==2?'silver':'bronze') : ''}" 
+                     style="${borderStyle}"
+                     data-name="${c.name.toLowerCase()}"
+                     data-webinar="${isWeb}" data-course="${isCourse}" data-top3="${c.isTop3}" data-site="${isSite}">
+                    
+                    ${c.isTop3 ? `<div class="rank-badge">${c.rank==1?'🥇':c.rank==2?'🥈':'🥉'}</div>` : ''}
+                    
+                    <div class="card-header">
+                        <h3>${c.rank}. ${c.name}</h3>
+                        <span class="fitness">${c.fitness}</span>
+                    </div>
+
+                    <div class="stats">
+                        👥 ${c.subs.toLocaleString()} subscribers · 📹 ${c.video_count} videos
+                    </div>
+
+                    <div class="links-row">
+                        <div>🌐 Website: ${c.website !== "Not Found" ? `<a href="${c.website}" target="_blank">Visit Site</a>` : '<span class="not-found">Not Found</span>'}</div>
+                        <div>▶️ YouTube: ${c.youtube !== "Not Found" ? `<a href="${c.youtube}" target="_blank">Channel</a>` : '<span class="not-found">Not Found</span>'}</div>
+                        <div>💼 LinkedIn: ${c.linkedin !== "Not Found" ? `<a href="${c.linkedin}" target="_blank">Profile</a>` : '<span class="not-found">Not Found</span>'}</div>
+                        <div>🎓 Course: ${c.course_url !== "Not Found" ? `<a href="${c.course_url}" target="_blank">Offer Page</a>` : '<span class="not-found">Not Found</span>'}</div>
+                    </div>
+
+                    <div class="webinar-box ${isWeb ? 'has-web' : 'no-web'}">
+                        <strong>${isWeb ? '✅ RUNS WEBINARS' : '❌ No Webinar Found'}</strong>
+                        ${isWeb ? `<br><a href="${c.webinar_url}" target="_blank" style="color:var(--green); font-size:0.8rem;">${c.webinar_url}</a>` : ''}
+                    </div>
+
+                    ${c.site_headline !== "Not Found" ? `
+                        <div class="site-intel">
+                            <span class="headline">"${c.site_headline}"</span>
+                            <div style="font-size:0.7rem; color:var(--blue); opacity:0.8;">${c.site_sections}</div>
+                            <div style="margin-top:5px;">💰 Has pricing: ${c.has_pricing ? '✅' : '❌'}</div>
+                        </div>
+                    ` : ''}
+
+                    <div style="margin-top:15px; font-size:0.85rem; color:#9ca3af;">
+                        ${c.bio.substring(0, 150)}...
+                    </div>
+
+                    <div class="collapsible" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">▼ Top Videos</div>
+                    <div class="content">${c.top_videos}</div>
+                </div>
+            `;
+
+            if(c.isTop3) top3Grid.innerHTML += cardHtml;
+            else mainGrid.innerHTML += cardHtml;
+
+            if(isWeb) {
+                tableBody.innerHTML += `<tr><td>${c.rank}</td><td>${c.name}</td><td>${c.subs.toLocaleString()}</td><td><a href="${c.webinar_url}" target="_blank">View Webinar</a></td><td><a href="${c.course_url}" target="_blank">View Course</a></td></tr>`;
+            }
+        });
+        
+        if(tableBody.innerHTML === '') {
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--orange);">⚠️ No webinar registration pages were discovered via automated search. Recommend manual verification for top 3 candidates.</td></tr>';
+        }
+    }
+
+    function filterCards(type, btn) {
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.display = 'block';
+            if(type === 'top3' && card.dataset.top3 !== 'true') card.style.display = 'none';
+            if(type === 'webinar' && card.dataset.webinar !== 'true') card.style.display = 'none';
+            if(type === 'course' && card.dataset.course !== 'true') card.style.display = 'none';
+            if(type === 'website' && card.dataset.site !== 'true') card.style.display = 'none';
+        });
+    }
+
+    function searchNames() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.display = card.dataset.name.includes(input) ? 'block' : 'none';
+        });
+    }
+
+    function animateValue(id, end) {
+        let obj = document.getElementById(id);
+        let current = 0;
+        let step = Math.ceil(end / 50);
+        let timer = setInterval(() => {
+            current += step;
+            if (current >= end) {
+                obj.innerText = end;
+                clearInterval(timer);
+            } else {
+                obj.innerText = current;
+            }
+        }, 30);
+    }
+
+    // Chart.js Discovery Chart
+    function initChart() {
+        const top12 = candidates.slice(0, 12);
+        const ctx = document.getElementById('footprintChart').getContext('2d');
+        
+        const counts = top12.map(c => {
+            let score = 0;
+            if(c.website !== "Not Found") score++;
+            if(c.youtube !== "Not Found") score++;
+            if(c.linkedin !== "Not Found") score++;
+            if(c.instagram !== "Not Found") score++;
+            if(c.twitter !== "Not Found") score++;
+            if(c.webinar_url !== "Not Found") score++;
+            return score;
+        });
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: top12.map(c => c.name),
+                datasets: [{
+                    label: 'Discovery Score (0-6)',
+                    data: counts,
+                    backgroundColor: counts.map(v => v >= 5 ? '#10b981' : v >= 3 ? '#f59e0b' : '#ef4444')
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { x: { max: 6, grid: { color: '#374151' } }, y: { grid: { display: false } } },
+                plugins: { legend: { display: false } }
+            }
+        });
+    }
+
+    window.onload = () => {
+        renderCards();
+        animateValue("count-total", 19);
+        animateValue("count-webs", 0);
+        animateValue("count-master", 0);
+        animateValue("count-course", 0);
+        initChart();
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automated Stalker — Intelligence Hub</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0f1e; color: #fff; font-family: system-ui, sans-serif; }
+  
+  .hero { 
+    text-align: center; padding: 60px 20px 40px;
+    border-bottom: 1px solid #1e293b;
+  }
+  .hero h1 { font-size: 2.5rem; color: #00d4ff; letter-spacing: 2px; }
+  .hero p { color: #94a3b8; margin-top: 10px; font-size: 1rem; }
+  .hero .tag { 
+    display: inline-block; background: rgba(0,212,255,0.1); 
+    border: 1px solid #00d4ff; color: #00d4ff;
+    padding: 4px 12px; border-radius: 20px; font-size: 0.75rem;
+    margin-top: 15px; letter-spacing: 1px;
+  }
+
+  .section { padding: 50px 40px; max-width: 1200px; margin: auto; }
+  .section-title { 
+    font-size: 0.75rem; letter-spacing: 3px; color: #00d4ff; 
+    text-transform: uppercase; margin-bottom: 24px;
+    border-left: 3px solid #00d4ff; padding-left: 12px;
+  }
+
+  /* ALGORITHM ITERATIONS */
+  .iterations { display: flex; flex-direction: column; gap: 16px; }
+  .iteration-card {
+    background: #111827; border-radius: 12px; padding: 24px 28px;
+    border: 1px solid #1e293b; display: flex; 
+    justify-content: space-between; align-items: center;
+    transition: border-color 0.2s;
+  }
+  .iteration-card:hover { border-color: #00d4ff; }
+  .iteration-card.gold { border-color: #ffd700; }
+  .iteration-left { flex: 1; }
+  .iteration-gen { 
+    font-size: 0.7rem; letter-spacing: 2px; color: #64748b; 
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .iteration-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+  .iteration-desc { color: #94a3b8; font-size: 0.875rem; line-height: 1.5; }
+  .iteration-meta { 
+    display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap;
+  }
+  .meta-pill {
+    background: rgba(0,212,255,0.08); border: 1px solid #1e293b;
+    color: #64748b; font-size: 0.7rem; padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .btn {
+    padding: 10px 22px; border-radius: 8px; font-weight: 700;
+    font-size: 0.85rem; text-decoration: none; white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-blue { background: #00d4ff; color: #0a0f1e; }
+  .btn-gold { background: #ffd700; color: #0a0f1e; }
+  .btn-grey { background: #1e293b; color: #94a3b8; }
+
+  /* 28 CANDIDATE GRID */
+  .cards-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .candidate-card {
+    background: #111827; border: 1px solid #1e293b; border-radius: 10px;
+    padding: 16px; text-decoration: none; color: #fff;
+    transition: border-color 0.2s, transform 0.2s;
+    display: block;
+  }
+  .candidate-card:hover { border-color: #00d4ff; transform: translateY(-2px); }
+  .candidate-card.top3 { border-color: #ffd700; }
+  .candidate-name { font-weight: 600; font-size: 0.875rem; margin-bottom: 4px; }
+  .candidate-badge { 
+    font-size: 0.65rem; color: #64748b; letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .candidate-badge.gold { color: #ffd700; }
+
+  /* NUNO BRAIN */
+  .brain-card {
+    background: #111827; border: 1px solid #7c3aed; border-radius: 12px;
+    padding: 28px; display: flex; justify-content: space-between; 
+    align-items: center; gap: 20px;
+  }
+  .brain-title { font-size: 1.2rem; font-weight: 700; color: #a78bfa; }
+  .brain-desc { color: #94a3b8; font-size: 0.875rem; margin-top: 6px; line-height: 1.5; }
+  .brain-stats { display: flex; gap: 24px; margin-top: 14px; }
+  .brain-stat { text-align: center; }
+  .brain-stat-num { font-size: 1.4rem; font-weight: 700; color: #a78bfa; }
+  .brain-stat-label { font-size: 0.65rem; color: #64748b; text-transform: uppercase; }
+  .btn-purple { background: #7c3aed; color: #fff; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center; padding: 40px 20px;
+    border-top: 1px solid #1e293b; color: #475569; font-size: 0.8rem;
+  }
+  .footer a { color: #00d4ff; text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .iteration-card { flex-direction: column; gap: 16px; align-items: flex-start; }
+    .brain-card { flex-direction: column; }
+    .hero h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="tag">PHASE 1 · COMPETITOR INTELLIGENCE</div>
+  <h1>🤖 AUTOMATED STALKER</h1>
+  <p>Built for Nuno Tavares (Automated Marketer) · Pareto Talent Final Project · April 2026</p>
+  <p style="color:#475569; font-size:0.8rem; margin-top:8px;">
+    A Darwinian evolutionary algorithm built with Claude Code, Claude AI & Gemini · 
+    Powered by YouTube Data API v3 + RivalSearchMCP
+  </p>
+</div>
+
+<!-- ALGORITHM ITERATIONS -->
+<div class="section">
+  <div class="section-title">🧬 Algorithm Iterations — From Raw Search to Deep Intelligence</div>
+  <div class="iterations">
+
+    <div class="iteration-card">
+      <div class="iteration-left">
+        <div class="iteration-gen">Generation 1 · Built with Gemini + Claude</div>
+        <div class="iteration-title">The Darwin Engine — First Run</div>
+        <div class="iteration-desc">
+          Queried YouTube Data API across 8 niche search terms. Discovered 28 candidates. 
+          Applied 7-dimension fitness scoring. Ran 3 elimination rounds. First HTML visualization 
+          of the Darwinian model with algorithm explanation and ranked table.
+        </div>
+        <div class="iteration-meta">
+          <span class="meta-pill">28 candidates</span>
+          <span class="meta-pill">YouTube API</span>
+          <span class="meta-pill">Darwinian scoring</span>
+          <span class="meta-pill">Python</span>
+        </div>
+      </div>
+      <a href="iteration1.html" class="btn btn-grey">View Report →</a>
+    </div>
+
+    <div class="iteration-card">
+      <div class="iteration-left">
+        <div class="iteration-gen">Generation 2 · Built with Gemini + Claude</div>
+        <div class="iteration-title">Deep Link Enrichment — All 28 Candidates</div>
+        <div class="iteration-desc">
+          Ran automated Google searches for each candidate to find real URLs — websites, 
+          LinkedIn, Instagram, course pages, webinar registration pages. Added digital 
+          footprint scoring and filter controls. All 28 shown with clickable links.
+        </div>
+        <div class="iteration-meta">
+          <span class="meta-pill">Web scraping</span>
+          <span class="meta-pill">Link discovery</span>
+          <span class="meta-pill">28 profiles</span>
+          <span class="meta-pill">Filter controls</span>
+        </div>
+      </div>
+      <a href="iteration2.html" class="btn btn-grey">View Report →</a>
+    </div>
+
+    <div class="iteration-card">
+      <div class="iteration-left">
+        <div class="iteration-gen">Generation 3 · Built with Gemini + Claude</div>
+        <div class="iteration-title">Individual Report Cards — One Per Candidate</div>
+        <div class="iteration-desc">
+          Generated individual HTML intelligence cards for each of the 28 candidates. 
+          Each card shows all discovered links, webinar page status, course/product pages, 
+          and GHL/MCP connection signals. Click any candidate below to open their card.
+        </div>
+        <div class="iteration-meta">
+          <span class="meta-pill">28 individual reports</span>
+          <span class="meta-pill">Per-candidate intel</span>
+          <span class="meta-pill">Clickable links</span>
+        </div>
+      </div>
+      <a href="iteration3.html" class="btn btn-grey">View Report →</a>
+    </div>
+
+    <div class="iteration-card gold">
+      <div class="iteration-left">
+        <div class="iteration-gen">Generation 4 · Built with Claude Code + RivalSearchMCP</div>
+        <div class="iteration-title">⭐ Top 3 Deep Intelligence — The Crown Jewel</div>
+        <div class="iteration-desc">
+          Switched from Python scraping to Claude Code + RivalSearchMCP for Cloudflare bypass 
+          and multi-engine search. Deep-stalked Nick Saraev, Riley Brown, and Nate Herk across 
+          all platforms. Found real pricing ($184/mo Skool, $99/mo community), revenue estimates 
+          ($160K–$440K/mo), press mentions, podcast appearances, and full business model breakdowns.
+          Key finding: none of the top 3 run public webinars — Nuno's webinar is uncontested.
+        </div>
+        <div class="iteration-meta">
+          <span class="meta-pill">RivalSearchMCP</span>
+          <span class="meta-pill">Claude Code</span>
+          <span class="meta-pill">Revenue intelligence</span>
+          <span class="meta-pill">Full business models</span>
+          <span class="meta-pill">Press + podcasts</span>
+        </div>
+      </div>
+      <a href="index.html" class="btn btn-gold">View Report →</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- 28 INDIVIDUAL CARDS -->
+<div class="section">
+  <div class="section-title">👥 All 28 Candidates — Individual Report Cards</div>
+  <div class="cards-grid">
+    <a href="report_cards/Nick_Saraev_Report.html" class="candidate-card top3">
+      <div class="candidate-name">Nick Saraev</div>
+      <div class="candidate-badge gold">🥇 Finalist #1 · 62.5</div>
+    </a>
+    <a href="report_cards/Riley_Brown_Report.html" class="candidate-card top3">
+      <div class="candidate-name">Riley Brown</div>
+      <div class="candidate-badge gold">🥈 Finalist #2 · 58.75</div>
+    </a>
+    <a href="report_cards/Nate_Herk_AI_Automation_Report.html" class="candidate-card top3">
+      <div class="candidate-name">Nate Herk</div>
+      <div class="candidate-badge gold">🥉 Finalist #3 · 58.75</div>
+    </a>
+    <a href="report_cards/Helena_Liu_Report.html" class="candidate-card">
+      <div class="candidate-name">Helena Liu</div>
+      <div class="candidate-badge">272K subs · 55.0</div>
+    </a>
+    <a href="report_cards/Liam_Ottley_Report.html" class="candidate-card">
+      <div class="candidate-name">Liam Ottley</div>
+      <div class="candidate-badge">764K subs · 25.4</div>
+    </a>
+    <a href="report_cards/Matt_Wolfe_Report.html" class="candidate-card">
+      <div class="candidate-name">Matt Wolfe</div>
+      <div class="candidate-badge">927K subs · 25.4</div>
+    </a>
+    <a href="report_cards/Jason_Wardrop_Report.html" class="candidate-card">
+      <div class="candidate-name">Jason Wardrop</div>
+      <div class="candidate-badge">337K subs · 22.4</div>
+    </a>
+    <a href="report_cards/Keaton_Walker_Report.html" class="candidate-card">
+      <div class="candidate-name">Keaton Walker</div>
+      <div class="candidate-badge">73.8K subs · 21.2</div>
+    </a>
+    <a href="report_cards/Mikey_No_Code_Report.html" class="candidate-card">
+      <div class="candidate-name">Mikey No Code</div>
+      <div class="candidate-badge">119K subs · 25.4</div>
+    </a>
+    <a href="report_cards/Corbin_Brown_Report.html" class="candidate-card">
+      <div class="candidate-name">Corbin Brown</div>
+      <div class="candidate-badge">165K subs · 25.4</div>
+    </a>
+    <a href="report_cards/Pragati_Kunwer_Claude_Code_Report.html" class="candidate-card">
+      <div class="candidate-name">Pragati Kunwer</div>
+      <div class="candidate-badge">112K subs · 31.4</div>
+    </a>
+    <a href="report_cards/HighLevel_Report.html" class="candidate-card">
+      <div class="candidate-name">HighLevel</div>
+      <div class="candidate-badge">92.1K subs · 49.7</div>
+    </a>
+    <a href="report_cards/GoHighLevel_Tutorials_HL_Power_Hub_Report.html" class="candidate-card">
+      <div class="candidate-name">GHL Power Hub</div>
+      <div class="candidate-badge">3.37K subs · 33.2</div>
+    </a>
+    <a href="report_cards/Vibe_Coding_with_Naman_Report.html" class="candidate-card">
+      <div class="candidate-name">Vibe Coding w/ Naman</div>
+      <div class="candidate-badge">8.97K subs · 34.3</div>
+    </a>
+    <a href="report_cards/n8n_Report.html" class="candidate-card">
+      <div class="candidate-name">n8n</div>
+      <div class="candidate-badge">230K subs · 55.0</div>
+    </a>
+    <a href="report_cards/Manus_AI_Report.html" class="candidate-card">
+      <div class="candidate-name">Manus AI</div>
+      <div class="candidate-badge">65.7K subs · 19.9</div>
+    </a>
+    <a href="report_cards/Claude_Ams_Programming_Guru_Report.html" class="candidate-card">
+      <div class="candidate-name">Claude Ams</div>
+      <div class="candidate-badge">412K subs · 28.4</div>
+    </a>
+    <a href="report_cards/Anthropic_Report.html" class="candidate-card">
+      <div class="candidate-name">Anthropic</div>
+      <div class="candidate-badge">516K subs · 25.4</div>
+    </a>
+    <a href="report_cards/Jonathan_Ferrell_GoHighLevel_Automations_Report.html" class="candidate-card">
+      <div class="candidate-name">Jonathan Ferrell</div>
+      <div class="candidate-badge">731 subs · 10.5</div>
+    </a>
+    <a href="report_cards/Milan_Vasarhelyi_Business_Automation_Report.html" class="candidate-card">
+      <div class="candidate-name">Milan Vasarhelyi</div>
+      <div class="candidate-badge">287 subs · 13.4</div>
+    </a>
+    <a href="report_cards/MCP_Manager_by_Usercentrics_Report.html" class="candidate-card">
+      <div class="candidate-name">MCP Manager</div>
+      <div class="candidate-badge">157 subs · 13.4</div>
+    </a>
+    <a href="report_cards/WEBINARIS_automatisiertes_Webinar_Marketing_Report.html" class="candidate-card">
+      <div class="candidate-name">WEBINARIS</div>
+      <div class="candidate-badge">1.44K subs · 25.3</div>
+    </a>
+    <a href="report_cards/MCP_Builder_ai_Report.html" class="candidate-card">
+      <div class="candidate-name">MCP Builder AI</div>
+      <div class="candidate-badge">13 subs · 10.4</div>
+    </a>
+    <a href="report_cards/Yazdan_Report.html" class="candidate-card">
+      <div class="candidate-name">Yazdan</div>
+      <div class="candidate-badge">149 subs · 10.4</div>
+    </a>
+    <a href="report_cards/Vibe_Coding_Tutorials_Report.html" class="candidate-card">
+      <div class="candidate-name">Vibe Coding Tutorials</div>
+      <div class="candidate-badge">1 sub · 7.4</div>
+    </a>
+    <a href="report_cards/Marketing_Cube_Marketing_Automation_Report.html" class="candidate-card">
+      <div class="candidate-name">Marketing Cube</div>
+      <div class="candidate-badge">762 subs · 4.5</div>
+    </a>
+    <a href="report_cards/Zoho_Marketing_Automation_Report.html" class="candidate-card">
+      <div class="candidate-name">Zoho Marketing Auto</div>
+      <div class="candidate-badge">694 subs · 4.5</div>
+    </a>
+    <a href="report_cards/mcp_Report.html" class="candidate-card">
+      <div class="candidate-name">mcp (electronics)</div>
+      <div class="candidate-badge">176 subs · 4.4</div>
+    </a>
+  </div>
+</div>
+
+<!-- NUNO BRAIN -->
+<div class="section">
+  <div class="section-title">🧠 Nuno Brain — The Knowledge Base</div>
+  <div class="brain-card">
+    <div>
+      <div class="brain-title">Ultimate_Nuno_Brain.txt</div>
+      <div class="brain-desc">
+        The complete knowledge base fed into the AI project. Compiled from Nuno Tavares's 
+        YouTube video transcripts, audience comments, pain points, and content themes. 
+        This file is the foundation for all voice cloning, ICP development, and 
+        webinar strategy work in this project.
+      </div>
+      <div class="brain-stats">
+        <div class="brain-stat">
+          <div class="brain-stat-num">20+</div>
+          <div class="brain-stat-label">Videos transcribed</div>
+        </div>
+        <div class="brain-stat">
+          <div class="brain-stat-num">100+</div>
+          <div class="brain-stat-label">Audience comments</div>
+        </div>
+        <div class="brain-stat">
+          <div class="brain-stat-num">1</div>
+          <div class="brain-stat-label">AI knowledge base</div>
+        </div>
+      </div>
+    </div>
+    <a href="nuno_brain.txt" class="btn btn-purple">View Nuno Brain →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Built by Sofia Renata · Pareto Talent Final Project · April 2026<br>
+  <a href="https://github.com/camussicamusica/automated-stalker">GitHub Repository</a> · 
+  <a href="https://github.com/damionrashford/RivalSearchMCP">Powered by RivalSearchMCP</a> · 
+  Built with Claude Code + Claude AI + Gemini
+</div>
+
+</body>
+</html>
