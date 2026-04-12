@@ -112,7 +112,6 @@
         <a href="hub.html"><span class="di">🏠</span> Intelligence Hub</a>
         <a href="index.html"><span class="di">🥇</span> Top 3 Deep Intel</a>
         <a href="algorithm_sop.html"><span class="di">🧬</span> Algorithm SOP</a>
-        <a href="iteration1.html"><span class="di">📊</span> Evolution Matrix</a>
         <a href="competitors28.html"><span class="di">👥</span> All 28 Candidates</a>
       </div>
     </li>
@@ -157,10 +156,6 @@
         <tbody></tbody>
     </table>
 
-    <h2 class="section-title">Digital Footprint Discovery</h2>
-    <div class="chart-container">
-        <canvas id="footprintChart"></canvas>
-    </div>
 </div>
 
 <footer>
@@ -284,49 +279,12 @@
         }, 30);
     }
 
-    // Chart.js Discovery Chart
-    function initChart() {
-        const top12 = candidates.slice(0, 12);
-        const ctx = document.getElementById('footprintChart').getContext('2d');
-        
-        const counts = top12.map(c => {
-            let score = 0;
-            if(c.website !== "Not Found") score++;
-            if(c.youtube !== "Not Found") score++;
-            if(c.linkedin !== "Not Found") score++;
-            if(c.instagram !== "Not Found") score++;
-            if(c.twitter !== "Not Found") score++;
-            if(c.webinar_url !== "Not Found") score++;
-            return score;
-        });
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: top12.map(c => c.name),
-                datasets: [{
-                    label: 'Discovery Score (0-6)',
-                    data: counts,
-                    backgroundColor: counts.map(v => v >= 5 ? '#10b981' : v >= 3 ? '#f59e0b' : '#ef4444')
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { x: { max: 6, grid: { color: '#374151' } }, y: { grid: { display: false } } },
-                plugins: { legend: { display: false } }
-            }
-        });
-    }
-
     window.onload = () => {
         renderCards();
         animateValue("count-total", 19);
         animateValue("count-webs", 0);
         animateValue("count-master", 0);
         animateValue("count-course", 0);
-        initChart();
     };
 </script>
 <!-- ═══ UNIVERSAL FOOTER ═══ -->
