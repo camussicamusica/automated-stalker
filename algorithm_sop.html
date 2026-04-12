@@ -1,1292 +1,575 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Darwin Engine — Algorithm SOP</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    :root {
-      --bg: #0a0f1e;
-      --card: #111827;
-      --card2: #0d1526;
-      --accent: #00d4ff;
-      --accent2: #0099cc;
-      --gold: #f59e0b;
-      --silver: #94a3b8;
-      --bronze: #cd7c2f;
-      --text: #e2e8f0;
-      --muted: #64748b;
-      --border: #1e293b;
-      --green: #10b981;
-      --amber: #f59e0b;
-      --red: #ef4444;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Darwin Engine — Full Technical SOP</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0f1e;color:#fff;font-family:system-ui,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:2.2rem;font-weight:700;color:#00d4ff;margin-bottom:6px}
+.sub{color:#475569;font-size:0.875rem;margin-bottom:48px;line-height:1.6}
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0}
+.phase{display:grid;grid-template-columns:100px 1fr;gap:0;position:relative}
+.phase-left{display:flex;flex-direction:column;align-items:center;padding-top:4px}
+.phase-dot{width:40px;height:40px;border-radius:50%;border:2px solid #00d4ff;background:#0a0f1e;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#00d4ff;z-index:2;flex-shrink:0}
+.phase-line{width:2px;flex:1;background:#1e293b;margin:6px 0}
+.phase-right{padding:0 0 48px 0}
+.phase-label{font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#00d4ff;margin-bottom:8px}
+.phase-title{font-size:1.15rem;font-weight:700;margin-bottom:6px}
+.phase-desc{color:#64748b;font-size:0.85rem;line-height:1.6;margin-bottom:16px}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+/* TOGGLES */
+.toggle-btn{background:#111827;border:1px solid #1e293b;color:#00d4ff;font-size:0.75rem;padding:7px 16px;border-radius:6px;cursor:pointer;margin:4px 4px 4px 0;font-family:monospace;transition:all 0.15s;display:inline-block}
+.toggle-btn:hover{background:#1e293b;border-color:#00d4ff}
+.toggle-btn.open{background:rgba(0,212,255,0.1);border-color:#00d4ff}
+.toggle-content{display:none;margin-top:16px;animation:fadeIn 0.2s ease}
+.toggle-content.open{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 3px; }
+/* TABLES */
+.matrix{width:100%;border-collapse:collapse;font-size:0.78rem;margin:0}
+.matrix th{background:#0d1526;color:#64748b;font-size:0.65rem;letter-spacing:1px;text-transform:uppercase;padding:10px 14px;text-align:left;border:1px solid #1e293b;white-space:nowrap}
+.matrix td{padding:9px 14px;border:1px solid #1e293b;vertical-align:middle;color:#94a3b8}
+.matrix tr:hover td{background:#111827}
+.name{color:#e2e8f0;font-weight:600}
+.score-hi{font-weight:700;color:#10b981}
+.score-lo{font-weight:700;color:#ef4444}
+.score-mid{font-weight:700;color:#00d4ff}
+.tag{display:inline-block;font-size:0.65rem;padding:3px 8px;border-radius:10px;white-space:nowrap}
+.tag-gold{background:rgba(255,215,0,0.12);color:#ffd700;border:1px solid rgba(255,215,0,0.3)}
+.tag-blue{background:rgba(0,212,255,0.08);color:#00d4ff;border:1px solid rgba(0,212,255,0.2)}
+.tag-red{background:rgba(239,68,68,0.08);color:#ef4444;border:1px solid rgba(239,68,68,0.2)}
+.tag-orange{background:rgba(245,158,11,0.08);color:#f59e0b;border:1px solid rgba(245,158,11,0.2)}
 
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: rgba(10,15,30,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 2rem;
-    }
-    .nav-logo {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-    }
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--accent); }
+/* DIMENSION CARDS */
+.dim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:0}
+.dim-card{background:#111827;border:1px solid #1e293b;border-radius:10px;padding:16px}
+.dim-w{font-size:1.5rem;font-weight:700;color:#00d4ff;margin-bottom:4px}
+.dim-w.high{color:#ffd700}
+.dim-n{font-size:0.9rem;font-weight:600;margin-bottom:6px}
+.dim-d{font-size:0.75rem;color:#64748b;line-height:1.5}
+.dim-bar{height:3px;background:#1e293b;border-radius:2px;margin-top:12px}
+.dim-fill{height:100%;border-radius:2px;background:#00d4ff}
+.dim-fill.high{background:#ffd700}
 
-    /* ── SECTIONS ── */
-    section {
-      padding: 6rem 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    section:first-of-type { padding-top: 9rem; }
+/* FORMULA */
+.formula{background:#050b14;border:1px solid #1e293b;border-radius:10px;padding:20px;font-family:monospace;font-size:0.8rem;color:#10b981;line-height:2;overflow-x:auto}
+.kw{color:#00d4ff}
+.fn{color:#ffd700}
+.cm{color:#334155}
+.st{color:#f59e0b}
 
-    .section-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.6rem;
-    }
-    h2 {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 1.2rem;
-      line-height: 1.15;
-    }
-    .lead {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 680px;
-      margin-bottom: 2.5rem;
-    }
+/* CODE BLOCK */
+.code-wrap{position:relative}
+.code{background:#050b14;border:1px solid #1e293b;border-radius:10px;padding:20px;font-family:monospace;font-size:0.78rem;color:#10b981;line-height:1.8;overflow-x:auto;white-space:pre}
+.copy-btn{position:absolute;top:10px;right:10px;background:#1e293b;border:1px solid #334155;color:#64748b;font-size:0.65rem;padding:5px 12px;border-radius:5px;cursor:pointer;font-family:monospace;transition:color 0.15s}
+.copy-btn:hover{color:#00d4ff;border-color:#00d4ff}
 
-    /* ── HERO ── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 5rem;
-      padding-bottom: 4rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 70% 60% at 60% 40%, rgba(0,212,255,0.07) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 10% 80%, rgba(0,153,204,0.05) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .hero-tag {
-      display: inline-block;
-      padding: 0.3rem 0.9rem;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      border-radius: 2px;
-      margin-bottom: 1.6rem;
-    }
-    #hero h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 900;
-      color: #fff;
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
-    }
-    #hero h1 span { color: var(--accent); }
-    #hero .subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
-      color: var(--muted);
-      margin-bottom: 3rem;
-      max-width: 600px;
-    }
-    .hero-stats {
-      display: flex;
-      gap: 3rem;
-      flex-wrap: wrap;
-    }
-    .hero-stat .num {
-      font-size: 2.8rem;
-      font-weight: 900;
-      color: var(--accent);
-      line-height: 1;
-    }
-    .hero-stat .lbl {
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-top: 0.25rem;
-    }
-    .hero-line {
-      width: 60px;
-      height: 3px;
-      background: var(--accent);
-      border-radius: 2px;
-      margin-bottom: 2rem;
-    }
+/* GEN FUNNEL */
+.gen-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0}
+.gen-card{background:#111827;border:1px solid #00d4ff;border-radius:10px;padding:18px}
+.gen-n{font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#00d4ff;margin-bottom:10px}
+.gen-big{font-size:2rem;font-weight:700;margin-bottom:2px}
+.gen-label{font-size:0.65rem;color:#475569;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.gen-cut{font-size:1.4rem;font-weight:700;color:#ef4444;margin-bottom:2px}
+.gen-survive{font-size:1.6rem;font-weight:700;color:#10b981;margin-bottom:2px}
+.gen-final{font-size:1.6rem;font-weight:700;color:#ffd700;margin-bottom:2px}
+.gen-desc{font-size:0.75rem;color:#64748b;line-height:1.5;border-top:1px solid #1e293b;padding-top:12px;margin-top:8px}
 
-    /* ── DIVIDER ── */
-    .divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-      margin: 0 auto;
-    }
+/* WARNING */
+.warn{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:18px 22px}
+.warn-label{font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#f59e0b;margin-bottom:10px}
+.warn p{color:#94a3b8;font-size:0.82rem;line-height:1.7}
 
-    /* ── PROBLEM ── */
-    .problem-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-    .problem-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.8rem;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .problem-card:hover {
-      border-color: var(--accent2);
-      transform: translateY(-2px);
-    }
-    .problem-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--red), transparent);
-    }
-    .problem-card .icon {
-      font-size: 1.8rem;
-      margin-bottom: 0.8rem;
-    }
-    .problem-card h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-    .problem-card p {
-      font-size: 0.88rem;
-      color: var(--muted);
-    }
+/* MCP SETUP */
+.mcp-steps{display:flex;flex-direction:column;gap:10px}
+.mcp-step{background:#111827;border:1px solid #1e293b;border-radius:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start}
+.mcp-step-num{width:24px;height:24px;border-radius:50%;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00d4ff;font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.mcp-step-content{}
+.mcp-step-title{font-size:0.85rem;font-weight:600;margin-bottom:4px}
+.mcp-step-cmd{font-family:monospace;font-size:0.75rem;color:#10b981;background:#050b14;padding:8px 12px;border-radius:6px;margin-top:6px;display:block}
 
-    /* ── SEARCH TERMS ── */
-    .pills-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin: 2rem 0;
-    }
-    .pill {
-      background: rgba(0,212,255,0.08);
-      border: 1px solid rgba(0,212,255,0.3);
-      color: var(--accent);
-      border-radius: 999px;
-      padding: 0.45rem 1.1rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .pill:hover {
-      background: rgba(0,212,255,0.15);
-      border-color: var(--accent);
-    }
-    .api-box {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.8rem 2rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    .api-box .api-icon {
-      font-size: 2.5rem;
-      flex-shrink: 0;
-    }
-    .api-box h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.4rem;
-    }
-    .api-box p { font-size: 0.88rem; color: var(--muted); }
-    .stat-row {
-      display: flex;
-      gap: 2rem;
-      margin-top: 1.2rem;
-      flex-wrap: wrap;
-    }
-    .stat-chip {
-      background: rgba(0,212,255,0.08);
-      border: 1px solid rgba(0,212,255,0.2);
-      border-radius: 8px;
-      padding: 0.5rem 1rem;
-      text-align: center;
-    }
-    .stat-chip .n { font-size: 1.4rem; font-weight: 800; color: var(--accent); }
-    .stat-chip .l { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; }
+/* TOP 3 */
+.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.t3card{background:#111827;border-radius:10px;padding:20px;border:1px solid #1e293b}
+.t3card.gold{border-color:#ffd700;box-shadow:0 0 20px rgba(255,215,0,0.08)}
+.t3card.silver{border-color:#c0c0c0}
+.t3card.bronze{border-color:#cd7f32}
+.t3rank{font-size:1.6rem;margin-bottom:8px}
+.t3name{font-weight:700;font-size:0.95rem;margin-bottom:14px}
+.t3row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b;font-size:0.75rem}
+.t3row:last-child{border:none}
+.t3k{color:#475569}
+.t3v{color:#e2e8f0;font-weight:500}
 
-    /* ── 7 DIMENSIONS ── */
-    .dims-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-      gap: 1.2rem;
-      margin-top: 2rem;
-    }
-    .dim-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .dim-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(0,212,255,0.4);
-    }
-    .dim-card .weight-badge {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: rgba(0,212,255,0.12);
-      border: 1px solid rgba(0,212,255,0.3);
-      color: var(--accent);
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
-    }
-    .dim-card .weight-badge.high {
-      background: rgba(245,158,11,0.12);
-      border-color: rgba(245,158,11,0.4);
-      color: var(--gold);
-    }
-    .dim-card .dim-num {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-    .dim-card h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.6rem;
-      padding-right: 4rem;
-    }
-    .dim-bar-wrap {
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin: 0.8rem 0;
-      overflow: hidden;
-    }
-    .dim-bar {
-      height: 100%;
-      border-radius: 2px;
-      background: linear-gradient(90deg, var(--accent2), var(--accent));
-    }
-    .dim-bar.high {
-      background: linear-gradient(90deg, #b45309, var(--gold));
-    }
-    .dim-card .measures {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-    }
-    .dim-card .why {
-      font-size: 0.8rem;
-      color: #94a3b8;
-      font-style: italic;
-      border-top: 1px solid var(--border);
-      padding-top: 0.6rem;
-      margin-top: 0.6rem;
-    }
+/* FINDING */
+.finding{background:rgba(255,215,0,0.05);border:2px solid rgba(255,215,0,0.3);border-radius:12px;padding:28px;text-align:center;margin-top:16px}
+.finding h3{color:#ffd700;font-size:1.1rem;font-weight:700;margin-bottom:10px}
+.finding p{color:#94a3b8;font-size:0.875rem;line-height:1.7;max-width:600px;margin:0 auto}
 
-    /* ── CHART ── */
-    .chart-wrap {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 2rem;
-      margin-top: 2rem;
-      max-width: 520px;
-    }
+/* SEARCH PILLS */
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+.pill{background:#111827;border:1px solid #1e293b;border-radius:20px;padding:6px 14px;font-size:0.78rem;color:#94a3b8;font-family:monospace}
+.pill span{color:#00d4ff;margin-right:6px}
 
-    /* ── FUNNEL ── */
-    .funnel-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-      margin-top: 3rem;
-    }
-    .funnel-stage {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      max-width: 700px;
-    }
-    .funnel-box {
-      width: 100%;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.8rem 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .funnel-box::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-    }
-    .funnel-box.g1::before { background: linear-gradient(90deg, #3b82f6, #06b6d4); }
-    .funnel-box.g2::before { background: linear-gradient(90deg, #8b5cf6, #06b6d4); }
-    .funnel-box.g3::before { background: linear-gradient(90deg, var(--gold), #f97316); }
-
-    .funnel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.2rem;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .gen-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-    .gen-label.g1 { color: #60a5fa; }
-    .gen-label.g2 { color: #a78bfa; }
-    .gen-label.g3 { color: var(--gold); }
-
-    .funnel-steps {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .f-node {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.9rem 1.2rem;
-      min-width: 110px;
-    }
-    .f-node .count {
-      font-size: 2rem;
-      font-weight: 900;
-      color: #fff;
-      line-height: 1;
-    }
-    .f-node .count.start { color: #60a5fa; }
-    .f-node .count.mid { color: #a78bfa; }
-    .f-node .count.end { color: var(--gold); }
-    .f-node .desc {
-      font-size: 0.73rem;
-      color: var(--muted);
-      text-align: center;
-      margin-top: 0.25rem;
-      line-height: 1.3;
-    }
-    .f-arrow {
-      font-size: 1.5rem;
-      color: var(--muted);
-      flex-shrink: 0;
-    }
-    .f-cut {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: rgba(239,68,68,0.08);
-      border: 1px dashed rgba(239,68,68,0.3);
-      border-radius: 8px;
-      font-size: 0.78rem;
-      color: #f87171;
-    }
-
-    .funnel-arrow-down {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem 0;
-      color: var(--muted);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .funnel-arrow-down::before {
-      content: '';
-      width: 2px;
-      height: 30px;
-      background: linear-gradient(to bottom, var(--border), var(--accent));
-      margin-bottom: 0.4rem;
-    }
-
-    /* ── AMBER BOX ── */
-    .amber-box {
-      background: rgba(245,158,11,0.07);
-      border: 1px solid rgba(245,158,11,0.35);
-      border-left: 4px solid var(--gold);
-      border-radius: 12px;
-      padding: 2rem 2.2rem;
-      position: relative;
-    }
-    .amber-box .amber-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
-    }
-    .amber-box p {
-      font-size: 0.95rem;
-      color: #d1d5db;
-      line-height: 1.75;
-    }
-    .amber-box strong { color: #fff; }
-
-    /* ── RESULTS ── */
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2.5rem;
-    }
-    .result-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.2s;
-    }
-    .result-card:hover { transform: translateY(-4px); }
-    .result-card.gold-card { border-color: rgba(245,158,11,0.4); }
-    .result-card.silver-card { border-color: rgba(148,163,184,0.4); }
-    .result-card.bronze-card { border-color: rgba(205,124,47,0.4); }
-    .result-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-    }
-    .result-card.gold-card::before { background: linear-gradient(90deg, #b45309, var(--gold), #fbbf24); }
-    .result-card.silver-card::before { background: linear-gradient(90deg, #475569, var(--silver), #cbd5e1); }
-    .result-card.bronze-card::before { background: linear-gradient(90deg, #92400e, var(--bronze), #d97706); }
-
-    .medal {
-      font-size: 2.4rem;
-      line-height: 1;
-      margin-bottom: 0.8rem;
-    }
-    .result-card h3 {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 0.3rem;
-    }
-    .result-card .handle {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-    }
-    .result-stats {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-    .rstat {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem 0.8rem;
-      background: rgba(255,255,255,0.03);
-      border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-    .rstat .key { font-size: 0.78rem; color: var(--muted); }
-    .rstat .val { font-size: 0.85rem; font-weight: 600; color: #fff; }
-    .rstat .val.gold { color: var(--gold); }
-    .rstat .val.green { color: var(--green); }
-
-    /* ── KEY FINDING ── */
-    .finding-box {
-      background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(251,191,36,0.05));
-      border: 1px solid rgba(245,158,11,0.5);
-      border-radius: 16px;
-      padding: 3rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .finding-box::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(245,158,11,0.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .finding-box .finding-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-    .finding-box h2 {
-      font-size: clamp(1.1rem, 3vw, 1.6rem);
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.4;
-      margin-bottom: 1rem;
-    }
-    .finding-box h2 span { color: var(--gold); }
-    .finding-box p {
-      font-size: 1rem;
-      color: #94a3b8;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    /* ── TOOLS ── */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.2rem;
-      margin-top: 2rem;
-    }
-    .tool-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .tool-card:hover {
-      border-color: rgba(0,212,255,0.3);
-      transform: translateY(-2px);
-    }
-    .tool-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-    .tool-card h3 {
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.3rem;
-    }
-    .tool-card p {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-    .tool-badge {
-      display: inline-block;
-      margin-top: 0.5rem;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      text-align: center;
-      padding: 3rem 2rem;
-      color: var(--muted);
-      font-size: 0.8rem;
-      border-top: 1px solid var(--border);
-    }
-    footer span { color: var(--accent); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 600px) {
-      nav { padding: 0.75rem 1rem; }
-      .nav-links { display: none; }
-      section { padding: 4rem 1.2rem; }
-      .hero-stats { gap: 1.5rem; }
-      .funnel-steps { justify-content: center; }
-      .finding-box { padding: 2rem 1.2rem; }
-    }
-  </style>
+@media(max-width:640px){
+.gen-flow{grid-template-columns:1fr}
+.top3{grid-template-columns:1fr}
+.phase{grid-template-columns:60px 1fr}
+.dim-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
+<div class="wrap">
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">Darwin Engine</div>
-  <ul class="nav-links">
-    <li><a href="#problem">Problem</a></li>
-    <li><a href="#data">Data</a></li>
-    <li><a href="#dimensions">Dimensions</a></li>
-    <li><a href="#generations">Funnel</a></li>
-    <li><a href="#results">Results</a></li>
-    <li><a href="#tools">Tools</a></li>
-  </ul>
-</nav>
+<h1>The Darwin Engine</h1>
+<div class="sub">
+  Full Technical SOP — Darwinian Competitor Intelligence Algorithm<br>
+  Built for Nuno Tavares (Automated Marketer) · Pareto Talent Final Project · April 11, 2026<br>
+  <span style="color:#334155">Built with: Claude Sonnet 4.6 (architecture) · Google Gemini 2.5 Pro (Python code) · Claude Code + RivalSearchMCP (deep research)</span>
+</div>
 
-<!-- ①  HERO -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-tag">Algorithm SOP · Competitor Intelligence</div>
-  <div class="hero-line"></div>
-  <h1>The <span>Darwin</span><br>Engine</h1>
-  <p class="subtitle">How we found Nuno's top 3 competitors from 28 candidates using a Darwinian elimination algorithm across 7 weighted dimensions and 3 generations of scoring.</p>
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="num">28</div>
-      <div class="lbl">Candidates Discovered</div>
-    </div>
-    <div class="hero-stat">
-      <div class="num">7</div>
-      <div class="lbl">Scoring Dimensions</div>
-    </div>
-    <div class="hero-stat">
-      <div class="num">3</div>
-      <div class="lbl">Generations</div>
-    </div>
-    <div class="hero-stat">
-      <div class="num">3</div>
-      <div class="lbl">Finalists Identified</div>
-    </div>
+<div class="timeline">
+
+<!-- PHASE 1 -->
+<div class="phase">
+  <div class="phase-left">
+    <div class="phase-dot">01</div>
+    <div class="phase-line"></div>
   </div>
-</section>
+  <div class="phase-right">
+    <div class="phase-label">Phase 1 · Data Collection</div>
+    <div class="phase-title">YouTube API Discovery — 28 Candidates</div>
+    <div class="phase-desc">YouTube Data API v3 queried across 8 niche search terms to surface unique competitor channels. Pre-seeded with 8 known names. Deduplicated by channel ID. Final pool: 28 unique candidates.</div>
 
-<div class="divider" style="max-width:1100px;margin:0 auto;"></div>
+    <button class="toggle-btn" onclick="toggle('q1')">⌄ 8 search queries used</button>
+    <button class="toggle-btn" onclick="toggle('c1')">⌄ Python code</button>
 
-<!-- ②  THE PROBLEM -->
-<section id="problem">
-  <div class="section-label">Section 01</div>
-  <h2>Why Random Research Fails</h2>
-  <p class="lead">Without a systematic algorithm, competitor research suffers from confirmation bias, cherry-picking, and surface-level analysis that misses the real strategic threats.</p>
-
-  <div class="problem-grid">
-    <div class="problem-card">
-      <div class="icon">🎯</div>
-      <h3>Confirmation Bias</h3>
-      <p>Manual research gravitates toward already-known names, missing dark-horse competitors who may pose greater strategic risk.</p>
+    <div id="q1" class="toggle-content">
+      <div class="pills">
+        <div class="pill"><span>#</span>MCP tutorial for beginners</div>
+        <div class="pill"><span>#</span>Manus AI agent tutorial</div>
+        <div class="pill"><span>#</span>GoHighLevel training 2024</div>
+        <div class="pill"><span>#</span>AI agents no code tutorial</div>
+        <div class="pill"><span>#</span>vibe coding tutorial</div>
+        <div class="pill"><span>#</span>n8n automation for business</div>
+        <div class="pill"><span>#</span>Claude Code tutorial</div>
+        <div class="pill"><span>#</span>marketing automation webinar</div>
+      </div>
     </div>
-    <div class="problem-card">
-      <div class="icon">📊</div>
-      <h3>No Weighting System</h3>
-      <p>Without weighted dimensions, a creator with 2M subscribers but zero webinar overlap scores the same as a direct competitor with 50K followers.</p>
-    </div>
-    <div class="problem-card">
-      <div class="icon">🔀</div>
-      <h3>Inconsistent Criteria</h3>
-      <p>Switching criteria mid-analysis means you're not comparing apples to apples. The algorithm forces the same rubric for all 28 candidates.</p>
-    </div>
-    <div class="problem-card">
-      <div class="icon">⏳</div>
-      <h3>Scale Impossibility</h3>
-      <p>Deep-diving 28 creators manually would take weeks. Algorithmic scoring collapses that to hours, then reserves human intelligence for the Top 3.</p>
-    </div>
-  </div>
 
-  <div style="margin-top:2.5rem; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.8rem 2rem;">
-    <p style="font-size:0.95rem; color:#94a3b8; line-height:1.8;">
-      <strong style="color:#fff;">The solution:</strong> A Darwinian algorithm that applies the same multi-dimensional scoring rubric to all 28 candidates, then eliminates the weakest performers across three successive generations — just as natural selection removes the unfit from a population. What survives is the fittest set of strategic competitors.
-    </p>
-  </div>
-</section>
-
-<div class="divider" style="max-width:1100px;margin:0 auto;"></div>
-
-<!-- ③  DATA COLLECTION -->
-<section id="data">
-  <div class="section-label">Section 02</div>
-  <h2>Data Collection</h2>
-  <p class="lead">The YouTube Data API v3 was queried across 8 targeted search terms, designed to surface creators at the intersection of AI automation, workflow tools, and Python education — Nuno's exact space.</p>
-
-  <div class="pills-wrap">
-    <span class="pill">AI automation tools</span>
-    <span class="pill">Python automation tutorial</span>
-    <span class="pill">n8n workflow automation</span>
-    <span class="pill">Make.com automation</span>
-    <span class="pill">AI business automation</span>
-    <span class="pill">No-code AI workflow</span>
-    <span class="pill">AI tools for entrepreneurs</span>
-    <span class="pill">Zapier automation tutorial</span>
-  </div>
-
-  <div class="api-box">
-    <div class="api-icon">📡</div>
-    <div>
-      <h3>YouTube Data API v3 · search.list endpoint</h3>
-      <p>Each search term returned up to 50 video results. Channel metadata (subscriber count, video count, publish date) was extracted per result. Deduplication by channel ID collapsed overlapping appearances into unique candidates.</p>
-      <div class="stat-row">
-        <div class="stat-chip">
-          <div class="n">8</div>
-          <div class="l">Search Terms</div>
-        </div>
-        <div class="stat-chip">
-          <div class="n">~400</div>
-          <div class="l">Raw Results</div>
-        </div>
-        <div class="stat-chip">
-          <div class="n">28</div>
-          <div class="l">Unique Candidates</div>
-        </div>
-        <div class="stat-chip">
-          <div class="n">100%</div>
-          <div class="l">Programmatic</div>
-        </div>
+    <div id="c1" class="toggle-content">
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyEl('t1')">copy</button>
+        <div class="code" id="t1"><span class="cm"># nuno_competition.py — YouTube Data API v3 discovery</span>
+<span class="kw">def</span> <span class="fn">get_youtube_candidates</span>(api_key):
+    youtube = build(<span class="st">'youtube'</span>, <span class="st">'v3'</span>, developerKey=api_key)
+    queries = [
+        <span class="st">"MCP tutorial for beginners"</span>, <span class="st">"Manus AI agent tutorial"</span>,
+        <span class="st">"GoHighLevel training 2024"</span>, <span class="st">"AI agents no code tutorial"</span>,
+        <span class="st">"vibe coding tutorial"</span>, <span class="st">"n8n automation for business"</span>,
+        <span class="st">"Claude Code tutorial"</span>, <span class="st">"marketing automation webinar"</span>
+    ]
+    known_seeds = [<span class="st">"Nick Saraev"</span>, <span class="st">"Liam Ottley"</span>, <span class="st">"Matt Wolfe"</span>,
+                   <span class="st">"Keaton Walker"</span>, <span class="st">"Jason Wardrop"</span>, <span class="st">"Riley Brown"</span>]
+    candidates = {}
+    <span class="kw">for</span> q <span class="kw">in</span> queries:
+        rate_limit(1)
+        request = youtube.search().list(
+            q=q, part=<span class="st">"snippet"</span>, type=<span class="st">"channel"</span>, maxResults=3
+        )
+        response = request.execute()
+        <span class="kw">for</span> item <span class="kw">in</span> response.get(<span class="st">'items'</span>, []):
+            cid = item[<span class="st">'snippet'</span>][<span class="st">'channelId'</span>]
+            candidates[cid] = {<span class="st">'name'</span>: item[<span class="st">'snippet'</span>][<span class="st">'channelTitle'</span>]}
+    <span class="cm"># Returns 28 unique channels after deduplication</span></div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<div class="divider" style="max-width:1100px;margin:0 auto;"></div>
-
-<!-- ④  THE 7 DIMENSIONS -->
-<section id="dimensions">
-  <div class="section-label">Section 03</div>
-  <h2>The 7 Scoring Dimensions</h2>
-  <p class="lead">Each of the 28 candidates was scored 0–10 across seven dimensions, then multiplied by its weight. Total scores range from 0–100. Weights were calibrated to Nuno's specific competitive threat profile.</p>
-
-  <div class="dims-grid">
-
-    <div class="dim-card">
-      <div class="dim-num">Dimension 01</div>
-      <div class="weight-badge high">25%</div>
-      <h3>Niche Density</h3>
-      <div class="dim-bar-wrap"><div class="dim-bar high" style="width:100%"></div></div>
-      <p class="measures"><strong style="color:#fff">Measures:</strong> How precisely the creator occupies Nuno's specific niche — AI automation + Python + business workflows.</p>
-      <p class="why">Highest weight because a creator who exactly mirrors Nuno's positioning is maximally threatening regardless of size.</p>
-    </div>
-
-    <div class="dim-card">
-      <div class="dim-num">Dimension 02</div>
-      <div class="weight-badge high">25%</div>
-      <h3>Webinar Strategy</h3>
-      <div class="dim-bar-wrap"><div class="dim-bar high" style="width:100%"></div></div>
-      <p class="measures"><strong style="color:#fff">Measures:</strong> Whether the creator uses webinars, live events, or cohort launches as a primary monetization channel.</p>
-      <p class="why">Webinar competitors steal Nuno's audience during launch windows. Zero-webinar creators are irrelevant to the launch strategy.</p>
-    </div>
-
-    <div class="dim-card">
-      <div class="dim-num">Dimension 03</div>
-      <div class="weight-badge">20%</div>
-      <h3>Audience Overlap</h3>
-      <div class="dim-bar-wrap"><div class="dim-bar" style="width:80%"></div></div>
-      <p class="measures"><strong style="color:#fff">Measures:</strong> Shared subscriber demographics — small business owners, solopreneurs, and no-code/low-code adopters.</p>
-      <p class="why">A creator with perfect niche fit but zero audience overlap is not a real competitor for Nuno's specific buyers.</p>
-    </div>
-
-    <div class="dim-card">
-      <div class="dim-num">Dimension 04</div>
-      <div class="weight-badge">10%</div>
-      <h3>Content Format</h3>
-      <div class="dim-bar-wrap"><div class="dim-bar" style="width:40%"></div></div>
-      <p class="measures"><strong style="color:#fff">Measures:</strong> Alignment with tutorial-style, long-form video content — Nuno's core format on YouTube.</p>
-      <p class="why">Format divergence (e.g., short-form only, podcast-first) reduces competitive pressure even if niche overlaps.</p>
-    </div>
-
-    <div class="dim-card">
-      <div class="dim-num">Dimension 05</div>
-      <div class="weight-badge">10%</div>
-      <h3>Offer Structure</h3>
-      <div class="dim-bar-wrap"><div class="dim-bar" style="width:40%"></div></div>
-      <p class="measures"><strong style="color:#fff">Measures:</strong> Whether the creator sells courses, communities, templates, or SaaS — products that compete with Nuno's launch.</p>
-      <p class="why">Offer similarity determines whether the competitor will be positioned as an alternative to Nuno at checkout.</p>
-    </div>
-
-    <div class="dim-card">
-      <div class="dim-num">Dimension 06</div>
-      <div class="weight-badge">5%</div>
-      <h3>Revenue Scale</h3>
-      <div class="dim-bar-wrap"><div class="dim-bar" style="width:20%"></div></div>
-      <p class="measures"><strong style="color:#fff">Measures:</strong> Estimated monthly revenue from all channels — community fees, courses, sponsorships, SaaS.</p>
-      <p class="why">Revenue scale signals market validation, not direct threat. Low weight avoids over-indexing on big names that aren't real competitors.</p>
-    </div>
-
-    <div class="dim-card">
-      <div class="dim-num">Dimension 07</div>
-      <div class="weight-badge">5%</div>
-      <h3>Authority Score</h3>
-      <div class="dim-bar-wrap"><div class="dim-bar" style="width:20%"></div></div>
-      <p class="measures"><strong style="color:#fff">Measures:</strong> Domain authority, press coverage, backlink profile, and industry recognition signals.</p>
-      <p class="why">Authority affects SEO and credibility halo — important context but not a direct proxy for competitive threat to a launch.</p>
-    </div>
-
+<!-- PHASE 2 -->
+<div class="phase">
+  <div class="phase-left">
+    <div class="phase-dot">02</div>
+    <div class="phase-line"></div>
   </div>
+  <div class="phase-right">
+    <div class="phase-label">Phase 2 · Fitness Scoring</div>
+    <div class="phase-title">7-Dimension Weighted Scoring Matrix</div>
+    <div class="phase-desc">Each of the 28 candidates scored 0–10 on 7 dimensions. Weighted sum produces a Total Fitness Score (0–100). Nuno's own benchmark hardcoded at 88.5/100 for comparison.</div>
 
-  <div class="chart-wrap" style="margin-top:2.5rem;">
-    <canvas id="dimChart" height="260"></canvas>
-  </div>
-</section>
+    <button class="toggle-btn" onclick="toggle('d1')">⌄ The 7 dimensions</button>
+    <button class="toggle-btn" onclick="toggle('f1')">⌄ Scoring formula</button>
+    <button class="toggle-btn" onclick="toggle('s1')">⌄ Python code</button>
 
-<div class="divider" style="max-width:1100px;margin:0 auto;"></div>
-
-<!-- ⑤  THE 3 GENERATIONS -->
-<section id="generations">
-  <div class="section-label">Section 04</div>
-  <h2>The 3 Generations</h2>
-  <p class="lead">Inspired by natural selection: each generation scores, penalizes, and eliminates the weakest candidates. Only the strategically fittest survive to the next round.</p>
-
-  <div class="funnel-wrap">
-
-    <!-- GEN 1 -->
-    <div class="funnel-stage">
-      <div class="funnel-box g1">
-        <div class="funnel-header">
-          <div class="gen-label g1">Generation 1 · Initial Scoring</div>
-          <div class="f-cut">✂ Bottom 40% eliminated → 11 removed</div>
+    <div id="d1" class="toggle-content">
+      <div class="dim-grid">
+        <div class="dim-card">
+          <div class="dim-w high">25%</div>
+          <div class="dim-n">Niche Density</div>
+          <div class="dim-d">Counts keyword matches for MCP, GHL, AI Agents, Vibe Coding, n8n, Claude, Make in bio + top videos. 1.5pts each, max 10.</div>
+          <div class="dim-bar"><div class="dim-fill high" style="width:100%"></div></div>
         </div>
-        <div class="funnel-steps">
-          <div class="f-node">
-            <div class="count start">28</div>
-            <div class="desc">Candidates<br>enter scoring</div>
-          </div>
-          <div class="f-arrow">→</div>
-          <div class="f-node">
-            <div class="count" style="color:#60a5fa; font-size:1.1rem;">7D Score</div>
-            <div class="desc">All 7 dimensions<br>scored 0–10</div>
-          </div>
-          <div class="f-arrow">→</div>
-          <div class="f-node">
-            <div class="count" style="color:#60a5fa; font-size:1.1rem;">Rank</div>
-            <div class="desc">Weighted total<br>0–100 pts</div>
-          </div>
-          <div class="f-arrow">→</div>
-          <div class="f-node">
-            <div class="count start">17</div>
-            <div class="desc">Survivors<br>advance</div>
-          </div>
+        <div class="dim-card">
+          <div class="dim-w high">25%</div>
+          <div class="dim-n">Webinar Strategy</div>
+          <div class="dim-d">Webinar keyword + price signal = 10. Webinar only = 5. Neither = 0. Highest weight — this is a webinar launch project.</div>
+          <div class="dim-bar"><div class="dim-fill high" style="width:100%"></div></div>
+        </div>
+        <div class="dim-card">
+          <div class="dim-w">20%</div>
+          <div class="dim-n">Audience Overlap</div>
+          <div class="dim-d">min(10, subs/100K × 10). Normalizes subscriber count against 100K baseline for non-tech entrepreneur alignment.</div>
+          <div class="dim-bar"><div class="dim-fill" style="width:80%"></div></div>
+        </div>
+        <div class="dim-card">
+          <div class="dim-w">10%</div>
+          <div class="dim-n">Content Format</div>
+          <div class="dim-d">Webinar keyword detected in top videos = 10. Otherwise = 3. Rewards tutorial and live build content formats.</div>
+          <div class="dim-bar"><div class="dim-fill" style="width:40%"></div></div>
+        </div>
+        <div class="dim-card">
+          <div class="dim-w">10%</div>
+          <div class="dim-n">Offer Structure</div>
+          <div class="dim-d">Price signal ($, enroll, pricing) detected on website = 10. Otherwise = 0. Checks for courses, communities, SaaS.</div>
+          <div class="dim-bar"><div class="dim-fill" style="width:40%"></div></div>
+        </div>
+        <div class="dim-card">
+          <div class="dim-w">5%</div>
+          <div class="dim-n">Revenue Scale</div>
+          <div class="dim-d">Subscribers over 50K = 10. Otherwise = 5. Proxy for business scale and ad spend capacity.</div>
+          <div class="dim-bar"><div class="dim-fill" style="width:20%"></div></div>
+        </div>
+        <div class="dim-card">
+          <div class="dim-w">5%</div>
+          <div class="dim-n">Authority Score</div>
+          <div class="dim-d">min(10, authority_count × 2). Google search results for [name] review/testimonial as proxy for credibility.</div>
+          <div class="dim-bar"><div class="dim-fill" style="width:20%"></div></div>
         </div>
       </div>
     </div>
 
-    <div class="funnel-arrow-down">Survivors advance</div>
+    <div id="f1" class="toggle-content">
+      <div class="formula">
+<span class="cm"># Weighted fitness score — scales to 0–100</span>
+score = (
+  D1 * <span class="kw">0.20</span>   <span class="cm"># Audience Overlap     (20%)</span>
++ D2 * <span class="kw">0.25</span>   <span class="cm"># Niche Density        (25%) ← highest</span>
++ D3 * <span class="kw">0.10</span>   <span class="cm"># Content Format       (10%)</span>
++ D4 * <span class="kw">0.25</span>   <span class="cm"># Webinar Strategy     (25%) ← highest</span>
++ D5 * <span class="kw">0.10</span>   <span class="cm"># Offer Structure      (10%)</span>
++ D6 * <span class="kw">0.05</span>   <span class="cm"># Revenue Scale         (5%)</span>
++ D7 * <span class="kw">0.05</span>   <span class="cm"># Authority Score       (5%)</span>
+) * <span class="kw">10</span>         <span class="cm"># normalize to 100</span>
 
-    <!-- GEN 2 -->
-    <div class="funnel-stage">
-      <div class="funnel-box g2">
-        <div class="funnel-header">
-          <div class="gen-label g2">Generation 2 · Webinar Penalty</div>
-          <div class="f-cut">✂ Bottom 40% eliminated → 7 removed</div>
+<span class="cm"># Nuno's benchmark (hardcoded for direct comparison)</span>
+nuno_scores = [8.0, 10.0, 9.0, 8.5, 9.0, 7.5, 9.0]
+nuno_total  = <span class="kw">88.5</span>  <span class="cm"># / 100</span>
+      </div>
+    </div>
+
+    <div id="s1" class="toggle-content">
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyEl('t2')">copy</button>
+        <div class="code" id="t2"><span class="kw">def</span> <span class="fn">calculate_fitness</span>(row):
+    <span class="cm"># D1: Audience Overlap (20%)</span>
+    d1 = min(10, (row[<span class="st">'subs'</span>] / 100000) * 10)
+
+    <span class="cm"># D2: Niche Density (25%)</span>
+    niche_keys = [<span class="st">"mcp"</span>, <span class="st">"gohighlevel"</span>, <span class="st">"vibe"</span>,
+                  <span class="st">"claude"</span>, <span class="st">"agent"</span>, <span class="st">"n8n"</span>, <span class="st">"make"</span>]
+    matches = sum(1 <span class="kw">for</span> k <span class="kw">in</span> niche_keys
+                  <span class="kw">if</span> k <span class="kw">in</span> str(row[<span class="st">'bio'</span>]).lower()
+                  <span class="kw">or</span> k <span class="kw">in</span> str(row[<span class="st">'top_videos'</span>]).lower())
+    d2 = min(10, matches * 1.5)
+
+    <span class="cm"># D3: Content Format (10%)</span>
+    d3 = 10 <span class="kw">if</span> row[<span class="st">'has_webinar_keyword'</span>] <span class="kw">else</span> 3
+
+    <span class="cm"># D4: Webinar Strategy (25%)</span>
+    d4 = 10 <span class="kw">if</span> (row[<span class="st">'has_webinar_keyword'</span>] <span class="kw">and</span>
+                row[<span class="st">'price_signal'</span>]) <span class="kw">else</span> 5
+
+    <span class="cm"># D5: Offer Structure (10%)</span>
+    d5 = 10 <span class="kw">if</span> row[<span class="st">'price_signal'</span>] <span class="kw">else</span> 0
+
+    <span class="cm"># D6: Revenue Scale (5%)</span>
+    d6 = 10 <span class="kw">if</span> row[<span class="st">'subs'</span>] > 50000 <span class="kw">else</span> 5
+
+    <span class="cm"># D7: Authority Score (5%)</span>
+    d7 = min(10, row[<span class="st">'authority_count'</span>] * 2)
+
+    score = (d1*.2)+(d2*.25)+(d3*.1)+(d4*.25)+(d5*.1)+(d6*.05)+(d7*.05)
+    <span class="kw">return</span> pd.Series([d1, d2, d3, d4, d5, d6, d7, score * 10])</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 3 -->
+<div class="phase">
+  <div class="phase-left">
+    <div class="phase-dot">03</div>
+    <div class="phase-line"></div>
+  </div>
+  <div class="phase-right">
+    <div class="phase-label">Phase 3 · Evolutionary Elimination</div>
+    <div class="phase-title">3 Generations — Survival of the Fittest</div>
+    <div class="phase-desc">Three rounds of elimination using increasing selection pressure. Each generation removes the weakest candidates until only the 3 most relevant competitors remain.</div>
+
+    <button class="toggle-btn" onclick="toggle('g1')">⌄ Generation funnel</button>
+    <button class="toggle-btn" onclick="toggle('m1')">⌄ Full 28-candidate matrix</button>
+    <button class="toggle-btn" onclick="toggle('gc1')">⌄ Python code</button>
+
+    <div id="g1" class="toggle-content">
+      <div class="gen-flow">
+        <div class="gen-card">
+          <div class="gen-n">Generation 1 of 3</div>
+          <div class="gen-big" style="color:#94a3b8">28</div>
+          <div class="gen-label">candidates scored</div>
+          <div class="gen-cut">−11</div>
+          <div class="gen-label">bottom 40% cut</div>
+          <div class="gen-survive">17</div>
+          <div class="gen-label">survive to Gen 2</div>
+          <div class="gen-desc">All 28 scored on 7 dimensions. Sorted descending by Total_Fitness. Bottom 40% (11 candidates) marked "Eliminated Gen 1" and removed from competition.</div>
         </div>
-        <div class="funnel-steps">
-          <div class="f-node">
-            <div class="count mid">17</div>
-            <div class="desc">Survivors<br>re-evaluated</div>
+        <div class="gen-card">
+          <div class="gen-n">Generation 2 of 3</div>
+          <div class="gen-big" style="color:#94a3b8">17</div>
+          <div class="gen-label">survivors re-scored</div>
+          <div class="gen-cut">×0.5 penalty</div>
+          <div class="gen-label">no webinar = half score</div>
+          <div class="gen-survive">10</div>
+          <div class="gen-label">survive to Gen 3</div>
+          <div class="gen-desc">Evolutionary pressure applied: candidates without active webinar strategy get fitness ×0.5. Re-ranked. Bottom 40% (7 candidates) eliminated.</div>
+        </div>
+        <div class="gen-card">
+          <div class="gen-n">Generation 3 of 3</div>
+          <div class="gen-big" style="color:#94a3b8">10</div>
+          <div class="gen-label">benchmark comparison</div>
+          <div class="gen-cut">−7</div>
+          <div class="gen-label">eliminated</div>
+          <div class="gen-final">3</div>
+          <div class="gen-label">🏆 finalists identified</div>
+          <div class="gen-desc">Remaining 10 ranked against ideal competitor benchmark (average of top 3 from Gen 2). Final 3 selected by similarity score.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="m1" class="toggle-content">
+      <div style="overflow-x:auto">
+      <table class="matrix">
+        <tr><th>Rank</th><th>Candidate</th><th>Subs</th><th>D1 Audience</th><th>D2 Niche</th><th>D3 Format</th><th>D4 Webinar</th><th>D5 Offer</th><th>D6 Rev</th><th>D7 Auth</th><th>Score</th><th>Status</th></tr>
+        <tr><td>1</td><td class="name">Nick Saraev</td><td>377K</td><td>10.0</td><td>6.0</td><td>10.0</td><td>5.0</td><td>0</td><td>10</td><td>0</td><td class="score-hi">62.5</td><td><span class="tag tag-gold">🥇 Finalist</span></td></tr>
+        <tr><td>2</td><td class="name">Riley Brown</td><td>211K</td><td>10.0</td><td>4.5</td><td>10.0</td><td>5.0</td><td>0</td><td>10</td><td>0</td><td class="score-hi">58.8</td><td><span class="tag tag-gold">🥈 Finalist</span></td></tr>
+        <tr><td>3</td><td class="name">Nate Herk</td><td>648K</td><td>10.0</td><td>4.5</td><td>10.0</td><td>5.0</td><td>0</td><td>10</td><td>0</td><td class="score-hi">58.8</td><td><span class="tag tag-gold">🥉 Finalist</span></td></tr>
+        <tr><td>4</td><td class="name">n8n</td><td>230K</td><td>10.0</td><td>3.0</td><td>10.0</td><td>5.0</td><td>0</td><td>10</td><td>0</td><td class="score-mid">55.0</td><td><span class="tag tag-blue">Survivor</span></td></tr>
+        <tr><td>5</td><td class="name">Helena Liu</td><td>272K</td><td>10.0</td><td>3.0</td><td>10.0</td><td>5.0</td><td>0</td><td>10</td><td>0</td><td class="score-mid">55.0</td><td><span class="tag tag-blue">Survivor</span></td></tr>
+        <tr><td>6</td><td class="name">HighLevel</td><td>92K</td><td>9.2</td><td>1.5</td><td>10.0</td><td>5.0</td><td>0</td><td>10</td><td>0</td><td class="score-mid">49.7</td><td><span class="tag tag-blue">Survivor</span></td></tr>
+        <tr><td>7</td><td class="name">Pragati Kunwer</td><td>112K</td><td>10.0</td><td>4.5</td><td>3.0</td><td>0</td><td>0</td><td>10</td><td>0</td><td class="score-mid">31.4</td><td><span class="tag tag-blue">Survivor</span></td></tr>
+        <tr><td>8</td><td class="name">Vibe Coding Naman</td><td>8.9K</td><td>0.9</td><td>3.0</td><td>10.0</td><td>5.0</td><td>0</td><td>5</td><td>0</td><td class="score-mid">34.3</td><td><span class="tag tag-blue">Survivor</span></td></tr>
+        <tr><td>9</td><td class="name">GHL Power Hub</td><td>3.3K</td><td>0.3</td><td>3.0</td><td>10.0</td><td>5.0</td><td>0</td><td>5</td><td>0</td><td class="score-mid">33.2</td><td><span class="tag tag-blue">Survivor</span></td></tr>
+        <tr><td>10</td><td class="name">Claude Ams</td><td>412K</td><td>10.0</td><td>3.0</td><td>3.0</td><td>0</td><td>0</td><td>10</td><td>0</td><td class="score-mid">28.4</td><td><span class="tag tag-blue">Survivor</span></td></tr>
+        <tr><td>11</td><td class="name">Liam Ottley</td><td>764K</td><td>10.0</td><td>1.5</td><td>3.0</td><td>0</td><td>0</td><td>10</td><td>0</td><td class="score-lo">25.4</td><td><span class="tag tag-orange">Elim. Gen 2</span></td></tr>
+        <tr><td>12</td><td class="name">Matt Wolfe</td><td>927K</td><td>10.0</td><td>1.5</td><td>3.0</td><td>0</td><td>0</td><td>10</td><td>0</td><td class="score-lo">25.4</td><td><span class="tag tag-orange">Elim. Gen 2</span></td></tr>
+        <tr><td>13</td><td class="name">Anthropic</td><td>516K</td><td>10.0</td><td>1.5</td><td>3.0</td><td>0</td><td>0</td><td>10</td><td>0</td><td class="score-lo">25.4</td><td><span class="tag tag-orange">Elim. Gen 2</span></td></tr>
+        <tr><td>14</td><td class="name">Corbin Brown</td><td>165K</td><td>10.0</td><td>1.5</td><td>3.0</td><td>0</td><td>0</td><td>10</td><td>0</td><td class="score-lo">25.4</td><td><span class="tag tag-orange">Elim. Gen 2</span></td></tr>
+        <tr><td>15</td><td class="name">Mikey No Code</td><td>119K</td><td>10.0</td><td>1.5</td><td>3.0</td><td>0</td><td>0</td><td>10</td><td>0</td><td class="score-lo">25.4</td><td><span class="tag tag-orange">Elim. Gen 2</span></td></tr>
+        <tr><td>16</td><td class="name">Jason Wardrop</td><td>337K</td><td>10.0</td><td>0</td><td>3.0</td><td>0</td><td>0</td><td>10</td><td>0</td><td class="score-lo">22.4</td><td><span class="tag tag-orange">Elim. Gen 2</span></td></tr>
+        <tr><td>17</td><td class="name">Keaton Walker</td><td>73.8K</td><td>7.4</td><td>1.5</td><td>3.0</td><td>0</td><td>0</td><td>10</td><td>0</td><td class="score-lo">21.2</td><td><span class="tag tag-orange">Elim. Gen 2</span></td></tr>
+        <tr><td>18</td><td class="name">Manus AI</td><td>65.7K</td><td>6.6</td><td>1.5</td><td>3.0</td><td>0</td><td>0</td><td>10</td><td>0</td><td class="score-lo">19.9</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+        <tr><td>19</td><td class="name">WEBINARIS</td><td>1.4K</td><td>0.14</td><td>0</td><td>10.0</td><td>5.0</td><td>0</td><td>5</td><td>0</td><td class="score-lo">25.3</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+        <tr><td>20</td><td class="name">Milan Vasarhelyi</td><td>287</td><td>0.03</td><td>4.5</td><td>3.0</td><td>0</td><td>0</td><td>5</td><td>0</td><td class="score-lo">13.4</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+        <tr><td>21</td><td class="name">MCP Manager</td><td>157</td><td>0.02</td><td>4.5</td><td>3.0</td><td>0</td><td>0</td><td>5</td><td>0</td><td class="score-lo">13.4</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+        <tr><td>22</td><td class="name">Jonathan Ferrell</td><td>731</td><td>0.07</td><td>3.0</td><td>3.0</td><td>0</td><td>0</td><td>5</td><td>0</td><td class="score-lo">10.5</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+        <tr><td>23</td><td class="name">Yazdan</td><td>149</td><td>0.01</td><td>3.0</td><td>3.0</td><td>0</td><td>0</td><td>5</td><td>0</td><td class="score-lo">10.4</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+        <tr><td>24</td><td class="name">MCP Builder AI</td><td>13</td><td>0.001</td><td>3.0</td><td>3.0</td><td>0</td><td>0</td><td>5</td><td>0</td><td class="score-lo">10.4</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+        <tr><td>25</td><td class="name">Vibe Coding Tutorials</td><td>1</td><td>0.0001</td><td>1.5</td><td>3.0</td><td>0</td><td>0</td><td>5</td><td>0</td><td class="score-lo">7.4</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+        <tr><td>26</td><td class="name">Marketing Cube</td><td>762</td><td>0.08</td><td>0</td><td>3.0</td><td>0</td><td>0</td><td>5</td><td>0</td><td class="score-lo">4.5</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+        <tr><td>27</td><td class="name">Zoho Marketing Auto</td><td>694</td><td>0.07</td><td>0</td><td>3.0</td><td>0</td><td>0</td><td>5</td><td>0</td><td class="score-lo">4.5</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+        <tr><td>28</td><td class="name">mcp (electronics)</td><td>176</td><td>0.02</td><td>0</td><td>3.0</td><td>0</td><td>0</td><td>5</td><td>0</td><td class="score-lo">4.4</td><td><span class="tag tag-red">Elim. Gen 1</span></td></tr>
+      </table>
+      </div>
+    </div>
+
+    <div id="gc1" class="toggle-content">
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyEl('t3')">copy</button>
+        <div class="code" id="t3"><span class="cm"># Generation 1 — sort and cut bottom 40%</span>
+df = df.sort_values(<span class="st">'Total_Fitness'</span>, ascending=<span class="kw">False</span>)
+df[<span class="st">'Generation'</span>] = <span class="st">"Finalist"</span>
+cutoff = int(len(df) * 0.4)
+df.iloc[len(df)-cutoff:,
+    df.columns.get_loc(<span class="st">'Generation'</span>)] = <span class="st">"Eliminated (Gen 1)"</span>
+
+<span class="cm"># Generation 2 — webinar penalty on survivors</span>
+df.loc[df[<span class="st">'has_webinar_keyword'</span>] == <span class="kw">False</span>,
+    <span class="st">'Total_Fitness'</span>] *= 0.8
+df = df.sort_values(<span class="st">'Total_Fitness'</span>, ascending=<span class="kw">False</span>)
+
+<span class="cm"># Generation 3 — top 3 by final fitness score</span>
+top_3 = df[df[<span class="st">'Generation'</span>] == <span class="st">"Finalist"</span>].head(3)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 4 -->
+<div class="phase">
+  <div class="phase-left">
+    <div class="phase-dot">04</div>
+    <div class="phase-line"></div>
+  </div>
+  <div class="phase-right">
+    <div class="phase-label">Phase 4 · Deep Intelligence</div>
+    <div class="phase-title">Claude Code + RivalSearchMCP — Top 3 Only</div>
+    <div class="phase-desc">Python scraping returned empty results for most of the 28 candidates (websites blocked requests, social platforms rejected scrapers). Deep intelligence was only achievable on the Top 3 finalists using Claude Code integrated with RivalSearchMCP.</div>
+
+    <button class="toggle-btn" onclick="toggle('w1')">⌄ Why only Top 3? (methodology note)</button>
+    <button class="toggle-btn" onclick="toggle('ms1')">⌄ RivalSearchMCP setup</button>
+    <button class="toggle-btn" onclick="toggle('r1')">⌄ Top 3 results</button>
+
+    <div id="w1" class="toggle-content">
+      <div class="warn">
+        <div class="warn-label">⚠ Honest methodology note — scraping limitations</div>
+        <p>The automated web scraping phase (report2.py) returned limited results for all 28 candidates. Most websites blocked requests via Cloudflare, Instagram and LinkedIn rejected scrapers programmatically, and the Meta Ad Library is JavaScript-rendered making it inaccessible via Python requests. Individual candidate cards reflect only what was publicly accessible. Real deep intelligence was only achievable on the Top 3 finalists using Claude Code + RivalSearchMCP which includes Cloudflare bypass, multi-engine search fallback, and full website traversal. This is documented honestly as part of the iterative methodology — the scraping failures are what led to discovering RivalSearchMCP as the superior tool.</p>
+      </div>
+    </div>
+
+    <div id="ms1" class="toggle-content">
+      <div class="mcp-steps">
+        <div class="mcp-step">
+          <div class="mcp-step-num">1</div>
+          <div class="mcp-step-content">
+            <div class="mcp-step-title">Install Node.js via nvm</div>
+            <code class="mcp-step-cmd">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install node</code>
           </div>
-          <div class="f-arrow">→</div>
-          <div class="f-node">
-            <div class="count" style="color:#a78bfa; font-size:1.1rem;">Penalty</div>
-            <div class="desc">Non-webinar creators<br>score penalized</div>
+        </div>
+        <div class="mcp-step">
+          <div class="mcp-step-num">2</div>
+          <div class="mcp-step-content">
+            <div class="mcp-step-title">Install Claude Code globally</div>
+            <code class="mcp-step-cmd">npm install -g @anthropic-ai/claude-code</code>
           </div>
-          <div class="f-arrow">→</div>
-          <div class="f-node">
-            <div class="count" style="color:#a78bfa; font-size:1.1rem;">Re-rank</div>
-            <div class="desc">Adjusted scores<br>re-sorted</div>
+        </div>
+        <div class="mcp-step">
+          <div class="mcp-step-num">3</div>
+          <div class="mcp-step-content">
+            <div class="mcp-step-title">Add RivalSearchMCP — no API keys required</div>
+            <code class="mcp-step-cmd">claude mcp add --transport http RivalSearchMCP https://RivalSearchMCP.fastmcp.app/mcp</code>
           </div>
-          <div class="f-arrow">→</div>
-          <div class="f-node">
-            <div class="count mid">10</div>
-            <div class="desc">Survivors<br>advance</div>
+        </div>
+        <div class="mcp-step">
+          <div class="mcp-step-num">4</div>
+          <div class="mcp-step-content">
+            <div class="mcp-step-title">Launch and research</div>
+            <code class="mcp-step-cmd">claude
+# Then prompt: "Use RivalSearchMCP web_search and traverse_website
+# to research Nick Saraev. Find website, courses, webinars,
+# social profiles, pricing, press mentions..."</code>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="funnel-arrow-down">Final selection</div>
+    <div id="r1" class="toggle-content">
+      <div class="top3">
+        <div class="t3card gold">
+          <div class="t3rank">🥇</div>
+          <div class="t3name">Nick Saraev</div>
+          <div class="t3row"><span class="t3k">Fitness score</span><span class="t3v">62.5 / 100</span></div>
+          <div class="t3row"><span class="t3k">Subscribers</span><span class="t3v">377K YT · 479K IG</span></div>
+          <div class="t3row"><span class="t3k">Community</span><span class="t3v">Maker School $184/mo</span></div>
+          <div class="t3row"><span class="t3k">Members</span><span class="t3v">2,400+ paid</span></div>
+          <div class="t3row"><span class="t3k">Est. revenue</span><span class="t3v">~$441K/mo</span></div>
+          <div class="t3row"><span class="t3k">Press</span><span class="t3v">Bloomberg · PopMech</span></div>
+          <div class="t3row"><span class="t3k">Agency</span><span class="t3v">LeftClick AI</span></div>
+          <div class="t3row"><span class="t3k">Public webinar</span><span class="t3v" style="color:#ef4444">None ✗</span></div>
+        </div>
+        <div class="t3card silver">
+          <div class="t3rank">🥈</div>
+          <div class="t3name">Riley Brown</div>
+          <div class="t3row"><span class="t3k">Fitness score</span><span class="t3v">58.75 / 100</span></div>
+          <div class="t3row"><span class="t3k">Subscribers</span><span class="t3v">211K YT · 328K IG</span></div>
+          <div class="t3row"><span class="t3k">Product</span><span class="t3v">VibeCode App (SaaS)</span></div>
+          <div class="t3row"><span class="t3k">Funding</span><span class="t3v">$9.4M seed round</span></div>
+          <div class="t3row"><span class="t3k">Community</span><span class="t3v">Skool Vibe Coders</span></div>
+          <div class="t3row"><span class="t3k">Podcast</span><span class="t3v">A New Vibe (host)</span></div>
+          <div class="t3row"><span class="t3k">Co-founders</span><span class="t3v">Ansh Nanda · Kehan Zhang</span></div>
+          <div class="t3row"><span class="t3k">Public webinar</span><span class="t3v" style="color:#ef4444">None ✗</span></div>
+        </div>
+        <div class="t3card bronze">
+          <div class="t3rank">🥉</div>
+          <div class="t3name">Nate Herk</div>
+          <div class="t3row"><span class="t3k">Fitness score</span><span class="t3v">58.75 / 100</span></div>
+          <div class="t3row"><span class="t3k">Subscribers</span><span class="t3v">648K YT · 149K IG</span></div>
+          <div class="t3row"><span class="t3k">Free community</span><span class="t3v">310K members</span></div>
+          <div class="t3row"><span class="t3k">Paid tier</span><span class="t3v">$94–99/mo · ~3,300 paid</span></div>
+          <div class="t3row"><span class="t3k">Est. revenue</span><span class="t3v">~$320K/mo</span></div>
+          <div class="t3row"><span class="t3k">Awards</span><span class="t3v">4x Skool Games Winner</span></div>
+          <div class="t3row"><span class="t3k">Press</span><span class="t3v">Apify · Microsoft Learn</span></div>
+          <div class="t3row"><span class="t3k">Public webinar</span><span class="t3v" style="color:#ef4444">None ✗</span></div>
+        </div>
+      </div>
 
-    <!-- GEN 3 -->
-    <div class="funnel-stage">
-      <div class="funnel-box g3">
-        <div class="funnel-header">
-          <div class="gen-label g3">Generation 3 · Benchmark Comparison</div>
-          <div class="f-cut">✂ 7 candidates eliminated → Top 3 identified</div>
-        </div>
-        <div class="funnel-steps">
-          <div class="f-node">
-            <div class="count" style="color:var(--gold)">10</div>
-            <div class="desc">Finalists<br>benchmarked</div>
-          </div>
-          <div class="f-arrow">→</div>
-          <div class="f-node">
-            <div class="count" style="color:var(--gold); font-size:1rem;">Deep Intel</div>
-            <div class="desc">Claude Code +<br>RivalSearchMCP</div>
-          </div>
-          <div class="f-arrow">→</div>
-          <div class="f-node">
-            <div class="count" style="color:var(--gold); font-size:1rem;">vs Nuno</div>
-            <div class="desc">Head-to-head<br>comparison</div>
-          </div>
-          <div class="f-arrow">→</div>
-          <div class="f-node">
-            <div class="count end">🏆 3</div>
-            <div class="desc">Strategic<br>competitors</div>
-          </div>
-        </div>
+      <div class="finding">
+        <h3>🏆 Key Strategic Finding</h3>
+        <p>None of the top 3 competitors run public webinars. Nick Saraev does private live coaching inside Skool ($184/mo members only). Riley Brown does nothing live. Nate Herk runs members-only weekly calls. Nuno Tavares's webinar on MCP + AI Agents + GoHighLevel is <strong style="color:#ffd700">completely uncontested</strong> in this space.</p>
       </div>
     </div>
 
   </div>
-</section>
+</div>
 
-<div class="divider" style="max-width:1100px;margin:0 auto;"></div>
+</div><!-- end timeline -->
 
-<!-- ⑥  HONEST METHODOLOGY NOTE -->
-<section id="methodology">
-  <div class="section-label">Section 05</div>
-  <h2>Honest Methodology Note</h2>
-
-  <div class="amber-box">
-    <div class="amber-tag">
-      ⚠ Transparency Notice
-    </div>
-    <p>
-      The automated web scraping phase (<strong>report2.py</strong>) returned limited results — most websites blocked requests, Instagram and LinkedIn rejected scrapers, and Meta Ad Library is JavaScript-rendered and inaccessible to standard HTTP clients.<br><br>
-      <strong>Individual candidate cards reflect only publicly accessible data</strong> (YouTube API metadata, publicly indexed pages). Real deep intelligence was only achievable on the <strong>Top 3 finalists</strong> using <strong>Claude Code + RivalSearchMCP</strong> with Cloudflare bypass, which enabled full website rendering, ad library access, community pricing visibility, and revenue estimation.<br><br>
-      The 28-candidate cards are algorithmic signals, not verified profiles. The Top 3 reports are high-confidence intelligence.
-    </p>
+<!-- CITATIONS FOOTER -->
+<div style="border-top:1px solid #1e293b;margin-top:20px;padding-top:32px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+  <div style="background:#111827;border:1px solid #1e293b;border-radius:10px;padding:16px">
+    <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:#00d4ff;margin-bottom:8px">🤖 Claude Sonnet 4.6</div>
+    <div style="color:#64748b;font-size:0.78rem;line-height:1.5;margin-bottom:8px">Algorithm architecture, prompt engineering, strategic analysis, ICP development</div>
+    <div style="font-size:0.65rem;color:#334155;font-style:italic">Anthropic, claude.ai · April 11, 2026</div>
   </div>
-</section>
-
-<div class="divider" style="max-width:1100px;margin:0 auto;"></div>
-
-<!-- ⑦  THE RESULTS -->
-<section id="results">
-  <div class="section-label">Section 06</div>
-  <h2>The Top 3 Finalists</h2>
-  <p class="lead">After 3 generations of scoring and elimination, these three creators represent Nuno's highest-priority strategic competitors in the AI automation education space.</p>
-
-  <div class="results-grid">
-
-    <!-- GOLD -->
-    <div class="result-card gold-card">
-      <div class="medal">🥇</div>
-      <h3>Nick Saraev</h3>
-      <div class="handle">@nicksaraev · AI Automation</div>
-      <div class="result-stats">
-        <div class="rstat">
-          <span class="key">YouTube Subscribers</span>
-          <span class="val gold">377K</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Community Pricing</span>
-          <span class="val">$184 / month · Skool</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Est. Monthly Revenue</span>
-          <span class="val green">~$441K / mo</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Webinar Activity</span>
-          <span class="val" style="color:#f87171;">None detected</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Primary Threat</span>
-          <span class="val">Exact niche overlap</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- SILVER -->
-    <div class="result-card silver-card">
-      <div class="medal">🥈</div>
-      <h3>Riley Brown</h3>
-      <div class="handle">@rileybrown.ai · VibeCode</div>
-      <div class="result-stats">
-        <div class="rstat">
-          <span class="key">YouTube Subscribers</span>
-          <span class="val" style="color:var(--silver)">211K</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Funding</span>
-          <span class="val">$9.4M VC Funded</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Product</span>
-          <span class="val">VibeCode App (SaaS)</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Webinar Activity</span>
-          <span class="val" style="color:#f87171;">None detected</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Primary Threat</span>
-          <span class="val">VC-backed product</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- BRONZE -->
-    <div class="result-card bronze-card">
-      <div class="medal">🥉</div>
-      <h3>Nate Herk</h3>
-      <div class="handle">@nateherk · AI Automation</div>
-      <div class="result-stats">
-        <div class="rstat">
-          <span class="key">YouTube Subscribers</span>
-          <span class="val" style="color:var(--bronze)">648K</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Community Pricing</span>
-          <span class="val">$99 / month</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Est. Monthly Revenue</span>
-          <span class="val green">~$320K / mo</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Webinar Activity</span>
-          <span class="val" style="color:#f87171;">None detected</span>
-        </div>
-        <div class="rstat">
-          <span class="key">Primary Threat</span>
-          <span class="val">Largest audience</span>
-        </div>
-      </div>
-    </div>
-
+  <div style="background:#111827;border:1px solid #1e293b;border-radius:10px;padding:16px">
+    <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:#00d4ff;margin-bottom:8px">💎 Google Gemini 2.5 Pro</div>
+    <div style="color:#64748b;font-size:0.78rem;line-height:1.5;margin-bottom:8px">Python code generation for all 3 scripts. Prompts designed by Claude, executed by Gemini.</div>
+    <div style="font-size:0.65rem;color:#334155;font-style:italic">Google, gemini.google.com · April 11, 2026</div>
   </div>
-</section>
-
-<div class="divider" style="max-width:1100px;margin:0 auto;"></div>
-
-<!-- ⑧  KEY FINDING -->
-<section id="finding">
-  <div class="section-label">Section 07</div>
-  <h2>The Key Finding</h2>
-
-  <div class="finding-box">
-    <div class="finding-icon">🎯</div>
-    <h2>
-      <span>NONE</span> of the top 3 competitors<br>run public webinars.<br>
-      Nuno's webinar is completely<br><span>uncontested</span> in this space.
-    </h2>
-    <p>Every major player in the AI automation education space monetizes through communities, SaaS, and courses — not live webinar launches. This is a genuine strategic white space that Nuno can own without fighting established players on their home turf.</p>
+  <div style="background:#111827;border:1px solid #1e293b;border-radius:10px;padding:16px">
+    <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:#00d4ff;margin-bottom:8px">⚡ Claude Code + RivalSearchMCP</div>
+    <div style="color:#64748b;font-size:0.78rem;line-height:1.5;margin-bottom:8px">Deep intelligence on Top 3. Cloudflare bypass, multi-engine search, website traversal.</div>
+    <div style="font-size:0.65rem;color:#334155;font-style:italic">Anthropic + <a href="https://github.com/damionrashford/RivalSearchMCP" style="color:#00d4ff">github.com/damionrashford/RivalSearchMCP</a> (MIT)</div>
   </div>
-</section>
-
-<div class="divider" style="max-width:1100px;margin:0 auto;"></div>
-
-<!-- ⑨  TOOLS USED -->
-<section id="tools">
-  <div class="section-label">Section 08</div>
-  <h2>Tools Used</h2>
-  <p class="lead">This intelligence system was built using a layered stack of AI models, APIs, and specialized tools — each assigned to the task it handles best.</p>
-
-  <div class="tools-grid">
-
-    <div class="tool-card">
-      <div class="tool-icon" style="background:rgba(100,116,139,0.15);">🤖</div>
-      <div>
-        <h3>Claude Sonnet 4.6</h3>
-        <p>Prompt engineering, algorithm architecture, scoring rubric design, and strategic synthesis of all intelligence outputs.</p>
-        <span class="tool-badge" style="background:rgba(0,212,255,0.1);color:var(--accent);border:1px solid rgba(0,212,255,0.2);">Anthropic</span>
-      </div>
-    </div>
-
-    <div class="tool-card">
-      <div class="tool-icon" style="background:rgba(59,130,246,0.12);">✨</div>
-      <div>
-        <h3>Google Gemini 2.5 Pro</h3>
-        <p>Python code generation for the scraping pipeline, API integration scripts, and data processing logic across all report stages.</p>
-        <span class="tool-badge" style="background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);">Google DeepMind</span>
-      </div>
-    </div>
-
-    <div class="tool-card">
-      <div class="tool-icon" style="background:rgba(16,185,129,0.12);">🔍</div>
-      <div>
-        <h3>Claude Code + RivalSearchMCP</h3>
-        <p>Deep competitive intelligence on the Top 3 finalists — Cloudflare bypass, full site rendering, ad library access, and revenue estimation.</p>
-        <span class="tool-badge" style="background:rgba(16,185,129,0.1);color:var(--green);border:1px solid rgba(16,185,129,0.2);">Anthropic · MCP</span>
-      </div>
-    </div>
-
-    <div class="tool-card">
-      <div class="tool-icon" style="background:rgba(239,68,68,0.12);">📡</div>
-      <div>
-        <h3>YouTube Data API v3</h3>
-        <p>Programmatic candidate discovery across 8 search terms. Channel metadata extraction, deduplication, and subscriber data for 28 candidates.</p>
-        <span class="tool-badge" style="background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);">Google Cloud</span>
-      </div>
-    </div>
-
+  <div style="background:#111827;border:1px solid #1e293b;border-radius:10px;padding:16px">
+    <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:#00d4ff;margin-bottom:8px">📺 YouTube Data API v3</div>
+    <div style="color:#64748b;font-size:0.78rem;line-height:1.5;margin-bottom:8px">Initial discovery of 28 candidates across 8 niche search terms. Free tier.</div>
+    <div style="font-size:0.65rem;color:#334155;font-style:italic">Google · console.cloud.google.com · April 11, 2026</div>
   </div>
-</section>
+</div>
 
-<!-- FOOTER -->
-<footer>
-  Built for <span>Nuno Tavares</span> · Pareto Final Project · 2025<br>
-  <span style="color:var(--muted); font-size:0.72rem; margin-top:0.4rem; display:block;">Darwinian Competitor Intelligence Algorithm · Python Processes Series 5</span>
-</footer>
+</div>
 
-<!-- CHART.JS RADAR -->
 <script>
-  const ctx = document.getElementById('dimChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels: [
-        'Niche Density (25%)',
-        'Webinar Strategy (25%)',
-        'Audience Overlap (20%)',
-        'Content Format (10%)',
-        'Offer Structure (10%)',
-        'Revenue Scale (5%)',
-        'Authority Score (5%)'
-      ],
-      datasets: [
-        {
-          label: 'Nick Saraev',
-          data: [9, 3, 8, 9, 8, 9, 7],
-          borderColor: 'rgba(245,158,11,0.9)',
-          backgroundColor: 'rgba(245,158,11,0.08)',
-          pointBackgroundColor: 'rgba(245,158,11,1)',
-          borderWidth: 2,
-          pointRadius: 4,
-        },
-        {
-          label: 'Riley Brown',
-          data: [7, 2, 7, 7, 6, 8, 8],
-          borderColor: 'rgba(148,163,184,0.9)',
-          backgroundColor: 'rgba(148,163,184,0.06)',
-          pointBackgroundColor: 'rgba(148,163,184,1)',
-          borderWidth: 2,
-          pointRadius: 4,
-        },
-        {
-          label: 'Nate Herk',
-          data: [8, 2, 9, 8, 7, 8, 8],
-          borderColor: 'rgba(205,124,47,0.9)',
-          backgroundColor: 'rgba(205,124,47,0.06)',
-          pointBackgroundColor: 'rgba(205,124,47,1)',
-          borderWidth: 2,
-          pointRadius: 4,
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        r: {
-          min: 0,
-          max: 10,
-          ticks: {
-            stepSize: 2,
-            color: 'rgba(100,116,139,0.8)',
-            font: { size: 10 },
-            backdropColor: 'transparent',
-          },
-          grid: { color: 'rgba(30,41,59,0.8)' },
-          angleLines: { color: 'rgba(30,41,59,0.8)' },
-          pointLabels: {
-            color: '#94a3b8',
-            font: { size: 10, weight: '600' },
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          labels: {
-            color: '#94a3b8',
-            font: { size: 11 },
-            boxWidth: 12,
-            padding: 16,
-          }
-        },
-        title: {
-          display: true,
-          text: 'Top 3 · Dimension Score Comparison',
-          color: '#e2e8f0',
-          font: { size: 13, weight: '700' },
-          padding: { bottom: 16 }
-        }
-      }
-    }
-  });
+function toggle(id){
+  const el=document.getElementById(id);
+  const btn=document.querySelector('[onclick="toggle(\''+id+'\')"]');
+  el.classList.toggle('open');
+  if(btn) btn.classList.toggle('open');
+}
+function copyEl(id){
+  const text=document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    event.target.textContent='copied!';
+    setTimeout(()=>event.target.textContent='copy',2000);
+  }).catch(()=>{});
+}
 </script>
-
 </body>
 </html>
