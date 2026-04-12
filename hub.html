@@ -28,24 +28,8 @@
     border-left: 3px solid #00d4ff; padding-left: 12px;
   }
 
-  /* ALGORITHM ITERATIONS */
-  .iterations { display: flex; flex-direction: column; gap: 16px; }
-  .iteration-card {
-    background: #111827; border-radius: 12px; padding: 24px 28px;
-    border: 1px solid #1e293b; display: flex; 
-    justify-content: space-between; align-items: center;
-    transition: border-color 0.2s;
-  }
-  .iteration-card:hover { border-color: #00d4ff; }
-  .iteration-card.gold { border-color: #ffd700; }
-  .iteration-left { flex: 1; }
-  .iteration-gen { 
-    font-size: 0.7rem; letter-spacing: 2px; color: #64748b; 
-    text-transform: uppercase; margin-bottom: 6px;
-  }
-  .iteration-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
-  .iteration-desc { color: #94a3b8; font-size: 0.875rem; line-height: 1.5; }
-  .iteration-meta { 
+  /* STEP META PILLS (reused from iterations) */
+  .iteration-meta {
     display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap;
   }
   .meta-pill {
@@ -105,9 +89,184 @@
   .footer a { color: #00d4ff; text-decoration: none; }
 
   @media (max-width: 768px) {
-    .iteration-card { flex-direction: column; gap: 16px; align-items: flex-start; }
     .brain-card { flex-direction: column; }
     .hero h1 { font-size: 1.6rem; }
+  }
+
+  /* ── TIMELINE ALGORITHM ── */
+  .timeline-outer {
+    position: relative;
+    padding-left: 52px;
+  }
+  .timeline-rail {
+    position: absolute;
+    left: 19px;
+    top: 24px;
+    bottom: 24px;
+    width: 2px;
+    background: linear-gradient(to bottom, #00d4ff 0%, #0099cc 40%, #7c3aed 80%, #ffd700 100%);
+    border-radius: 2px;
+  }
+
+  .step-wrap { position: relative; margin-bottom: 0; }
+  .step-dot {
+    position: absolute;
+    left: -41px;
+    top: 28px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #00d4ff;
+    border: 3px solid #0a0f1e;
+    box-shadow: 0 0 0 2px #00d4ff;
+    z-index: 2;
+  }
+  .step-dot.step4 { background: #ffd700; box-shadow: 0 0 0 2px #ffd700; }
+
+  .step-card {
+    background: #111827;
+    border-radius: 12px;
+    border: 1px solid #1e293b;
+    padding: 24px 28px;
+    margin-bottom: 0;
+    transition: border-color 0.2s;
+  }
+  .step-card:hover { border-color: #00d4ff33; }
+  .step-card.gold-step { border-color: #ffd700; }
+
+  .step-number {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #00d4ff;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    margin-bottom: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+  .step-number.gold-num { color: #ffd700; }
+  .step-subtitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .step-gen {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: #475569;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .step-desc { color: #94a3b8; font-size: 0.875rem; line-height: 1.6; margin-bottom: 12px; }
+  .step-footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .toggle-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ── FLOW ARROW ── */
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0 10px 4px;
+    color: #334155;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .flow-arrow::before {
+    content: '';
+    display: block;
+    width: 2px; height: 28px;
+    background: linear-gradient(to bottom, #1e293b, #334155);
+    flex-shrink: 0;
+  }
+  .flow-arrow-tip { font-size: 1rem; }
+
+  /* ── TOGGLE BUTTONS ── */
+  .toggle-btn {
+    background: #1e293b;
+    color: #00d4ff;
+    border: 1px solid #334155;
+    border-radius: 20px;
+    padding: 5px 13px;
+    font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .toggle-btn:hover { background: #243044; border-color: #00d4ff; }
+  .toggle-btn.warn { color: #f59e0b; border-color: #44350a; }
+  .toggle-btn.warn:hover { background: #1c1506; border-color: #f59e0b; }
+
+  /* ── CODE BLOCKS ── */
+  .code-wrap {
+    margin-top: 14px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #1e293b;
+    max-height: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .code-wrap.open {
+    max-height: 800px;
+    opacity: 1;
+  }
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0d1521;
+    padding: 8px 14px;
+    border-bottom: 1px solid #1e293b;
+  }
+  .code-header span {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.72rem;
+    color: #475569;
+    letter-spacing: 0.05em;
+  }
+  .copy-btn {
+    background: #1e293b;
+    color: #64748b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 0.68rem;
+    cursor: pointer;
+    font-family: system-ui, sans-serif;
+    transition: color 0.15s, background 0.15s;
+  }
+  .copy-btn:hover { background: #243044; color: #00d4ff; }
+  .copy-btn.copied { color: #10b981; border-color: #10b981; }
+  pre.code-pre {
+    background: #0a0f1e;
+    color: #10b981;
+    font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 0.78rem;
+    line-height: 1.65;
+    padding: 16px;
+    margin: 0;
+    overflow-x: auto;
+    white-space: pre;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  /* Scrollbar for code blocks */
+  pre.code-pre::-webkit-scrollbar { width: 5px; height: 5px; }
+  pre.code-pre::-webkit-scrollbar-track { background: #0a0f1e; }
+  pre.code-pre::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+
+  @media (max-width: 640px) {
+    .timeline-outer { padding-left: 36px; }
+    .timeline-rail { left: 14px; }
+    .step-dot { left: -30px; }
+    .step-number { font-size: 1.2rem; }
   }
 </style>
 </head>
@@ -124,90 +283,200 @@
   </p>
 </div>
 
-<!-- ALGORITHM ITERATIONS -->
+<!-- ALGORITHM TIMELINE -->
 <div class="section">
-  <div class="section-title">🧬 Algorithm Iterations — From Raw Search to Deep Intelligence</div>
-  <div class="iterations">
+  <div class="section-title">🧬 THE DARWIN ENGINE — One Algorithm, Four Steps</div>
 
-    <div class="iteration-card">
-      <div class="iteration-left">
-        <div class="iteration-gen">Generation 1 · Built with Gemini + Claude</div>
-        <div class="iteration-title">The Darwin Engine — First Run</div>
-        <div class="iteration-desc">
-          Queried YouTube Data API across 8 niche search terms. Discovered 28 candidates. 
-          Applied 7-dimension fitness scoring. Ran 3 elimination rounds. First HTML visualization 
-          of the Darwinian model with algorithm explanation and ranked table.
+  <div class="timeline-outer">
+    <div class="timeline-rail"></div>
+
+    <!-- ── STEP 1 ── -->
+    <div class="step-wrap">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">STEP 1 OF 4</div>
+        <div class="step-subtitle">The Darwin Engine — First Run</div>
+        <div class="step-gen">Generation 1 · Built with Gemini + Claude</div>
+        <div class="step-desc">
+          Queried YouTube Data API v3 across 8 niche search terms. Discovered 28 unique candidates.
+          Applied 7-dimension weighted fitness scoring (audience overlap, niche density, webinar strategy…).
+          Ran 3 Darwinian elimination rounds. Produced ranked CSV + first HTML visualization.
         </div>
         <div class="iteration-meta">
           <span class="meta-pill">28 candidates</span>
-          <span class="meta-pill">YouTube API</span>
-          <span class="meta-pill">Darwinian scoring</span>
+          <span class="meta-pill">YouTube API v3</span>
+          <span class="meta-pill">7D fitness score</span>
           <span class="meta-pill">Python</span>
         </div>
+        <div class="step-footer">
+          <a href="iteration1.html" class="btn btn-grey">View Report →</a>
+          <div class="toggle-row">
+            <button class="toggle-btn" onclick="toggleBlock('wrap-code1','btn-code1')" id="btn-code1">&lt;/&gt; Show Python Code</button>
+            <button class="toggle-btn" onclick="toggleBlock('wrap-prompt1','btn-prompt1')" id="btn-prompt1">🤖 Show Gemini Prompt</button>
+          </div>
+        </div>
+        <div id="wrap-code1" class="code-wrap">
+          <div class="code-header">
+            <span>nuno_competition.py — YouTube API + Fitness Scoring + Elimination</span>
+            <button class="copy-btn" onclick="copyCode('pre-code1',this)">Copy</button>
+          </div>
+          <pre id="pre-code1" class="code-pre"></pre>
+        </div>
+        <div id="wrap-prompt1" class="code-wrap">
+          <div class="code-header">
+            <span>🤖 Gemini Prompt — Darwinian Algorithm Generation</span>
+            <button class="copy-btn" onclick="copyCode('pre-prompt1',this)">Copy</button>
+          </div>
+          <pre id="pre-prompt1" class="code-pre"></pre>
+        </div>
       </div>
-      <a href="iteration1.html" class="btn btn-grey">View Report →</a>
     </div>
 
-    <div class="iteration-card">
-      <div class="iteration-left">
-        <div class="iteration-gen">Generation 2 · Built with Gemini + Claude</div>
-        <div class="iteration-title">Deep Link Enrichment — All 28 Candidates</div>
-        <div class="iteration-desc">
-          Ran automated Google searches for each candidate to find real URLs — websites, 
-          LinkedIn, Instagram, course pages, webinar registration pages. Added digital 
-          footprint scoring and filter controls. All 28 shown with clickable links.
+    <div class="flow-arrow"><span class="flow-arrow-tip">↓</span> 28 candidates → competitor_analysis.csv</div>
+
+    <!-- ── STEP 2 ── -->
+    <div class="step-wrap">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">STEP 2 OF 4</div>
+        <div class="step-subtitle">Deep Link Enrichment — All 28 Candidates</div>
+        <div class="step-gen">Generation 2 · Built with Gemini + Claude</div>
+        <div class="step-desc">
+          Reads competitor_analysis.csv and generates a self-contained HTML intelligence dashboard.
+          Injects all CSV data as JSON into the HTML template. Renders a searchable ranked table,
+          Top 3 profile cards with tabbed deep-dives, and a Chart.js fitness visualization.
         </div>
         <div class="iteration-meta">
-          <span class="meta-pill">Web scraping</span>
-          <span class="meta-pill">Link discovery</span>
-          <span class="meta-pill">28 profiles</span>
-          <span class="meta-pill">Filter controls</span>
+          <span class="meta-pill">HTML generation</span>
+          <span class="meta-pill">JSON injection</span>
+          <span class="meta-pill">Chart.js</span>
+          <span class="meta-pill">Tabbed profiles</span>
+        </div>
+        <div class="step-footer">
+          <a href="iteration2.html" class="btn btn-grey">View Report →</a>
+          <div class="toggle-row">
+            <button class="toggle-btn" onclick="toggleBlock('wrap-code2','btn-code2')" id="btn-code2">&lt;/&gt; Show Python Code</button>
+            <button class="toggle-btn" onclick="toggleBlock('wrap-prompt2','btn-prompt2')" id="btn-prompt2">🤖 Show Gemini Prompt</button>
+          </div>
+        </div>
+        <div id="wrap-code2" class="code-wrap">
+          <div class="code-header">
+            <span>2. report.py — HTML Generation + Chart.js Injection</span>
+            <button class="copy-btn" onclick="copyCode('pre-code2',this)">Copy</button>
+          </div>
+          <pre id="pre-code2" class="code-pre"></pre>
+        </div>
+        <div id="wrap-prompt2" class="code-wrap">
+          <div class="code-header">
+            <span>🤖 Gemini Prompt — Report Generator</span>
+            <button class="copy-btn" onclick="copyCode('pre-prompt2',this)">Copy</button>
+          </div>
+          <pre id="pre-prompt2" class="code-pre"></pre>
         </div>
       </div>
-      <a href="iteration2.html" class="btn btn-grey">View Report →</a>
     </div>
 
-    <div class="iteration-card">
-      <div class="iteration-left">
-        <div class="iteration-gen">Generation 3 · Built with Gemini + Claude</div>
-        <div class="iteration-title">Individual Report Cards — One Per Candidate</div>
-        <div class="iteration-desc">
-          Generated individual HTML intelligence cards for each of the 28 candidates. 
-          Each card shows all discovered links, webinar page status, course/product pages, 
-          and GHL/MCP connection signals. Click any candidate below to open their card.
+    <div class="flow-arrow"><span class="flow-arrow-tip">↓</span> competitor_report.html → per-candidate card pages</div>
+
+    <!-- ── STEP 3 ── -->
+    <div class="step-wrap">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">STEP 3 OF 4</div>
+        <div class="step-subtitle">Individual Report Cards — One Per Candidate</div>
+        <div class="step-gen">Generation 3 · Built with Gemini + Claude</div>
+        <div class="step-desc">
+          Ran automated Google searches for each of the 19 qualifying candidates to discover
+          websites, LinkedIn, Instagram, webinar pages, and course pages. Scraped each site for
+          headline, sections, CTA, and pricing signals. Generated 28 individual HTML report cards.
         </div>
         <div class="iteration-meta">
-          <span class="meta-pill">28 individual reports</span>
-          <span class="meta-pill">Per-candidate intel</span>
-          <span class="meta-pill">Clickable links</span>
+          <span class="meta-pill">7 searches/candidate</span>
+          <span class="meta-pill">BeautifulSoup</span>
+          <span class="meta-pill">28 report cards</span>
+          <span class="meta-pill">deep_enriched.csv</span>
+        </div>
+        <div class="step-footer">
+          <a href="iteration3.html" class="btn btn-grey">View Report →</a>
+          <div class="toggle-row">
+            <button class="toggle-btn" onclick="toggleBlock('wrap-code3','btn-code3')" id="btn-code3">&lt;/&gt; Show Python Code</button>
+            <button class="toggle-btn" onclick="toggleBlock('wrap-prompt3','btn-prompt3')" id="btn-prompt3">🤖 Show Gemini Prompt</button>
+            <button class="toggle-btn warn" onclick="toggleBlock('wrap-note3','btn-note3')" id="btn-note3">⚠️ Methodology Note</button>
+          </div>
+        </div>
+        <div id="wrap-code3" class="code-wrap">
+          <div class="code-header">
+            <span>3. report2.py — deep_search() + Enrichment Loop</span>
+            <button class="copy-btn" onclick="copyCode('pre-code3',this)">Copy</button>
+          </div>
+          <pre id="pre-code3" class="code-pre"></pre>
+        </div>
+        <div id="wrap-prompt3" class="code-wrap">
+          <div class="code-header">
+            <span>🤖 Gemini Prompt — Deep Web Enrichment</span>
+            <button class="copy-btn" onclick="copyCode('pre-prompt3',this)">Copy</button>
+          </div>
+          <pre id="pre-prompt3" class="code-pre"></pre>
+        </div>
+        <div id="wrap-note3" class="code-wrap">
+          <div class="code-header" style="background:rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.3);">
+            <span style="color:#f59e0b;">⚠️  What Actually Happened During Scraping</span>
+            <button class="copy-btn" onclick="copyCode('pre-note3',this)">Copy</button>
+          </div>
+          <pre id="pre-note3" class="code-pre" style="color:#f59e0b; background:#0c0a04;"></pre>
         </div>
       </div>
-      <a href="iteration3.html" class="btn btn-grey">View Report →</a>
     </div>
 
-    <div class="iteration-card gold">
-      <div class="iteration-left">
-        <div class="iteration-gen">Generation 4 · Built with Claude Code + RivalSearchMCP</div>
-        <div class="iteration-title">⭐ Top 3 Deep Intelligence — The Crown Jewel</div>
-        <div class="iteration-desc">
-          Switched from Python scraping to Claude Code + RivalSearchMCP for Cloudflare bypass 
-          and multi-engine search. Deep-stalked Nick Saraev, Riley Brown, and Nate Herk across 
-          all platforms. Found real pricing ($184/mo Skool, $99/mo community), revenue estimates 
-          ($160K–$440K/mo), press mentions, podcast appearances, and full business model breakdowns.
-          Key finding: none of the top 3 run public webinars — Nuno's webinar is uncontested.
+    <div class="flow-arrow"><span class="flow-arrow-tip">↓</span> deep_enriched.csv → Top 3 escalated to Claude Code</div>
+
+    <!-- ── STEP 4 ── -->
+    <div class="step-wrap">
+      <div class="step-dot step4"></div>
+      <div class="step-card gold-step">
+        <div class="step-number gold-num">STEP 4 OF 4</div>
+        <div class="step-subtitle">⭐ Top 3 Deep Intelligence — The Crown Jewel</div>
+        <div class="step-gen">Generation 4 · Built with Claude Code + RivalSearchMCP</div>
+        <div class="step-desc">
+          Switched from Python scraping to Claude Code + RivalSearchMCP for Cloudflare bypass and
+          multi-engine search. Deep-stalked Nick Saraev, Riley Brown, and Nate Herk across all platforms.
+          Found real pricing ($184/mo Skool, $99/mo community), revenue estimates ($320K–$441K/mo),
+          press mentions, and full business model breakdowns.
+          <br><br>
+          <strong style="color:#ffd700">Key finding: none of the top 3 run public webinars — Nuno's webinar is uncontested.</strong>
         </div>
         <div class="iteration-meta">
           <span class="meta-pill">RivalSearchMCP</span>
           <span class="meta-pill">Claude Code</span>
-          <span class="meta-pill">Revenue intelligence</span>
-          <span class="meta-pill">Full business models</span>
-          <span class="meta-pill">Press + podcasts</span>
+          <span class="meta-pill">Revenue intel</span>
+          <span class="meta-pill">Business models</span>
+          <span class="meta-pill">Cloudflare bypass</span>
+        </div>
+        <div class="step-footer">
+          <a href="index.html" class="btn btn-gold">View Report →</a>
+          <div class="toggle-row">
+            <button class="toggle-btn" onclick="toggleBlock('wrap-prompt4','btn-prompt4')" id="btn-prompt4">🤖 Show Claude Code Prompt</button>
+            <button class="toggle-btn" onclick="toggleBlock('wrap-mcp4','btn-mcp4')" id="btn-mcp4">⚡ Show RivalSearchMCP Config</button>
+          </div>
+        </div>
+        <div id="wrap-prompt4" class="code-wrap">
+          <div class="code-header">
+            <span>🤖 Claude Code Terminal Prompt — Top 3 Deep Research</span>
+            <button class="copy-btn" onclick="copyCode('pre-prompt4',this)">Copy</button>
+          </div>
+          <pre id="pre-prompt4" class="code-pre"></pre>
+        </div>
+        <div id="wrap-mcp4" class="code-wrap">
+          <div class="code-header" style="background:#0a0f1e;">
+            <span style="color:#a78bfa;">⚡ RivalSearchMCP — MCP Server Setup</span>
+            <button class="copy-btn" onclick="copyCode('pre-mcp4',this)">Copy</button>
+          </div>
+          <pre id="pre-mcp4" class="code-pre" style="color:#a78bfa;"></pre>
         </div>
       </div>
-      <a href="index.html" class="btn btn-gold">View Report →</a>
     </div>
 
-  </div>
+  </div><!-- /timeline-outer -->
 </div>
 
 <!-- 28 INDIVIDUAL CARDS -->
@@ -371,6 +640,482 @@
   <a href="https://github.com/damionrashford/RivalSearchMCP">Powered by RivalSearchMCP</a> · 
   Built with Claude Code + Claude AI + Gemini
 </div>
+
+
+<script>
+// ── TOGGLE FUNCTION ──────────────────────────────────────
+function toggleBlock(wrapId, btnId) {
+  const wrap = document.getElementById(wrapId);
+  const btn  = document.getElementById(btnId);
+  if (!wrap) return;
+  const isOpen = wrap.classList.contains('open');
+  wrap.classList.toggle('open', !isOpen);
+  if (btn) btn.style.borderColor = isOpen ? '' : '#00d4ff';
+}
+
+// ── COPY TO CLIPBOARD ────────────────────────────────────
+function copyCode(preId, btn) {
+  const pre = document.getElementById(preId);
+  if (!pre) return;
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+// ── CODE SNIPPETS ─────────────────────────────────────────
+const SNIPPETS = {};
+
+SNIPPETS['pre-code1'] = `# ─────────────────────────────────────────────────────────
+# STEP 1A: YOUTUBE DATA API v3 — 8-QUERY CANDIDATE DISCOVERY
+# nuno_competition.py
+# ─────────────────────────────────────────────────────────
+from googleapiclient.discovery import build
+import pandas as pd
+
+def get_youtube_candidates(api_key):
+    youtube = build('youtube', 'v3', developerKey=api_key)
+    queries = [
+        "MCP tutorial for beginners",    "Manus AI agent tutorial",
+        "GoHighLevel training 2024",      "AI agents no code tutorial",
+        "vibe coding tutorial",           "n8n automation for business",
+        "Claude Code tutorial",           "marketing automation webinar"
+    ]
+    known_seeds = [
+        "Nick Saraev", "Liam Ottley", "Matt Wolfe", "Keaton Walker",
+        "Jason Wardrop", "Cole Humphus", "Riley Brown", "Corbin Brown"
+    ]
+    candidates = {}
+    for q in queries:
+        request = youtube.search().list(
+            q=q, part="snippet", type="channel", maxResults=3
+        )
+        for item in request.execute().get('items', []):
+            cid = item['snippet']['channelId']
+            candidates[cid] = {'name': item['snippet']['channelTitle'], 'id': cid}
+
+    for name in known_seeds:          # Ensure seeds are always included
+        req = youtube.search().list(q=name, part="snippet",
+                                    type="channel", maxResults=1).execute()
+        if req['items']:
+            cid = req['items'][0]['snippet']['channelId']
+            candidates[cid] = {'name': name, 'id': cid}
+    return candidates   # → ~28 unique channel IDs
+
+# ─────────────────────────────────────────────────────────
+# STEP 1B: DARWINIAN FITNESS SCORING — 7 WEIGHTED DIMENSIONS
+# ─────────────────────────────────────────────────────────
+def calculate_fitness(row):
+    d1 = min(10, (row['subs'] / 100000) * 10)            # Audience Overlap   20%
+    niche_keys = ["mcp","gohighlevel","vibe","claude","agent","n8n","make"]
+    d2 = min(10, sum(1 for k in niche_keys
+                     if k in str(row['bio']).lower()
+                     or k in str(row['top_videos']).lower()) * 1.5) # Niche Density 25%
+    d3 = 10 if row['has_webinar_keyword'] else 3          # Content Format     10%
+    d4 = 10 if row['has_webinar_keyword'] and \
+               row['price_signal'] else (5 if row['has_webinar_keyword'] else 0) # Webinar 25%
+    d5 = 10 if row['price_signal'] else 0                 # Offer Structure    10%
+    d6 = 10 if row['subs'] > 50000 else 5                 # Revenue Scale       5%
+    d7 = min(10, row['authority_count'] * 2)              # Authority Score     5%
+
+    score = (d1*0.2)+(d2*0.25)+(d3*0.1)+(d4*0.25)+(d5*0.1)+(d6*0.05)+(d7*0.05)
+    return pd.Series([d1, d2, d3, d4, d5, d6, d7, score * 10])
+
+# ─────────────────────────────────────────────────────────
+# STEP 1C: 3-GENERATION DARWINIAN ELIMINATION
+# ─────────────────────────────────────────────────────────
+    df[score_labels] = df.apply(calculate_fitness, axis=1)
+    df = df.sort_values(by='Total_Fitness', ascending=False)
+
+    # Generation 1: Eliminate bottom 40%  →  28 → ~17 survive
+    df['Generation'] = "Finalist"
+    cutoff = int(len(df) * 0.4)
+    df.iloc[len(df)-cutoff:,
+            df.columns.get_loc('Generation')] = "Eliminated (Gen 1)"
+
+    # Generation 2: Penalty for no webinar focus → re-sort  →  ~10 survive
+    df.loc[df['has_webinar_keyword'] == False, 'Total_Fitness'] *= 0.8
+    df = df.sort_values(by='Total_Fitness', ascending=False)
+
+    df.to_csv('competitor_analysis.csv', index=False)    # All 28 → CSV`;
+
+SNIPPETS['pre-prompt1'] = `You are building a Darwinian competitor intelligence system
+for Nuno Tavares, an AI automation educator planning a
+webinar launch. His niche: Python automation, MCP, GHL,
+no-code AI tools for entrepreneurs.
+
+Build nuno_competition.py — a complete Python script that:
+
+DISCOVERY:
+- Query YouTube Data API v3 across 8 search terms:
+    "MCP tutorial for beginners", "Manus AI agent tutorial",
+    "GoHighLevel training 2024", "AI agents no code tutorial",
+    "vibe coding tutorial", "n8n automation for business",
+    "Claude Code tutorial", "marketing automation webinar"
+- Seed with known competitors: Nick Saraev, Liam Ottley,
+    Matt Wolfe, Keaton Walker, Jason Wardrop, Riley Brown, Corbin Brown
+- Collect: channel URL, subs, views, video count, bio, top 5 videos
+- Deduplicate by channel ID → target ~28 unique candidates
+
+SCORING — 7 Darwinian dimensions (weights sum to 100%):
+  D1: Audience Overlap (20%)   — normalize subs / 100k
+  D2: Niche Density (25%)      — keyword matches: mcp, ghl, vibe, claude, n8n
+  D3: Content Format (10%)     — webinar/live/workshop in top videos
+  D4: Webinar Strategy (25%)   — webinar keyword AND price signal detected
+  D5: Offer Structure (10%)    — price signal ($, Enroll, Price) on website
+  D6: Revenue Scale (5%)       — subs > 50k = 10 pts, else 5 pts
+  D7: Authority Score (5%)     — Google result count for "[name] review"
+
+ELIMINATION — 3 generations:
+  Gen 1: Score all, eliminate bottom 40% → ~17 survive
+  Gen 2: Apply 0.8x penalty to non-webinar creators → ~10 survive
+  Gen 3: Top 3 finalists extracted for deep report
+
+OUTPUT:
+  competitor_analysis.csv     ← all 28 with D1–D7 + Total_Fitness + Generation
+  top3_competitors.txt        ← structured Top 3 report
+  nuno_vs_competitors.csv     ← Nuno vs Top 3 comparison matrix
+
+Use: pandas, numpy, google-api-python-client, beautifulsoup4
+Rate limit: sleep(1) between API calls, sleep(5) for Google
+Log all errors to errors.log`;
+
+SNIPPETS['pre-code2'] = `# ─────────────────────────────────────────────────────────
+# STEP 2A: LOAD CSV DATA AND INJECT AS JSON INTO HTML
+# 2. report.py
+# ─────────────────────────────────────────────────────────
+import pandas as pd, json, webbrowser
+from datetime import datetime
+
+def generate_report():
+    df_analysis = pd.read_csv('competitor_analysis.csv')  # 28 candidates
+    df_vs       = pd.read_csv('nuno_vs_competitors.csv')   # Nuno benchmark
+    top3_data   = parse_top3_txt('top3_competitors.txt')   # Top 3 profiles
+
+    # Convert DataFrames → JSON strings for JS injection
+    analysis_json = df_analysis.to_json(orient='records')
+    vs_json       = df_vs.to_json(orient='records')
+    top3_json     = json.dumps(top3_data)
+
+# ─────────────────────────────────────────────────────────
+# STEP 2B: HTML TEMPLATE — CSV DATA INJECTED AS JSON
+# ─────────────────────────────────────────────────────────
+html_template = f"""
+<!DOCTYPE html>
+...
+<script>
+    // All CSV data injected at build time — no server required
+    const analysisData = {analysis_json};
+    const vsData       = {vs_json};
+    const top3Data     = {top3_json};
+
+    // Render searchable ranked table with color-coded rows
+    const tbody = document.getElementById('tableBody');
+    analysisData.forEach(row => {{
+        const tr = document.createElement('tr');
+        if (row.Generation === 'Finalist')        tr.className = 'row-finalist';
+        if (row.Generation.includes('Gen 1'))     tr.className = 'row-gen1';
+        const score = row.Total_Fitness || 0;
+        tr.innerHTML = \`
+            <td><strong>\${row.name}</strong></td>
+            <td>\${row.subs?.toLocaleString()}</td>
+            <td>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width:\${score}%"></div>
+                </div>
+                \${parseFloat(score).toFixed(1)}
+            </td>
+            <td>\${row.has_webinar_keyword ? '✅' : '❌'}</td>
+            <td>\${row.Generation}</td>
+        \`;
+        tbody.appendChild(tr);
+    }});
+
+    // Chart.js: Nuno vs Top 3 — fitness score bar chart
+    new Chart(document.getElementById('vsChart'), {{
+        type: 'bar',
+        data: {{
+            labels: ['Nuno', 'Nick Saraev', 'Riley Brown', 'Nate Herk'],
+            datasets: [{{
+                label: 'Fitness Score',
+                data: [88.5, 62.5, 58.75, 58.75],
+                backgroundColor: ['#00d4ff','#ffd700','#e5e7eb','#cd7f32']
+            }}]
+        }}
+    }});
+</script>
+"""
+    with open('competitor_report.html', 'w') as f:
+        f.write(html_template)`;
+
+SNIPPETS['pre-prompt2'] = `Generate report.py — a Python script that reads the output
+of nuno_competition.py and produces a stunning single-file
+HTML intelligence dashboard. No web server needed.
+
+INPUT FILES:
+  competitor_analysis.csv  — 28 candidates with D1–D7 scores
+  nuno_vs_competitors.csv  — Nuno vs Top 3 comparison matrix
+  top3_competitors.txt     — structured Top 3 profiles
+
+OUTPUT: competitor_report.html (100% self-contained)
+
+DESIGN SYSTEM:
+  Background: #0a0f1e  |  Cards: #111827  |  Accent: #00d4ff
+  Gold/Silver/Bronze for rank 1/2/3
+
+REQUIRED SECTIONS:
+1. Hero header with key stats: 28 analyzed, 3 rounds, Top 3
+2. Sticky navigation bar (Overview / Algorithm / Rankings / Profiles)
+3. Section: "The Darwinian Model"
+   — 4 algo cards showing each weighted dimension
+4. Section: "Evolution Matrix"
+   — Searchable table, all 28 candidates
+   — Color-coded rows: Finalist (gold), Eliminated Gen 1 (red)
+   — Progress bar for fitness score column
+   — Webinar ✅/❌ column
+5. Section: "Strategic Profiles — Top 3"
+   — Cards with tabbed deep-dives (Audience / Strategy / Why It Matters)
+   — Radar chart per profile via Chart.js
+6. Section: "Nuno vs The Field"
+   — Chart.js bar chart: subscribers + fitness score comparison
+
+TECHNICAL:
+- Inject all CSV data as JSON via Python f-strings into <script> tags
+- Use Chart.js from CDN — no other external dependencies
+- Add fixed bottom-right "Export to PDF" button
+- All data self-contained — no runtime file reads`;
+
+SNIPPETS['pre-code3'] = `# ─────────────────────────────────────────────────────────
+# STEP 3A: deep_search() — GOOGLE SEARCH WITH RATE LIMITING
+# 3. report2.py
+# ─────────────────────────────────────────────────────────
+from googlesearch import search
+import time, requests
+from bs4 import BeautifulSoup
+
+def deep_search(name, query_suffix, keywords, exclude_keywords=None):
+    query = f"{name} {query_suffix}"
+    try:
+        time.sleep(5)   # Mandatory: prevents Google IP blocks
+        for url in search(query, num_results=5):
+            url_lower = url.lower()
+            if exclude_keywords and any(x in url_lower for x in exclude_keywords):
+                continue
+            if any(k in url_lower for k in keywords):
+                return url   # First matching URL returned
+        return "Not Found"
+    except Exception as e:
+        with open(ERROR_LOG, "a") as log:
+            log.write(f"[{datetime.now()}] Search Error ({query}): {e}\\n")
+        return "Not Found"
+
+# ─────────────────────────────────────────────────────────
+# STEP 3B: ENRICHMENT LOOP — 7 SEARCHES PER CANDIDATE
+# ─────────────────────────────────────────────────────────
+for idx, cand in enumerate(candidates_list, 1):
+    name = cand['name']
+
+    website    = deep_search(name, "official website",
+                    keywords=[".com",".io",".co",".net",".org"],
+                    exclude_keywords=["youtube.com","linkedin.com","instagram.com"])
+
+    linkedin   = deep_search(name, "LinkedIn",
+                    keywords=["linkedin.com/in","linkedin.com/company"])
+
+    instagram  = deep_search(name, "Instagram",
+                    keywords=["instagram.com/"])
+
+    webinar_url = deep_search(name, "webinar register live masterclass",
+                    keywords=["webinar","register","masterclass",
+                              "workshop","bootcamp","live-training"])
+
+    course_url  = deep_search(name, "course buy enroll skool community",
+                    keywords=["skool.com","course","enroll","pricing",
+                              "membership","academy","learn"])
+
+    # ── Scrape discovered website ──────────────────────
+    if website != "Not Found":
+        resp = requests.get(website,
+                            headers={"User-Agent":"Mozilla/5.0"}, timeout=8)
+        if resp.status_code == 429:
+            time.sleep(45)   # Rate limit backoff
+            resp = requests.get(website, headers={"User-Agent":"Mozilla/5.0"}, timeout=8)
+
+        soup         = BeautifulSoup(resp.text, 'html.parser')
+        site_headline = soup.find('h1').get_text().strip() if soup.find('h1') else "Not Found"
+        h2s           = [h.get_text().strip() for h in soup.find_all('h2')[:4]]
+        has_pricing   = "$" in resp.text
+
+    enriched_results.append({**cand,
+        "website": website,       "linkedin": linkedin,
+        "instagram": instagram,   "webinar_url": webinar_url,
+        "has_webinar": webinar_url != "Not Found",
+        "course_url": course_url, "site_headline": site_headline,
+        "has_pricing": has_pricing})
+
+df_enriched = pd.DataFrame(enriched_results)
+df_enriched.to_csv(ENRICHED_CSV, index=False)   # → deep_enriched.csv`;
+
+SNIPPETS['pre-prompt3'] = `Generate report2.py — a deep web enrichment script that
+layers real internet intelligence on top of the 28 YouTube
+candidates discovered in Step 1.
+
+INPUT:  competitor_analysis.csv (28 candidates, subs >= 1000 filter)
+OUTPUT: deep_enriched.csv + competitor_final_report.html
+
+ENRICHMENT — for each qualifying candidate, run 7 searches:
+  1. Official website (exclude all social media domains)
+  2. YouTube channel URL (confirm vs API data)
+  3. LinkedIn profile (linkedin.com/in or /company)
+  4. Instagram profile (instagram.com/)
+  5. Webinar/masterclass/workshop registration page
+  6. Course / Skool / community / membership page
+  7. Twitter/X profile (twitter.com/ or x.com/)
+
+SCRAPING — for each discovered website:
+  - Extract h1 headline text
+  - Extract first 4 h2 section headings, joined with " · "
+  - Find primary CTA button text
+  - Check if "$" pricing appears anywhere on the page
+
+RATE LIMITING (critical — Google will block your IP):
+  - sleep(5) between every Google search call
+  - sleep(2) between page scrapes
+  - Handle 429 errors: wait 45 seconds then retry once
+  - Log ALL failures to errors.log with timestamp
+
+OUTPUT HTML should include:
+  - Filter pills: All / Top 3 / Webinar / Course / Website
+  - Real-time search input by name
+  - Card grid: all discovered links per candidate
+  - Webinar intelligence table (only webinar-active candidates)
+  - Chart.js horizontal bar: digital footprint score per candidate
+    (1 point per platform successfully discovered, max 6)`;
+
+SNIPPETS['pre-note3'] = `WHAT ACTUALLY HAPPENED DURING SCRAPING (HONEST ACCOUNT)
+
+report2.py ran successfully but returned severely limited data:
+
+BLOCKED PLATFORMS (0% success rate):
+  Instagram       ─── login wall on ALL requests
+  LinkedIn        ─── authentication required, all blocked
+  Meta Ad Library ─── JavaScript-rendered, not accessible via requests
+  Most websites   ─── Cloudflare 403 or bot detection on first request
+
+GOOGLE SEARCH LIMITS:
+  googlesearch-python was rate-limited after ~50 queries
+  Error: "429 Too Many Requests" — IP temporarily banned
+  Some niche creators (< 10K subs) returned 0 Google results
+
+SCRAPING RESULTS:
+  deep_enriched.csv shows "Not Found" for the majority of fields
+  Site headlines only captured where Cloudflare was absent
+  Pricing signal ("$") was the most reliably detected field
+
+WHY THIS MATTERS FOR THE METHODOLOGY:
+  Individual candidate report cards reflect only what the Python
+  scraper could access in a single automated pass — not verified
+  intelligence. Cards are algorithmic signals, not confirmed profiles.
+
+WHY STEP 4 EXISTS:
+  The scraping failures are the documented reason the project
+  escalated to Claude Code + RivalSearchMCP for the Top 3.
+  RivalSearchMCP provides:
+    ✅ JavaScript rendering (bypasses Cloudflare)
+    ✅ Authenticated session handling
+    ✅ Meta Ad Library access
+    ✅ Multi-engine fallback (Google + Bing + DuckDuckGo)
+    ✅ No rate limiting issues
+
+  This two-tier approach (Python for 28, MCP for Top 3)
+  is the documented honest methodology of this project.`;
+
+SNIPPETS['pre-prompt4'] = `I need deep competitor intelligence on the Top 3 finalists
+from our Darwinian algorithm. These are Nuno Tavares's
+highest-priority strategic competitors for his webinar launch.
+
+CONTEXT:
+Nuno Tavares (@automatedmarketer) — AI automation educator,
+~20K YouTube subscribers, planning first webinar launch
+in the Python / MCP / GHL automation space for entrepreneurs.
+
+━━━ COMPETITOR 1: Nick Saraev ━━━
+YouTube: youtube.com/@nicksaraev  (377K subscribers)
+Darwinian Fitness Score: 62.5/100  (ranked #1)
+Priority research: Skool community pricing, estimated revenue,
+business model breakdown, webinar history, press/podcast mentions
+
+━━━ COMPETITOR 2: Riley Brown ━━━
+YouTube: youtube.com/@rileybrown.ai  (211K subscribers)
+Darwinian Fitness Score: 58.75/100  (ranked #2)
+Priority research: VibeCode app details, VC funding amount,
+current pricing structure, webinar or live event history
+
+━━━ COMPETITOR 3: Nate Herk ━━━
+YouTube: youtube.com/@nateherk  (648K subscribers)
+Darwinian Fitness Score: 58.75/100  (ranked #3)
+Priority research: community pricing, monthly revenue estimate,
+funnel structure, any live events or webinar launches
+
+FOR EACH COMPETITOR, FIND:
+  1. All current paid products with exact pricing
+  2. Estimated monthly revenue (subs × est. conversion × price)
+  3. Do they run public webinars? (YES/NO + direct evidence)
+  4. Primary monetization funnel: YouTube → ? → purchase
+  5. Skool community: name, price, estimated member count
+  6. Press / podcast appearances in the last 12 months
+  7. GHL or MCP tool connections (if any)
+
+STRATEGIC QUESTION:
+Is there a webinar white space in this market?
+Does any of the Top 3 run a public webinar funnel that would
+directly compete with Nuno's planned launch?
+
+Use RivalSearchMCP for all Cloudflare-protected pages,
+Skool pricing, LinkedIn profiles, and Meta Ad Library.
+Format output as individual competitor reports + strategic summary.`;
+
+SNIPPETS['pre-mcp4'] = `# ─────────────────────────────────────────────────────────
+# RivalSearchMCP — MCP SERVER SETUP FOR CLAUDE CODE
+# Cloudflare bypass + JS rendering + multi-engine search
+# ─────────────────────────────────────────────────────────
+
+# STEP 1: Add the MCP server to Claude Code
+claude mcp add --transport http RivalSearchMCP \\
+  https://RivalSearchMCP.fastmcp.app/mcp
+
+# STEP 2: Verify the connection
+claude mcp list
+# Expected: RivalSearchMCP (http) ✓
+
+# STEP 3: Open Claude Code — the tool is auto-available
+# No API key required. Connects via HTTP transport.
+
+# ─────────────────────────────────────────────────────────
+# WHAT RivalSearchMCP UNLOCKS vs. Python scraping:
+# ─────────────────────────────────────────────────────────
+# ✅  JavaScript-rendered pages (Skool, Meta Ad Library)
+# ✅  Cloudflare-protected websites
+# ✅  Multi-engine search (Google + Bing + DuckDuckGo)
+# ✅  LinkedIn profile data
+# ✅  Real-time pricing page rendering
+# ✅  No rate limiting or IP bans
+#
+# MCP Server URL:   https://RivalSearchMCP.fastmcp.app/mcp
+# Transport:        HTTP  (no stdio, no local process)
+# Auth:             None required
+# GitHub:           github.com/damionrashford/RivalSearchMCP`;
+
+// ── POPULATE ALL CODE BLOCKS ON LOAD ─────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  Object.entries(SNIPPETS).forEach(([id, code]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = code;
+  });
+});
+</script>
 
 </body>
 </html>
