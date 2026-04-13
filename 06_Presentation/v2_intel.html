@@ -544,7 +544,11 @@
   <h1>Top 3 Competitor Intelligence — V2</h1>
   <p class="subtitle">Liam Ottley · Jordan Platten · Billy Gene &nbsp;|&nbsp; April 13, 2026</p>
   <br>
-  <span class="badge">Research Method: RivalSearchMCP · Web Search · Social Search · Website Mapping</span>
+  <span class="badge">Research Method: <a href="https://github.com/damionrashford/RivalSearchMCP" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:700">RivalSearchMCP</a> · Web Search · Social Search · Website Mapping</span>
+  <br><br>
+  <a href="https://github.com/camussicamusica/automated-stalker/blob/main/02_Data/competitor_intelligence_report_2026.txt" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.35);color:var(--accent);text-decoration:none;padding:9px 20px;border-radius:8px;font-size:0.8rem;font-weight:700;letter-spacing:0.5px;transition:all .2s;position:relative" onmouseover="this.style.background='rgba(0,212,255,0.18)';this.style.borderColor='rgba(0,212,255,0.6)'" onmouseout="this.style.background='rgba(0,212,255,0.1)';this.style.borderColor='rgba(0,212,255,0.35)'">
+    <span style="font-size:1rem">📄</span> View Original Report <span style="opacity:0.6;font-size:0.75rem">↗ raw .txt</span>
+  </a>
 </div>
 
 <div class="container">
@@ -556,6 +560,79 @@
       <p>This report provides deep competitor intelligence on three key players in the AI marketing, agency education, and digital marketing training space — all of whom compete directly or tangentially with <strong>Nuno Tavares (@AutomatedMarketer on YouTube)</strong>.</p>
       <p>The goal is to map each competitor's full business ecosystem: YouTube presence, product suite, pricing, sales funnel, social media reach, Facebook ad activity, and GoHighLevel (GHL) connections. These three were selected after the V1 algorithm was found to produce organic-only creators. The new filter: <strong>YouTube ✓ + Active Facebook ads ✓ + Confirmed sales funnel ✓ + GHL connection ✓</strong></p>
       <p>Research method: <strong>RivalSearchMCP</strong> — parallel searches across DuckDuckGo and Yahoo, review site scraping (marksinsights.com, ippei.com, salesforge.ai, trustpilot.com), social profile pulls, website mapping, pricing triangulation from Reddit, Scribd, and third-party analytics.</p>
+    </div>
+  </section>
+
+  <!-- RIVALSEARCHMCP EXPLAINER — TOGGLE -->
+  <section>
+    <div class="section-title">How This Was Built</div>
+
+    <div id="mcp-toggle" onclick="(function(){var b=document.getElementById('mcp-body');var a=document.getElementById('mcp-arrow');var open=b.style.display!=='none';b.style.display=open?'none':'block';a.style.transform=open?'':'rotate(180deg)'})()" style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 24px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(0,212,255,0.3)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="font-size:1.6rem;line-height:1">🔍</div>
+        <div>
+          <div style="font-weight:700;color:#fff;font-size:0.95rem">What is RivalSearchMCP?</div>
+          <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px">The tool used to research these 3 competitors — click to learn how it works</div>
+        </div>
+      </div>
+      <span id="mcp-arrow" style="color:var(--accent);font-size:0.7rem;transition:transform .25s;flex-shrink:0">▼</span>
+    </div>
+
+    <div id="mcp-body" style="display:none;margin-top:2px">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:24px 28px">
+
+        <!-- What it is -->
+        <div style="margin-bottom:20px">
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px">What it is</div>
+          <p style="font-size:0.9rem;color:var(--text);line-height:1.7"><strong style="color:#fff">RivalSearchMCP</strong> is an open-source Model Context Protocol (MCP) server built by <a href="https://github.com/damionrashford/RivalSearchMCP" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none">Damion Rashford</a>. It gives AI assistants like Claude a set of real-time web tools — search, social scraping, website mapping, and research aggregation — that the model can call directly during a conversation. No browser required. No manual copy-pasting.</p>
+        </div>
+
+        <!-- How MCP works -->
+        <div style="margin-bottom:20px">
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px">How MCP works</div>
+          <p style="font-size:0.9rem;color:var(--text);line-height:1.7">MCP stands for <strong style="color:#fff">Model Context Protocol</strong> — an open standard by Anthropic that lets external tools "plug in" to a language model's context window. Think of it like browser extensions, but for AI. When Claude Code has RivalSearchMCP connected, it can call tools like <code style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:1px 6px;font-size:0.82em;color:#a0aec0">web_search</code>, <code style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:1px 6px;font-size:0.82em;color:#a0aec0">map_website</code>, and <code style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:1px 6px;font-size:0.82em;color:#a0aec0">research_topic</code> mid-session, retrieve live data, and incorporate it into its response — all in one uninterrupted flow.</p>
+        </div>
+
+        <!-- What it did for this report -->
+        <div style="margin-bottom:20px">
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:10px">What it did for this report</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
+            <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px">
+              <div style="font-size:0.68rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">web_search</div>
+              <div style="font-size:0.82rem;color:var(--text)">Parallel queries across DuckDuckGo + Yahoo for pricing, reviews, product info</div>
+            </div>
+            <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px">
+              <div style="font-size:0.68rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">social_search</div>
+              <div style="font-size:0.82rem;color:var(--text)">Pulled live social media profiles, follower counts, and bio data</div>
+            </div>
+            <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px">
+              <div style="font-size:0.68rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">map_website</div>
+              <div style="font-size:0.82rem;color:var(--text)">Scraped review sites (trustpilot, ippei, salesforge) + product landing pages</div>
+            </div>
+            <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px">
+              <div style="font-size:0.68rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">research_topic</div>
+              <div style="font-size:0.82rem;color:var(--text)">Aggregated cross-source summaries for each competitor's full ecosystem</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Why it matters -->
+        <div style="margin-bottom:20px">
+          <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:8px">Why it matters</div>
+          <p style="font-size:0.9rem;color:var(--text);line-height:1.7">Traditional competitor research involves switching tabs, copy-pasting, and manually cross-referencing sources. With RivalSearchMCP running inside Claude Code, the entire research session — queries, scraping, analysis, formatting — happened in a single uninterrupted conversation. The raw output was then structured into this report. That's what AI-native research actually looks like in practice.</p>
+        </div>
+
+        <!-- CTA -->
+        <div style="display:flex;flex-wrap:wrap;gap:10px;padding-top:4px;border-top:1px solid var(--border)">
+          <a href="https://github.com/damionrashford/RivalSearchMCP" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);color:var(--accent);text-decoration:none;padding:8px 16px;border-radius:7px;font-size:0.78rem;font-weight:700;transition:all .2s" onmouseover="this.style.background='rgba(0,212,255,0.16)'" onmouseout="this.style.background='rgba(0,212,255,0.08)'">
+            ⭐ RivalSearchMCP on GitHub ↗
+          </a>
+          <a href="https://github.com/camussicamusica/automated-stalker/blob/main/02_Data/competitor_intelligence_report_2026.txt" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text-muted);text-decoration:none;padding:8px 16px;border-radius:7px;font-size:0.78rem;font-weight:600;transition:all .2s" onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,0.25)'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='rgba(255,255,255,0.1)'">
+            📄 View Raw Report Output ↗
+          </a>
+        </div>
+
+      </div>
     </div>
   </section>
 
@@ -1186,12 +1263,23 @@
 
 </div>
 
+<!-- BOTTOM RAW REPORT CTA -->
+<div style="text-align:center;padding:48px 24px 0;border-top:1px solid var(--border);margin-top:0">
+  <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px">Research Method</div>
+  <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:20px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6">
+    This report was generated using <a href="https://github.com/damionrashford/RivalSearchMCP" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none">RivalSearchMCP ↗</a> — web search, social search, and website mapping, all running inside Claude Code in a single session.
+  </p>
+  <a href="https://github.com/camussicamusica/automated-stalker/blob/main/02_Data/competitor_intelligence_report_2026.txt" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.35);color:var(--accent);text-decoration:none;padding:10px 22px;border-radius:8px;font-size:0.82rem;font-weight:700;letter-spacing:0.5px;transition:all .2s" onmouseover="this.style.background='rgba(0,212,255,0.18)';this.style.borderColor='rgba(0,212,255,0.6)'" onmouseout="this.style.background='rgba(0,212,255,0.1)';this.style.borderColor='rgba(0,212,255,0.35)'">
+    <span style="font-size:1rem">📄</span> View Original Report &nbsp;<span style="opacity:0.6;font-size:0.75rem">raw .txt · GitHub ↗</span>
+  </a>
+</div>
+
 <!-- FOOTER -->
-<footer style="border-top:1px solid rgba(255,255,255,0.06);margin-top:80px;padding:48px 40px 36px;background:rgba(10,10,15,0.8);font-family:'DM Sans',sans-serif">
+<footer style="border-top:1px solid rgba(255,255,255,0.06);margin-top:48px;padding:48px 40px 36px;background:rgba(10,10,15,0.8);font-family:'DM Sans',sans-serif">
   <div style="max-width:1100px;margin:0 auto">
     <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:6px">Automated <span style="color:#D4AF37">Stalker</span></div>
     <div style="color:rgba(255,255,255,0.35);font-size:0.78rem;line-height:1.7">Darwinian Competitor Intelligence · Built for Nuno Tavares<br>Pareto Talent Final Project · Sofia Renata Camussi · April 2026</div>
-    <div style="color:rgba(255,255,255,0.2);font-size:0.72rem;margin-top:8px">Built with Claude Code · Claude Sonnet 4.6 · Google Gemini 2.5 Pro · RivalSearchMCP · YouTube Data API v3</div>
+    <div style="color:rgba(255,255,255,0.2);font-size:0.72rem;margin-top:8px">Built with Claude Code · Claude Sonnet 4.6 · Google Gemini 2.5 Pro · <a href="https://github.com/damionrashford/RivalSearchMCP" target="_blank" style="color:rgba(255,255,255,0.35);text-decoration:none" onmouseover="this.style.color='rgba(0,212,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">RivalSearchMCP</a> · YouTube Data API v3</div>
   </div>
 </footer>
 
