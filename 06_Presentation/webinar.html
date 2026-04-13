@@ -791,6 +791,21 @@
             .countdown-unit { padding: 1rem; min-width: 80px; }
             .closing-buttons { flex-direction: column; }
         }
+
+        /* Nav breakpoint override — more items on this page */
+        @media (max-width: 1024px) {
+            .unav { padding: 1rem 1.2rem; flex-wrap: wrap; }
+            .unav-hamburger { display: flex !important; }
+            .unav-links { display: none; flex-direction: column; width: 100%; gap: 0; padding: .5rem 0; border-top: 1px solid rgba(255,255,255,0.06); }
+            .unav-links.open { display: flex; }
+            .unav-links li { width: 100%; }
+            .unav-links a:not(.unav-cta), .unav-drop-trigger { padding: .75rem 1.2rem; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.04); justify-content: flex-start; }
+            .unav-cta { margin: .75rem 1.2rem; display: inline-block; }
+            .unav-drop { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; border-radius: 0; background: rgba(255,255,255,0.03); min-width: unset; padding: .25rem 0; display: none; }
+            .unav-drop.open { display: block; }
+            .unav-drop::before { display: none; }
+            .unav-drop a { padding: .6rem 2.4rem; }
+        }
     </style>
 </head>
 <body>
