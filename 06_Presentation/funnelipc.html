@@ -1029,6 +1029,13 @@
   .unav-drop a{padding:.6rem 2.4rem;}
   .unav-links li:hover .unav-drop{opacity:1;visibility:visible;transform:none;}
 }
+.drop-section-head{padding:.5rem 1.4rem .25rem;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;pointer-events:none;}
+.drop-section-head.v2-head{color:#D4AF37;}
+.drop-section-head.v1-head{color:rgba(255,255,255,.28);margin-top:.2rem;}
+.unav-drop a.drop-v2{background:rgba(212,175,55,0.07);border-left:2px solid rgba(212,175,55,0.55);color:rgba(255,255,255,.8);}
+.unav-drop a.drop-v2:hover{background:rgba(212,175,55,0.15);border-left-color:#D4AF37;color:#fff;}
+.unav-drop a.drop-v2.drop-current{background:rgba(212,175,55,0.15);border-left-color:#D4AF37;color:#D4AF37;}
+.unav-drop a.drop-current{border-left-color:#D4AF37;color:#D4AF37;}
 </style>
 <nav class="unav">
   <a href="hub.html" class="unav-brand">Automated <em>Stalker</em></a>
@@ -1037,24 +1044,22 @@
   </button>
   <ul class="unav-links" id="unav-links">
     <li>
-      <button class="unav-drop-trigger active">View Report V1 <span class="unav-arrow">&#9660;</span></button>
-      <div class="unav-drop">
-        <a href="hub.html"><span class="di">🏠</span> Intelligence Hub</a>
-        <a href="index.html"><span class="di">🥇</span> Top 3 Deep Intel</a>
-        <a href="algorithm_sop.html"><span class="di">🧬</span> Algorithm SOP</a>
-        <a href="competitors28.html"><span class="di">👥</span> All 28 Candidates</a>
-        <a href="funnelipc.html"><span class="di">👤</span> Funnel &amp; ICP</a>
+      <button class="unav-drop-trigger active">Reports <span class="unav-arrow">&#9660;</span></button>
+      <div class="unav-drop" style="min-width:270px">
+        <div class="drop-section-head v2-head">&#10024; Latest &mdash; V2</div>
+        <a href="process_brief.html" class="drop-v2"><span class="di">&#128203;</span> Process Brief</a>
+        <a href="v2_intel.html" class="drop-v2"><span class="di">&#129351;</span> Top 3 Deep Intel V2</a>
+        <div class="unav-drop-divider"></div>
+        <div class="drop-section-head v1-head">Oldest &mdash; V1</div>
+        <a href="hub.html"><span class="di">&#127968;</span> Intelligence Hub</a>
+        <a href="index.html"><span class="di">&#129351;</span> Top 3 Deep Intel</a>
+        <a href="algorithm_sop.html"><span class="di">&#129516;</span> Algorithm SOP</a>
+        <a href="competitors28.html"><span class="di">&#128101;</span> All 28 Candidates</a>
+        <a href="funnelipc.html"><span class="di">&#128100;</span> Funnel &amp; ICP</a>
       </div>
     </li>
-    <li>
-      <button class="unav-drop-trigger">View Report V2 <span class="unav-arrow">&#9660;</span></button>
-      <div class="unav-drop">
-        <a href="process_brief.html"><span class="di">📋</span> Process Brief</a>
-        <a href="v2_intel.html"><span class="di">🥇</span> Top 3 Deep Intel V2</a>
-      </div>
-    </li>
-    <li><a href="https://github.com/camussicamusica/automated-stalker" target="_blank">GitHub ↗</a></li>
-    <li><a href="https://app.clickup.com" target="_blank">ClickUp ↗</a></li>
+    <li><a href="https://github.com/camussicamusica/automated-stalker" target="_blank">GitHub &#8599;</a></li>
+    <li><a href="https://app.clickup.com" target="_blank">ClickUp &#8599;</a></li>
   </ul>
 </nav>
 
