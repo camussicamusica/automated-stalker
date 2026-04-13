@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Days to Launch - Automated Stalker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Syne:wght@400..800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Core Backgrounds */
+            --bg-paper: #F5F0E8;
+            --bg-section: #EDE8DE;
+            --navy-base: #0E1627;
+            
+            /* Luxury Gray Text System for Cards */
+            --card-text-primary: #2C2C2C;
+            --card-text-secondary: #5C5C5C;
+            --card-text-muted: #8C8C8C;
+            --card-text-label: #A8A8A8;
+            --inner-panel-bg: rgba(240, 236, 228, 0.6);
+            --inner-panel-border: rgba(180, 174, 162, 0.35);
+
+            /* Accents */
+            --accent-blue: #3C83F6;
+            --amber-gold: #FFBF00;
+            --mid-dark: #131D34;
+            --border-muted: #D4CEC4;
+            --deep-navy: #152E57;
+        }
+
+        body {
+            background-color: var(--bg-paper);
+            color: var(--navy-base);
+            font-family: 'DM Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .syne {
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* Nav placeholder — .unav system injected in body */
+
+        /* Hero */
+        .hero {
+            padding: 6rem 3rem 4rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-tag {
+            color: var(--card-text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin: 0 0 1.5rem;
+            line-height: 1.1;
+            font-weight: 800;
+            background: linear-gradient(135deg, #996515 0%, #FFBF00 25%, #FFE066 40%, #FFBF00 55%, #D4AF37 70%, #FFBF00 85%, #996515 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: goldShimmer 5s linear infinite;
+        }
+
+        .hero p.subtitle {
+            font-size: 1.5rem;
+            color: var(--mid-dark);
+            margin: 0 auto 1rem;
+            max-width: 800px;
+        }
+        
+        .hero p.small-note {
+            font-size: 0.95rem;
+            color: var(--card-text-muted);
+            font-style: italic;
+            margin-bottom: 3.5rem;
+        }
+
+        /* Timeline Pill Connectors */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: var(--border-muted);
+            z-index: 0;
+        }
+
+        .timeline-step {
+            position: relative;
+            z-index: 1;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(250, 247, 241, 0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(190, 182, 168, 0.5);
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(140, 120, 90, 0.05);
+        }
+
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .step-label {
+            font-weight: 700;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            color: var(--card-text-primary);
+        }
+
+        .step-1 .step-dot { background-color: var(--amber-gold); box-shadow: 0 0 10px rgba(255,191,0,0.5); }
+        .step-2 .step-dot { background-color: var(--accent-blue); box-shadow: 0 0 10px rgba(60,131,246,0.5); }
+        .step-3 .step-dot { background-color: var(--deep-navy); box-shadow: 0 0 10px rgba(21,46,87,0.5); }
+
+        /* Framing Banner / Brief */
+        .brief-banner {
+            background: linear-gradient(135deg, #EDE8DE, #E4DDD0);
+            border: 1px solid #C8C0B0;
+            border-left: 4px solid #FFBF00;
+            color: #2C2C2C;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto 4rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(140, 120, 90, 0.04);
+        }
+
+        .brief-banner h2 {
+            margin-top: 0;
+            color: var(--deep-navy);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .brief-banner p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .brief-banner p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight-icp { font-weight: 700; }
+
+        /* Day Cards & Glassmorphism */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .day-card {
+            position: relative;
+            background: rgba(250, 247, 241, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(190, 182, 168, 0.5);
+            border-radius: 24px;
+            box-shadow: 
+                0 12px 40px rgba(140, 120, 90, 0.10),
+                inset 2px 2px 0 rgba(255, 253, 248, 0.9),
+                inset -2px -2px 0 rgba(180, 170, 155, 0.25);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            padding: 3.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            color: var(--card-text-primary);
+        }
+
+        .day-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .day-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            background: rgba(255, 253, 248, 0.85);
+            box-shadow:
+                0 24px 64px rgba(140, 120, 90, 0.15),
+                inset 2px 2px 0 rgba(255,255,255,1),
+                inset -2px -2px 0 rgba(180,170,155,0.35),
+                0 0 0 1px rgba(212,175,55,0.2);
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            border-radius: 50%;
+            filter: blur(4px);
+        }
+
+        .day-1::before { background: linear-gradient(90deg, transparent, var(--amber-gold), transparent); }
+        .day-2::before { background: linear-gradient(90deg, transparent, var(--accent-blue), transparent); }
+        .day-3::before { background: linear-gradient(90deg, transparent, var(--deep-navy), transparent); }
+
+        .day-card p {
+            color: var(--card-text-secondary);
+        }
+
+        .card-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        /* Title Ticket Shimmer */
+        @keyframes goldShimmer {
+            0%   { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .title-ticket {
+            display: inline-block;
+            position: relative;
+            padding: 0.6rem 1.8rem;
+            margin-bottom: 1.2rem;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 50px;
+            box-shadow:
+                0 2px 12px rgba(212, 175, 55, 0.15),
+                inset 0 1px 0 rgba(255,255,255,0.9),
+                inset 0 -1px 0 rgba(212,175,55,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .title-ticket::before {
+            content: '🎟';
+            margin-right: 0.6rem;
+            font-size: 1.2em;
+            -webkit-text-fill-color: initial;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .title-ticket:hover {
+            box-shadow:
+                0 4px 20px rgba(212, 175, 55, 0.3),
+                inset 0 1px 0 rgba(255,255,255,1),
+                inset 0 -1px 0 rgba(212,175,55,0.2);
+            border-color: rgba(212, 175, 55, 0.7);
+            transform: scale(1.02);
+        }
+
+        .day-title {
+            display: inline-block;
+            vertical-align: middle;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+            background: linear-gradient(135deg, #996515 0%, #FFBF00 25%, #FFE066 40%, #FFBF00 55%, #D4AF37 70%, #FFBF00 85%, #996515 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: goldShimmer 3s linear infinite;
+            text-shadow: none;
+            position: relative;
+            margin: 0;
+            padding-top: 0.1em;
+        }
+
+        /* Badges System */
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-day {
+            background: #E8E2D6;
+            color: #8C8C8C;
+            font-family: 'Syne', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .badge-safe { background: #F0EBE0; color: #7A6F5E; border: 1px solid #C4B99A; }
+        .badge-capable { background: #EAF0F8; color: #4A6FA5; border: 1px solid #A8C0DC; }
+        .badge-urgent { background: #F0EDE8; color: #6B5B4E; border: 1px solid #C4B5A0; }
+
+        .badge-icp { 
+            background: #E2DDD6; 
+            color: #6B6560; 
+            border: 1px solid rgba(107, 101, 96, 0.2); 
+            text-transform: none;
+            font-weight: 600;
+        }
+
+        /* Inner Content Styling */
+        .hook {
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--card-text-secondary);
+            border-left: 3px solid var(--card-text-muted);
+            padding-left: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            color: var(--card-text-label);
+            margin: 2.5rem 0 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        /* Frosted Inner Panels */
+        .teaching-block {
+            background: rgba(237, 232, 222, 0.55);
+            border: 1px solid rgba(196, 188, 174, 0.4);
+            border-radius: 12px;
+            border-left: 3px solid #C4BCA8;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--card-text-secondary);
+            box-shadow: 0 2px 8px rgba(140, 120, 90, 0.02);
+        }
+        
+        .teaching-block strong {
+            color: var(--card-text-primary);
+            font-family: 'Syne', sans-serif;
+        }
+        
+        .timestamp {
+            color: var(--card-text-muted);
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Added Learning Objective Block */
+        .learning-objective {
+            background: rgba(5, 150, 105, 0.04);
+            border-left: 3px solid #059669;
+            border-radius: 0 10px 10px 0;
+            padding: 1.2rem 1.5rem;
+            background-image: linear-gradient(135deg, rgba(5,150,105,0.04) 0%, rgba(250,247,241,0.8) 100%);
+            margin-bottom: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .learning-objective-label {
+            font-variant: small-caps;
+            color: #059669;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .learning-objective-text {
+            font-family: 'DM Sans', sans-serif;
+            color: #5C5C5C;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* Highlight Boxes */
+        .demo-box {
+            background: rgba(255, 191, 0, 0.05);
+            border-left: 3px solid #FFBF00;
+            background-image: linear-gradient(135deg, rgba(255,191,0,0.04) 0%, rgba(250,247,241,0.8) 100%);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 2rem 0;
+            color: var(--card-text-secondary);
+        }
+
+        .demo-box h4 {
+            margin: 0 0 0.5rem;
+            color: #996515;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .objection-box {
+            background: rgba(60, 131, 246, 0.04);
+            border-left: 3px solid #3C83F6;
+            background-image: linear-gradient(135deg, rgba(60,131,246,0.04) 0%, rgba(250,247,241,0.8) 100%);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 2rem;
+            color: var(--card-text-secondary);
+        }
+
+        .objection-box strong {
+            color: var(--accent-blue);
+        }
+
+        /* Email Subject Chip */
+        .email-chip {
+            display: inline-block;
+            background-color: #E8E2D6;
+            color: var(--card-text-primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            border: 1px solid var(--inner-panel-border);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .email-chip::before {
+            content: '✉️ Subject: ';
+            color: var(--card-text-muted);
+            margin-right: 0.4rem;
+        }
+
+        .emotional-audit {
+            font-style: italic;
+            color: var(--card-text-muted);
+            text-align: center;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--inner-panel-border);
+        }
+
+        /* Added Full CTA Block */
+        .full-cta-block {
+            background: linear-gradient(135deg, #131D34, #152E57);
+            border-radius: 12px;
+            padding: 1.5rem 1.8rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(60,131,246,0.2);
+        }
+
+        .full-cta-label {
+            font-variant: small-caps;
+            color: #3C83F6;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .full-cta-text {
+            color: #CBD5E0;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            font-style: italic;
+            margin: 0;
+        }
+
+        /* Rationale Section */
+        .rationale {
+            background: rgba(250, 247, 241, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(190, 182, 168, 0.5);
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(140, 120, 90, 0.10);
+            padding: 3.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .rationale.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .rationale h2 {
+            font-size: 2rem;
+            color: var(--deep-navy);
+            margin-top: 0;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .rationale-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .rationale-item {
+            background-color: var(--inner-panel-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--inner-panel-border);
+            color: var(--card-text-secondary);
+        }
+
+        .rationale-item h3 {
+            color: var(--card-text-primary);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* Final Countdown Section (The Curtain Drop) */
+        .closing-section {
+            background-color: var(--bg-paper);
+            padding: 6rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .closing-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .closing-headline {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #152E57;
+            margin-bottom: 1.5rem;
+        }
+
+        .closing-subline {
+            color: #6B7280;
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 3.5rem;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .countdown-unit {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(196, 188, 174, 0.4);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(140, 120, 90, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            min-width: 110px;
+        }
+
+        .countdown-number {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            background: linear-gradient(135deg, #996515, #FFBF00, #FFE066, #FFBF00, #996515);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: goldShimmer 3s linear infinite;
+            line-height: 1;
+            filter: drop-shadow(0 0 12px rgba(255, 191, 0, 0.2));
+        }
+
+        #cd-seconds .countdown-number {
+            animation: goldShimmer 3s linear infinite, pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50%      { opacity: 0.6; }
+        }
+
+        .countdown-label {
+            color: #8C8C8C;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            font-weight: 700;
+        }
+
+        .closing-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background-color: var(--amber-gold);
+            color: var(--navy-base);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            box-shadow: 0 4px 15px rgba(255, 191, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 191, 0, 0.4);
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: #3C83F6;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 1px solid #3C83F6;
+        }
+
+        .btn-ghost:hover {
+            background-color: rgba(60, 131, 246, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .closing-disclaimer {
+            font-size: 0.85rem;
+            color: #8C8C8C;
+            margin-top: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-muted);
+            padding: 4rem 2rem;
+            text-align: center;
+            background-color: var(--bg-paper);
+        }
+
+        .footer-text {
+            color: var(--card-text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-nav a {
+            color: var(--card-text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .footer-nav a:hover {
+            color: var(--accent-blue);
+        }
+        
+        .footer-meta {
+            font-size: 0.85rem;
+            color: var(--card-text-label);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .hero { padding: 4rem 1.5rem 2rem; }
+            .timeline { flex-direction: column; gap: 2rem; }
+            .timeline::before {
+                top: 10%; bottom: 10%; left: 50%; right: auto;
+                width: 2px; height: auto;
+            }
+            .day-card { padding: 2rem 1.5rem; }
+            .title-ticket { padding: 0.5rem 1.2rem; }
+            .countdown-container { gap: 1rem; }
+            .countdown-unit { padding: 1rem; min-width: 80px; }
+            .closing-buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ UNIVERSAL NAV ═══ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600;9..40,700&family=Syne:wght@400;600;700;800&display=swap');
+.unav{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);z-index:9999;font-family:'Syne',sans-serif;letter-spacing:.06em;font-size:.78rem;text-transform:uppercase}
+.unav-brand{font-weight:800;color:#fff;text-decoration:none;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.unav-brand em{color:#D4AF37;font-style:normal}
+.unav-links{display:flex;gap:1.8rem;align-items:center;list-style:none}
+.unav-links li{position:relative}
+.unav-links a,.unav-drop-trigger{color:rgba(255,255,255,0.65);text-decoration:none;cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:6px;padding:.3rem 0;background:none;border:none;font:inherit;letter-spacing:inherit;text-transform:inherit;font-size:inherit}
+.unav-links a:hover,.unav-drop-trigger:hover{color:#fff}
+.unav-links a.active,.unav-drop-trigger.active{color:#D4AF37}
+.unav-arrow{font-size:.5rem;transition:transform .25s;opacity:.6}
+.unav-links li:hover .unav-arrow{transform:rotate(180deg);opacity:1}
+.unav-drop{position:absolute;top:calc(100% + 12px);right:0;background:rgba(14,14,20,0.97);border:1px solid rgba(255,255,255,0.08);border-radius:10px;min-width:240px;padding:.5rem 0;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .25s cubic-bezier(.16,1,.3,1);box-shadow:0 20px 40px rgba(0,0,0,.7)}
+.unav-drop::before{content:'';position:absolute;top:-5px;right:18px;width:9px;height:9px;background:rgba(14,14,20,.97);border-left:1px solid rgba(255,255,255,.08);border-top:1px solid rgba(255,255,255,.08);transform:rotate(45deg)}
+.unav-links li:hover .unav-drop{opacity:1;visibility:visible;transform:translateY(0)}
+.unav-drop a{color:rgba(255,255,255,.55);text-decoration:none;padding:.75rem 1.4rem;display:flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;text-transform:none;letter-spacing:0;transition:all .2s;border-left:2px solid transparent;white-space:nowrap}
+.unav-drop a:hover{color:#fff;background:rgba(255,255,255,.03);border-left-color:#D4AF37}
+.unav-drop a .di{font-size:.75rem;opacity:.5}
+.unav-cta{background:#D4AF37;color:#0a0a0f!important;padding:.45rem 1.1rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.72rem;transition:opacity .2s;white-space:nowrap;letter-spacing:.04em}
+.unav-cta:hover{opacity:.85}
+.unav-cta.active-page{background:#b8860b;box-shadow:0 0 0 2px #D4AF37}
+.unav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:.4rem;}
+.unav-hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:transform .3s,opacity .3s;}
+.unav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.unav-hamburger.open span:nth-child(2){opacity:0;}
+.unav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+@media(max-width:768px){
+  .unav{padding:1rem 1.2rem;flex-wrap:wrap;}
+  .unav-hamburger{display:flex;}
+  .unav-links{display:none;flex-direction:column;width:100%;gap:0;padding:.5rem 0;border-top:1px solid rgba(255,255,255,0.06);}
+  .unav-links.open{display:flex;}
+  .unav-links li{width:100%;}
+  .unav-links a:not(.unav-cta),.unav-drop-trigger{padding:.75rem 1.2rem;width:100%;border-bottom:1px solid rgba(255,255,255,0.04);justify-content:flex-start;}
+  .unav-cta{margin:.75rem 1.2rem;display:inline-block;}
+  .unav-drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;border-radius:0;background:rgba(255,255,255,0.03);min-width:unset;padding:.25rem 0;display:none;}
+  .unav-drop.open{display:block;}
+  .unav-drop::before{display:none;}
+  .unav-drop a{padding:.6rem 2.4rem;}
+  .unav-links li:hover .unav-drop{opacity:1;visibility:visible;transform:none;}
+}
+.drop-section-head{padding:.5rem 1.4rem .25rem;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;pointer-events:none;}
+.drop-section-head.v2-head{color:#D4AF37;}
+.drop-section-head.v1-head{color:rgba(255,255,255,.28);margin-top:.2rem;}
+.unav-drop a.drop-v2{background:rgba(212,175,55,0.07);border-left:2px solid rgba(212,175,55,0.55);color:rgba(255,255,255,.8);}
+.unav-drop a.drop-v2:hover{background:rgba(212,175,55,0.15);border-left-color:#D4AF37;color:#fff;}
+.unav-drop a.drop-v2.drop-current{background:rgba(212,175,55,0.15);border-left-color:#D4AF37;color:#D4AF37;}
+.unav-drop a.drop-current{border-left-color:#D4AF37;color:#D4AF37;}
+.unav-drop-divider{height:1px;background:rgba(255,255,255,0.06);margin:.4rem 1rem;}
+</style>
+<nav class="unav">
+  <a href="hub.html" class="unav-brand">Automated <em>Stalker</em></a>
+  <button class="unav-hamburger" id="unav-hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="unav-links" id="unav-links">
+    <li>
+      <button class="unav-drop-trigger">Reports <span class="unav-arrow">&#9660;</span></button>
+      <div class="unav-drop" style="min-width:270px">
+        <div class="drop-section-head v2-head">&#10024; Latest &mdash; V2</div>
+        <a href="process_brief.html" class="drop-v2"><span class="di">&#128203;</span> Process Brief</a>
+        <a href="v2_intel.html" class="drop-v2"><span class="di">&#129351;</span> Top 3 Deep Intel V2</a>
+        <a href="icp-v2.html" class="drop-v2"><span class="di">&#128100;</span> Funnel &amp; ICP V2</a>
+        <div class="unav-drop-divider"></div>
+        <div class="drop-section-head v1-head">Oldest &mdash; V1</div>
+        <a href="hub.html"><span class="di">&#127968;</span> Intelligence Hub</a>
+        <a href="index.html"><span class="di">&#129351;</span> Top 3 Deep Intel</a>
+        <a href="algorithm_sop.html"><span class="di">&#129516;</span> Algorithm SOP</a>
+        <a href="competitors28.html"><span class="di">&#128101;</span> All 28 Candidates</a>
+        <a href="funnelipc.html"><span class="di">&#128100;</span> Funnel &amp; ICP</a>
+      </div>
+    </li>
+    <li><a href="webinar.html" class="unav-cta active-page">&#127916; Webinar Proposal</a></li>
+    <li><a href="https://github.com/camussicamusica/automated-stalker" target="_blank">GitHub &#8599;</a></li>
+    <li><a href="https://app.clickup.com" target="_blank">ClickUp &#8599;</a></li>
+  </ul>
+</nav>
+
+    <div class="hero">
+        <div class="hero-tag">Automated Marketer · Webinar Launch Strategy · Prepared by Sofia Camussi</div>
+        <h1>3 Days to $67.</h1>
+        <p class="subtitle">A complete launch sequence engineered to move your audience from stranger to buyer — in exactly 3 sessions. Safe. Capable. Urgent.</p>
+        <p class="small-note">This strategy was built from your real audience data, your competitor gaps, and Hormozi's emotional arc framework.</p>
+        
+        <div style="margin:2rem 0 2.5rem;text-align:center;">
+            <a href="Webinar-For-Nano-Tavares-3-Days-to-dollar67.pptx"
+               style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#7a4f00,#FFBF00 45%,#ffe57a 60%,#FFBF00 75%,#7a4f00);background-size:200% auto;color:#131D34;font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;padding:.85rem 2rem;border-radius:8px;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 4px 24px rgba(255,191,0,0.4);animation:goldShimmer 4s linear infinite;">
+                &#128202; View PPT Presentation &#8595;
+            </a>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-step step-1">
+                <span class="step-label" style="color: #996515;">Day 1: SAFE</span>
+                <div class="step-dot"></div>
+            </div>
+            <div class="timeline-step step-2">
+                <span class="step-label" style="color: var(--accent-blue);">Day 2: CAPABLE</span>
+                <div class="step-dot"></div>
+            </div>
+            <div class="timeline-step step-3">
+                <span class="step-label" style="color: var(--deep-navy);">Day 3: URGENT</span>
+                <div class="step-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="brief-banner">
+            <h2>The Strategic Brief</h2>
+            <p>Nuno, your audience isn't afraid of AI — they're afraid of being the one person in the room who can't ship it. This 3-day sequence doesn't sell your workshop. It sells them the version of themselves that already built something. The $67 is just the next logical step before the 4-day workshop begins.</p>
+            <p>Each day targets one ICP at their exact emotional breaking point:</p>
+            <p><span class="highlight-icp" style="color: #996515;">Carlos</span> needs to feel safe. <span class="highlight-icp" style="color: var(--accent-blue);">Ron</span> needs to feel capable. <span class="highlight-icp" style="color: var(--deep-navy);">Maya</span> needs to feel supported.</p>
+        </div>
+
+        <div class="day-card day-1">
+            <div class="card-header">
+                <div class="badges">
+                    <span class="badge badge-day">Day 1</span>
+                    <span class="badge badge-safe">Objective: SAFE</span>
+                    <span class="badge badge-icp">ICP: Carlos (TOFU)</span>
+                </div>
+                <div class="title-ticket">
+                    <h2 class="day-title">The Architect's Blueprint</h2>
+                </div>
+            </div>
+            
+            <div class="hook">
+                "I've spent 25 years in the IT trenches at Bank of America and Capital One, and I'm here to tell you that the 'coder' is officially optional. If you can think in business logic, you are now a Builder."
+            </div>
+            
+            <p><strong>Pain:</strong> "You feel the market shifting. Hiring experts costs $500/day, your competitors are moving 10x faster, and you're terrified you don't know what you don't know. You have app ideas in notebooks because you're afraid of the terminal."</p>
+            
+            <div class="section-title">Teaching Blocks</div>
+            <div class="teaching-block">
+                <span class="timestamp">[3:00–3:20]</span> <strong>Vibe Coding vs. Writing Code</strong> — explain why we give High-Performance Instructions instead of Python in 2026
+            </div>
+            <div class="teaching-block">
+                <span class="timestamp">[3:20–3:40]</span> <strong>The 7-Phase Launch Sequence</strong> — Claude MD → PRD → Database → Security → GitHub → Deploy → Sell
+            </div>
+            <div class="teaching-block">
+                <span class="timestamp">[3:40–3:55]</span> <strong>MCP — The USB Ports for AI</strong> — how Manus AI uses MCPs to give your AI "hands"
+            </div>
+
+            <div class="learning-objective">
+                <span class="learning-objective-label">📌 Learning Objective</span>
+                <p class="learning-objective-text">By the end of Day 1 you will be able to explain the 7-Phase Launch Sequence, set up your CLAUDE.md playbook with persistent memory, and understand exactly why you don't need to write a single line of code to build a working AI agent.</p>
+            </div>
+            
+            <div class="demo-box">
+                <h4>🔴 Live Demo: The Memory Setup</h4>
+                <p>Nuno configures a CLAUDE.md playbook live, encoding personal defaults and security rules so the AI never forgets his brand standards.</p>
+            </div>
+            
+            <div class="objection-box">
+                <p><strong>Objection: "I'm not technical and I'm terrified of the terminal"</strong><br>
+                Claude Code acts as a junior developer with judgment. If you can follow a SOP, the AI handles the terminal for you.</p>
+            </div>
+            
+            <div class="email-chip">Are you being left behind by the AI gurus?</div>
+            
+            <div class="emotional-audit">
+                "Nuno's system was built for people who hate the terminal like I do."
+            </div>
+
+            <div class="full-cta-block">
+                <span class="full-cta-label">➡️ CTA</span>
+                <p class="full-cta-text">Tomorrow we build it live. No slides. No theory. You watch a Lead Research Agent go from a 2-sentence idea to a deployed URL in under 15 minutes — and then you build yours. Be here at 3 PM. Don't be the person who missed the demo.</p>
+            </div>
+        </div>
+
+        <div class="day-card day-2">
+            <div class="card-header">
+                <div class="badges">
+                    <span class="badge badge-day">Day 2</span>
+                    <span class="badge badge-capable">Objective: CAPABLE</span>
+                    <span class="badge badge-icp">ICP: Ron (MOFU)</span>
+                </div>
+                <div class="title-ticket">
+                    <h2 class="day-title">The 15-Minute Blitz</h2>
+                </div>
+            </div>
+            
+            <div class="hook">
+                "Yesterday was the Why. Today is the How. We aren't here to talk — we're here to ship. In the next 60 minutes you're going to build a Lead Research Agent that qualifies prospects while you sleep."
+            </div>
+            
+            <p><strong>Pain:</strong> "You've watched 50 tutorials and saved 100 SOPs but haven't shipped a single thing. You're stuck in Starter Hell, burning credits on toy demos and getting lost in JSON files with no one to help."</p>
+            
+            <div class="section-title">Teaching Blocks</div>
+            <div class="teaching-block">
+                <span class="timestamp">[3:00–3:20]</span> <strong>Directing the Autonomous Loop</strong> — using Manus AI's Iterative Planning to let the AI think through architecture so you don't have to
+            </div>
+            <div class="teaching-block">
+                <span class="timestamp">[3:20–3:40]</span> <strong>Token-Efficient Architecture</strong> — specialized sub-agents with limited context windows prevent context rot, keeping costs at $0.67/day vs $350/day human developer
+            </div>
+            <div class="teaching-block">
+                <span class="timestamp">[3:40–3:55]</span> <strong>Localhost to Live URL</strong> — 1-click deployment using Vercel and Supabase
+            </div>
+
+            <div class="learning-objective">
+                <span class="learning-objective-label">📌 Learning Objective</span>
+                <p class="learning-objective-text">By the end of Day 2 you will have watched — and followed along with — a complete app build from idea to live URL using the 7-Phase sequence, and you will understand how to keep your AI token costs under $1 a day using sub-agent architecture.</p>
+            </div>
+            
+            <div class="demo-box">
+                <h4>🔴 Live Demo: The ROI Calculator Blitz</h4>
+                <p>Nuno triggers a build in Manus AI for a "Cost of Inaction" ROI tool, ships it to a live URL in under 15 minutes, shares the link in chat.</p>
+            </div>
+            
+            <div class="objection-box">
+                <p><strong>Objection: "AI token costs are like a taxi meter that will bankrupt me"</strong><br>
+                Token-Efficient Architecture demo showing sub-agents keeping minimal costs.</p>
+            </div>
+            
+            <div class="email-chip">Today we build your first AI Employee live.</div>
+            
+            <div class="emotional-audit">
+                "I just watched an app go from idea to live URL in 15 minutes."
+            </div>
+
+            <div class="full-cta-block">
+                <span class="full-cta-label">➡️ CTA</span>
+                <p class="full-cta-text">Day 3 is where it gets dangerous. Tomorrow I'm showing you how to connect your agent directly into GoHighLevel so it manages your CRM, updates your pipeline, and drafts client emails — while you sleep. If Day 2 was 'I can build this,' Day 3 is 'I can sell this.' See you tomorrow.</p>
+            </div>
+        </div>
+
+        <div class="day-card day-3">
+            <div class="card-header">
+                <div class="badges">
+                    <span class="badge badge-day">Day 3</span>
+                    <span class="badge badge-urgent">Objective: URGENT</span>
+                    <span class="badge badge-icp">ICP: Maya (BOFU)</span>
+                </div>
+                <div class="title-ticket">
+                    <h2 class="day-title">The Infrastructure</h2>
+                </div>
+            </div>
+            
+            <div class="hook">
+                "A single app is a hobby. An AI Nervous System is a business. While competitors teach you to 'talk' to AI, I'm showing you how to build a Permanent AI Employee that manages your CRM while you sleep."
+            </div>
+            
+            <p><strong>Pain:</strong> "You're motivated but drowning in Starter Hell. You hit a wall at 3:45 PM when an error pops up that wasn't in the video and there's no one to help you debug. You don't need another tutorial — you need Implementation Insurance."</p>
+            
+            <div class="section-title">Teaching Blocks</div>
+            <div class="teaching-block">
+                <span class="timestamp">[3:00–3:20]</span> <strong>The AI Operating System</strong> — transition from $400 websites to $2,500+ Implementation Deals using GHL as the delivery vehicle for Manus AI agents
+            </div>
+            <div class="teaching-block">
+                <span class="timestamp">[3:20–3:40]</span> <strong>Agent Orchestration</strong> — managing a parallel team of agents (Reviewer, Frontend Dev, Tester) inside your file system for $0.67/day
+            </div>
+            <div class="teaching-block">
+                <span class="timestamp">[3:40–3:55]</span> <strong>App Security</strong> — Kunal's (ex-Amazon Security) framework so vibe-coded apps don't create data leak liability
+            </div>
+
+            <div class="learning-objective">
+                <span class="learning-objective-label">📌 Learning Objective</span>
+                <p class="learning-objective-text">By the end of Day 3 you will know how to orchestrate a team of parallel AI agents inside GHL, understand the security framework that makes vibe-coded apps enterprise-safe, and have a clear path to packaging this as a $2,500+ implementation deal for clients.</p>
+            </div>
+            
+            <div class="demo-box">
+                <h4>🔴 Live Demo: The "Done Day" Sequence</h4>
+                <p>Nuno sends a voice note to Manus AI via Telegram; audience watches the AI update a GHL pipeline, create a Supabase record, and draft a personalized email autonomously.</p>
+            </div>
+            
+            <div class="objection-box">
+                <p><strong>Objection: "I don't have time to implement this in my busy agency"</strong><br>
+                The Shipped-or-Solved Success Bond: show up + don't ship = Nuno works with you 1:1 until it's done.</p>
+            </div>
+            
+            <div class="email-chip">FINAL CALL: Your AI workforce is ready to be hired.</div>
+            
+            <div class="emotional-audit">
+                "If I don't grab one of these last VIP spots I'll be stuck debugging errors alone forever."
+            </div>
+
+            <div class="full-cta-block">
+                <span class="full-cta-label">➡️ CTA</span>
+                <p class="full-cta-text">The $67 seat is open right now. The $97 VIP has 17 spots left and closes with this session. If you've been in the room for 3 days and you're still on the fence — ask yourself what it costs you to spend another 6 months watching tutorials instead of shipping. The founding cohort price disappears April 24th. It won't come back.</p>
+            </div>
+        </div>
+
+        <div class="rationale">
+            <h2>Why This Works — The Strategic Rationale</h2>
+            <div class="rationale-grid">
+                <div class="rationale-item">
+                    <h3>1. The Emotional Arc is Deliberate</h3>
+                    <p>Safe → Capable → Urgent mirrors exactly how a non-technical buyer moves from "this isn't for me" to "I need this before someone else takes my spot." Borrowed from Hormozi's value equation applied to webinar sequencing.</p>
+                </div>
+                <div class="rationale-item">
+                    <h3>2. Each Day Owns One ICP</h3>
+                    <p>Carlos, Ron, and Maya aren't just personas. They're the three conversations happening in your comment section right now. This sequence answers each one in sequence so no one falls through the cracks.</p>
+                </div>
+                <div class="rationale-item">
+                    <h3>3. The Competitor Gap</h3>
+                    <p>Liam Ottley, Jordan Platten, and Billy Gene all hide behind "book a call" funnels. This 3-day open webinar with transparent $67 pricing is the anti-guru move that builds the trust your audience is starving for.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="closing-section">
+        <h2 class="closing-headline">Still Running Your Business on Manual Mode?</h2>
+        <p class="closing-subline">Every day you wait is another day your competitors are shipping agents while you're still copy-pasting into ChatGPT.</p>
+        
+        <div class="countdown-container">
+            <div class="countdown-unit">
+                <div class="countdown-number" id="cd-days">00</div>
+                <div class="countdown-label">DAYS</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="countdown-number" id="cd-hours">00</div>
+                <div class="countdown-label">HOURS</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="countdown-number" id="cd-minutes">00</div>
+                <div class="countdown-label">MINUTES</div>
+            </div>
+            <div class="countdown-unit" id="cd-seconds-unit">
+                <div class="countdown-number" id="cd-seconds">00</div>
+                <div class="countdown-label">SECONDS</div>
+            </div>
+        </div>
+
+        <div class="closing-buttons">
+            <a href="https://go.vcinc.ai" class="btn-primary">Reserve My $67 Seat →</a>
+            <a href="#" class="btn-ghost">Upgrade to VIP — $97 · 50 Seats Only</a>
+        </div>
+        <p class="closing-disclaimer">Registration closes April 24th · Founding cohort pricing · Will not be repeated at this price</p>
+    </div>
+
+    <div style="text-align:center;padding:3rem 2rem 2rem;">
+        <a href="Webinar-For-Nano-Tavares-3-Days-to-dollar67.pptx"
+           style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#7a4f00,#FFBF00 45%,#ffe57a 60%,#FFBF00 75%,#7a4f00);background-size:200% auto;color:#131D34;font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;padding:.85rem 2rem;border-radius:8px;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 4px 24px rgba(255,191,0,0.4);animation:goldShimmer 4s linear infinite;">
+            &#128202; View PPT Presentation &#8595;
+        </a>
+    </div>
+
+    <footer>
+        <div class="footer-nav">
+            <a href="hub.html">Hub</a>
+            <a href="icp-v2.html">Funnel &amp; ICP</a>
+            <a href="webinar.html">Webinar</a>
+        </div>
+        <p class="footer-text">Automated Stalker · Darwinian Competitor Intelligence · Built for Nuno Tavares · Pareto Talent Final Project · Sofia Renata Camussi · April 2026</p>
+        <p class="footer-meta">Strategy developed by Sofia Camussi · April 2026 · Built using Claude, Gemini, NotebookLM, and RivalSearchMCP</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Scroll Animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const cards = document.querySelectorAll('.day-card, .rationale, .closing-section');
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+
+            // Countdown Logic (Targeting the 4-day workshop start date: April 27, 2026 4:30 PM EST)
+            const target = new Date('2026-04-27T16:30:00-05:00');
+
+            function updateClock() {
+                const now = new Date();
+                const diff = target - now;
+                
+                if (diff <= 0) {
+                    document.getElementById('cd-days').textContent    = '00';
+                    document.getElementById('cd-hours').textContent   = '00';
+                    document.getElementById('cd-minutes').textContent = '00';
+                    document.getElementById('cd-seconds').textContent = '00';
+                    return;
+                }
+                
+                const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                document.getElementById('cd-days').textContent    = String(days).padStart(2,'0');
+                document.getElementById('cd-hours').textContent   = String(hours).padStart(2,'0');
+                document.getElementById('cd-minutes').textContent = String(minutes).padStart(2,'0');
+                document.getElementById('cd-seconds').textContent = String(seconds).padStart(2,'0');
+            }
+
+            setInterval(updateClock, 1000);
+            updateClock();
+        });
+    </script>
+<script>
+(function(){
+  var btn = document.getElementById('unav-hamburger');
+  var menu = document.getElementById('unav-links');
+  if(btn && menu){
+    btn.addEventListener('click', function(){
+      btn.classList.toggle('open');
+      menu.classList.toggle('open');
+    });
+  }
+  document.querySelectorAll('.unav-drop-trigger').forEach(function(trigger){
+    trigger.addEventListener('click', function(){
+      var drop = trigger.nextElementSibling;
+      if(drop) drop.classList.toggle('open');
+    });
+  });
+})();
+</script>
+</body>
+</html>
