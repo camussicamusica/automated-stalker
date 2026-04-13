@@ -1,0 +1,292 @@
+================================================================================
+  HOW WE FOUND NUNO'S 3 BEST-FIT COMPETITORS — PROCESS BRIEF
+  Pareto Final Project | Sofia Camussi | April 12–13, 2026
+================================================================================
+
+  "I had the algorithm. I just had the wrong question."
+
+--------------------------------------------------------------------------------
+OVERVIEW
+--------------------------------------------------------------------------------
+
+This document explains the full research process behind the final competitor
+selection for Nuno Tavares (@AutomatedMarketer on YouTube). It covers what
+was attempted in code, what broke, what was learned, and how the final three
+competitors — Liam Ottley, Jordan Platten, and Billy Gene — were identified,
+validated, and deeply researched.
+
+Total files touched on April 12: 416
+Time range: 00:25 AM — 23:37 PM
+It was a long day.
+
+--------------------------------------------------------------------------------
+PART 1 — WHERE IT STARTED: THE ALGORITHM
+--------------------------------------------------------------------------------
+
+The project began with a working algorithm, published here:
+
+  https://camussicamusica.github.io/automated-stalker
+
+This tool was built to scrape and score potential competitors for a given
+YouTube creator. It pulled channel data, estimated subscriber ranges, analyzed
+topic overlap, and ranked candidates by relevance. On paper, it was solid.
+
+The core assumption baked into that algorithm was:
+  > "If someone is a YouTuber talking about marketing and AI, they are a
+    viable competitor and probably have a business behind them."
+
+That assumption turned out to be wrong — or at least, wildly incomplete.
+
+When the algorithm ran and returned a list of candidates for Nuno, the results
+looked great on the surface: YouTubers, decent subscriber counts, similar
+content topics. But when each candidate was manually checked, the same
+problem appeared again and again:
+
+  - Organic-only creators. No Facebook ads. No sales funnel. No product.
+  - YouTube hobbyists with knowledge but no commercial operation behind them.
+  - Educators with courses but zero paid traffic, meaning their acquisition
+    model was completely different from Nuno's.
+
+Nuno is not just a YouTuber. He runs Facebook and Instagram ads. He has active
+sales funnels. He sells high-ticket programs. His business is built on paid
+acquisition feeding into a conversion funnel. His competitors need to match
+that profile — not just overlap on content topics.
+
+The algorithm had found the right industry. It had found the wrong type of
+player within it.
+
+--------------------------------------------------------------------------------
+PART 2 — THE DAY OF BROKEN CODE (APRIL 12, 2026, 00:00–22:00)
+--------------------------------------------------------------------------------
+
+The logical next step was: update the algorithm to filter for the right signals.
+Add Facebook ads detection. Add funnel/sales page detection. Re-run. Done.
+
+It did not go that way.
+
+ATTEMPT 1 — ICP and Funnel Work (00:25 – 01:42)
+  Before rebuilding the algorithm, time was spent grounding the problem in
+  Nuno's ICP (Ideal Customer Profile) to make sure we were targeting the right
+  type of competitor for the right type of audience.
+  Files: icp.html, icprofile.html, icpfunnel.html, funnelipc.html
+  Reference material pulled in: Alex Hormozi's $100M Leads, $100M Offers,
+  $100M Money Models — for framework on funnels and audience matching.
+  Also: ICP profile images created (diana.png, ron.png, marco.png).
+  This part worked. The ICP was solid. Then the code began.
+
+ATTEMPT 2 — Competitor Repo Iterations (02:20 – 04:07)
+  Heavy commit activity on the Nuno's Competitors git repo, with presentation
+  iterations (iteration2.html, iteration3.html, competitors28.html) and shell
+  scripts to reorganize and fix the repo structure (reorganize_repo.sh,
+  fix_links.sh, fix_competitors28_responsive.sh).
+  Also produced: algorithm_sop.html — an attempt to document the algorithm
+  standard operating procedure while rebuilding it.
+  Result: The presentation scaffolding worked. The scoring logic did not.
+  The algorithm_sop remained more aspiration than reality at this point.
+
+ATTEMPT 3 — Scraping Scripts (19:32 – 20:32)
+  By evening, several Python scripts were being written to automate the search:
+
+    nuno_cleaner.py     — Script to clean and normalize Nuno's data
+    scrap_compet.py     — Competitor scraping script (two versions: in repo
+                          and on Desktop root)
+    yt_cleaner.py       — YouTube data cleaning utility
+    fb_scrap.py         — Facebook ads scraping attempt
+
+  The fb_scrap.py was the critical one. Facebook's ad library does not expose
+  a clean API for this kind of scraping. It requires authentication, handles
+  bot detection aggressively, and the data structure changes frequently.
+  fb_scrap.py produced errors, partial data, and eventually nothing useful.
+
+  Also generated during this window:
+    nuno_motherdoc.txt     — Consolidated notes on Nuno's full ecosystem
+    top3_intelligence.txt  — Early placeholder for final competitor write-up
+    Webinar info .txt      — Nuno's April 27–30 live workshop (reference doc)
+
+ATTEMPT 4 — Manual Ad Screenshots (21:05 – 21:33)
+  Since the scraper wasn't working, Facebook Ads Library was opened manually.
+  Nuno's own ads were screenshotted for reference (nuno 1.jpeg through
+  nuno 5.jpeg). His funnel and website PDFs were saved. A visual HTML of his
+  profile was built (nuno.html). The goal was to use this as a baseline to
+  compare against competitors' ads.
+  This worked for Nuno. The problem was doing the same for 20+ candidates.
+
+ATTEMPT 5 — Firecrawl (22:31)
+  testcrawl.py was created. This was the Firecrawl experiment.
+  Firecrawl was installed, the API was learned, and a test crawl was run.
+  It worked — Firecrawl successfully scraped page content from websites.
+  However, it could not access the Facebook Ads Library in a meaningful way
+  (Facebook blocks headless crawlers and requires authentication), and it
+  could not pull live YouTube subscriber counts without additional tooling.
+  New skill unlocked. Problem not fully solved.
+
+ATTEMPT 6 — competitor_intelligence.py + Apify attempt (23:06 – 23:14)
+  competitor_intelligence.py was the most ambitious script of the day:
+  a pipeline to pull competitor YouTube data, check for Facebook ad activity,
+  score candidates, and output a ranked CSV.
+
+  Also explored: Apify (screenshot: Apify_fb_ads.png) — a third-party scraping
+  platform with Facebook Ads Library actors. It worked better than raw scraping
+  but required per-query cost and setup time that wasn't feasible mid-session.
+
+  The competitor_intelligence.py script ran. It produced:
+    - screenshots/ folder with 20+ Facebook ads library screenshots
+      (Jack Roberts, Liam Ottley, Nick Saraev, Riley Brown, Nate Herk,
+       Corbin, Alicia Lyttle, Nick Ponte, Pavlo, Derek Cheung, Ed Hill,
+       and many more)
+    - competitor_data/ folder with .md files for some candidates
+    - competitors_scored.csv — a scored output
+
+  The scored CSV existed. But the scoring logic was inconsistent: some
+  candidates were scored on partial data, the Facebook ad detection was
+  unreliable (some active advertisers were missed, some inactive ones were
+  flagged), and YouTube data was stale or estimated.
+
+  Result: Thousands of lines of Python across the day. Multiple approaches.
+  Multiple partial solutions. No clean, trustworthy output.
+
+  The code worked in pieces. It did not work as a whole.
+
+--------------------------------------------------------------------------------
+PART 3 — THE PIVOT: MANUAL RESEARCH + GHL AS THE FILTER
+--------------------------------------------------------------------------------
+
+At this point, the problem was reframed.
+
+The original question was:
+  "How do I write code to find Nuno's competitors?"
+
+The new question was:
+  "What do I already KNOW that narrows this down?"
+
+The key insight was GoHighLevel.
+
+Nuno Tavares uses GoHighLevel. His audience uses GoHighLevel. GHL is central
+to his business model. Therefore, his most relevant competitors would likely
+also be in the GHL ecosystem — either as affiliates, award winners, or
+featured partners.
+
+GoHighLevel runs a formal recognition program for high-performing affiliates
+and agencies. These are people who:
+  (a) have built real businesses using GHL
+  (b) are actively marketing those businesses
+  (c) have been validated by GHL's own team as high performers
+
+This became the new starting pool.
+
+STEP 1 — GHL Award Winners List
+  A list of GHL-recognized creators and affiliates was assembled through
+  manual research: GoHighLevel's own website, partner pages, YouTube searches
+  for "GoHighLevel award," and community references.
+
+STEP 2 — Claude Segmentation
+  With Claude Code, the list was filtered by three criteria simultaneously:
+    1. Do they have a YouTube channel? (Must be active, not just existing)
+    2. Do they have GHL recognition/awards? (Affiliate, partner, or featured)
+    3. Do they cover topics adjacent to Nuno? (AI, marketing, automation,
+       agency building, courses — anything in the orbit)
+
+  Dozens of names were processed. Most fell out on criterion 1 or 3.
+
+STEP 3 — Facebook Ads Library Manual Check
+  For each candidate who passed the Claude segmentation, the Facebook Ads
+  Library (facebook.com/ads/library) was manually searched.
+  This is the most reliable way to confirm active paid advertising — no API,
+  no scraper, just the source.
+
+  Candidates confirmed running active Facebook/Instagram ads were kept.
+  Organic-only creators were removed.
+
+STEP 4 — Final 3 Selected
+  After the segmentation and ads library check, three candidates clearly
+  stood above the others as the best match for Nuno's profile:
+
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  1. Liam Ottley       — youtube.com/@LiamOttley                │
+  │     AI Automation Agency model, 730K YouTube subs, 280K+       │
+  │     Skool community, AAA Accelerator ($5K–$7K), Morningside AI  │
+  │                                                                 │
+  │  2. Jordan Platten    — youtube.com/@JordanPlatten              │
+  │     SMMA + AI Lead Gen, ~375K subs, Affluent Academy,          │
+  │     Agency Launch ($3.8K–$4.5K), confirmed GHL affiliate        │
+  │                                                                 │
+  │  3. Billy Gene        — youtube.com/@Billygeneismarketing       │
+  │     AI + XR Marketing, 247K Instagram, 285K Facebook,          │
+  │     10-Day AI Plan entry funnel, GHL co-marketing partner       │
+  └─────────────────────────────────────────────────────────────────┘
+
+--------------------------------------------------------------------------------
+PART 4 — FINAL INTELLIGENCE RUN WITH CLAUDE CODE + RIVALSEARCHMCP
+--------------------------------------------------------------------------------
+
+With the final three competitors selected, deep intelligence was gathered using
+Claude Code with the RivalSearchMCP tool (web_search, map_website,
+research_topic) — the same GitHub repo used throughout this project as the
+operational environment.
+
+RivalSearchMCP ran parallel searches across DuckDuckGo and Yahoo, scraped
+review sites (marksinsights.com, ippei.com, salesforge.ai, trustpilot.com),
+pulled social media profiles, mapped product websites, and cross-referenced
+pricing data from Reddit, Scribd, and third-party analytics platforms.
+
+The output was two documents:
+
+  competitor_intelligence_report_2026.txt
+  — Full structured report with 7 sections per competitor, pricing tables,
+    funnel maps, social media stats, GHL connection analysis, and a
+    master comparison table.
+
+  PROCESS_BRIEF.txt (this document)
+  — The story of how we got there.
+
+--------------------------------------------------------------------------------
+PART 5 — HONEST REFLECTION ON WHAT WOULD HAVE BEEN BETTER
+--------------------------------------------------------------------------------
+
+If more time had been available, this is what a better version looks like:
+
+BETTER ALGORITHM (v2 wishlist):
+  - Start with GHL affiliate/partner lists as the seed pool, not general YouTube
+  - Add Facebook Ads Library check via Apify actor (automated, not manual)
+  - Add sales funnel detection: does the candidate have a VSL page? A calendar
+    booking page? A Skool community? These are programmatically detectable.
+  - Weight the scoring: YouTube subs * 0.2 + active FB ads * 0.4 +
+    sales funnel detected * 0.3 + topic overlap * 0.1
+  - Output a ranked shortlist of 10–15 candidates, then apply manual review
+    only to the top tier
+
+The manual process that was actually used produced accurate results but
+would not scale. For a second client or a second assignment, rebuilding the
+algorithm with these three filters as hard requirements (YouTube ✓ + FB ads ✓
++ funnel ✓) would turn a 20-hour manual process into a 20-minute automated one.
+
+That is Part 2 of this assignment. Or the next time there is enough time.
+
+--------------------------------------------------------------------------------
+WHAT THIS IS, IN ONE SENTENCE
+--------------------------------------------------------------------------------
+
+This is Part 1 of competitor intelligence for Nuno Tavares (@AutomatedMarketer):
+a day of code that taught us what the algorithm was missing, a manual pivot that
+found the right answer anyway, and a deep intelligence report on the 3 best-fit
+competitors — Liam Ottley, Jordan Platten, and Billy Gene — all of whom run
+YouTube channels, active Facebook ad campaigns, and high-ticket sales funnels,
+the exact profile that Nuno competes with.
+
+--------------------------------------------------------------------------------
+FILES REFERENCED IN THIS BRIEF
+--------------------------------------------------------------------------------
+
+Algorithm (original):   https://camussicamusica.github.io/automated-stalker
+Intelligence Report:    /competitor_intelligence_report_2026.txt
+                        (also at root of PARETO_FINAL_PROJECT folder)
+Scored CSV:             /1. Python Processes/5. Nuno's Competitors/competitors_scored.csv
+FB Ads Screenshots:     /1. Python Processes/5. Nuno's Competitors/screenshots/
+Competitor Data:        /1. Python Processes/5. Nuno's Competitors/competitor_data/
+Python Scripts:         /1. Python Processes/5. Nuno's Competitors/01_Scripts/
+Presentation Files:     /1. Python Processes/5. Nuno's Competitors/06_Presentation/
+
+--------------------------------------------------------------------------------
+Sofia Camussi — Pareto Final Project — April 2026
+"If I had more time, I'd have written a shorter algorithm."
+================================================================================

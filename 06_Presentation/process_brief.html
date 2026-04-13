@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Process Brief — How We Found Nuno's Competitors V2</title>
+  <style>
+    :root {
+      --bg: #0a0f1e;
+      --bg2: #0d1426;
+      --bg3: #111827;
+      --accent: #00d4ff;
+      --accent2: #0099bb;
+      --gold: #ffd700;
+      --gold-dim: #b8960c;
+      --silver: #c0c0c0;
+      --bronze: #cd7f32;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: #1e2d4a;
+      --green: #10b981;
+      --purple: #8b5cf6;
+      --red: #ef4444;
+      --orange: #fb923c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-top: 64px;
+    }
+
+    /* ─── BANNER ─────────────────────────────────────────── */
+    .v2-banner {
+      background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04));
+      border-bottom: 1px solid rgba(212,175,55,0.3);
+      padding: 12px 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #D4AF37;
+    }
+    .v2-banner a { color: #D4AF37; font-weight: 700; }
+
+    /* ─── HEADER ─────────────────────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, #0a0f1e 0%, #0d1f3c 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 24px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,212,255,0.06) 0%, transparent 70%);
+    }
+    .header h1 {
+      font-size: clamp(1.5rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, var(--accent) 0%, #ffffff 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      display: inline-block;
+    }
+    .header .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 8px;
+      position: relative;
+    }
+    .header .quote {
+      display: inline-block;
+      margin-top: 18px;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: #ffffff;
+      background: rgba(0,212,255,0.06);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 10px;
+      padding: 12px 24px;
+      position: relative;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-top: 14px;
+      position: relative;
+    }
+
+    /* ─── LAYOUT ──────────────────────────────────────────── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 40px 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+    }
+
+    /* ─── OVERVIEW BOX ────────────────────────────────────── */
+    .overview-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+    .overview-box p { color: var(--text); font-size: 0.95rem; line-height: 1.7; }
+    .overview-box p + p { margin-top: 12px; }
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .stat-pill {
+      background: rgba(0,212,255,0.06);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+    }
+    .stat-pill strong { color: var(--accent); }
+
+    /* ─── TIMELINE ────────────────────────────────────────── */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px; top: 8px; bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent) 0%, rgba(0,212,255,0.1) 100%);
+    }
+    .tl-item { position: relative; margin-bottom: 28px; }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-dot {
+      position: absolute;
+      left: -26px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tl-item.failed .tl-dot { border-color: var(--red); }
+    .tl-item.partial .tl-dot { border-color: var(--orange); }
+    .tl-item.success .tl-dot { border-color: var(--green); }
+    .tl-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .tl-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .tl-item.failed .tl-label  { background: rgba(239,68,68,0.15);  color: var(--red); }
+    .tl-item.partial .tl-label { background: rgba(251,146,60,0.15); color: var(--orange); }
+    .tl-item.success .tl-label { background: rgba(16,185,129,0.15); color: var(--green); }
+    .tl-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+    .tl-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .tl-body {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 0.87rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .tl-body p + p { margin-top: 8px; }
+    .tl-body .files {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .file-tag {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: #a0aec0;
+    }
+    .tl-body .result {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .result.fail   { background: rgba(239,68,68,0.08);  border-left: 3px solid var(--red);    color: #fca5a5; }
+    .result.ok     { background: rgba(16,185,129,0.08); border-left: 3px solid var(--green);  color: #6ee7b7; }
+    .result.partial{ background: rgba(251,146,60,0.08); border-left: 3px solid var(--orange); color: #fdba74; }
+
+    /* ─── INSIGHT BOX ─────────────────────────────────────── */
+    .insight-box {
+      background: rgba(212,175,55,0.06);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .insight-box .ib-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #D4AF37;
+      margin-bottom: 8px;
+    }
+    .insight-box p {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    /* ─── STEP BOXES ──────────────────────────────────────── */
+    .step-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .step-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .step-box .step-num {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .step-box .step-title { font-weight: 700; color: #ffffff; font-size: 0.9rem; margin-bottom: 6px; }
+    .step-box p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ─── FINAL 3 CARDS ───────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .f3-card {
+      background: var(--bg2);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .f3-card.gold   .f3-head { background: linear-gradient(135deg,#1a1400,#2a1f00); border-bottom: 2px solid var(--gold); }
+    .f3-card.silver .f3-head { background: linear-gradient(135deg,#111,#1a1a1a);    border-bottom: 2px solid var(--silver); }
+    .f3-card.bronze .f3-head { background: linear-gradient(135deg,#1a0e00,#281500); border-bottom: 2px solid var(--bronze); }
+    .f3-head { padding: 18px 20px; }
+    .f3-rank {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .f3-card.gold   .f3-rank { color: var(--gold); }
+    .f3-card.silver .f3-rank { color: var(--silver); }
+    .f3-card.bronze .f3-rank { color: var(--bronze); }
+    .f3-name { font-size: 1.3rem; font-weight: 800; color: #ffffff; }
+    .f3-tagline { font-size: 0.78rem; color: var(--text-muted); margin-top: 3px; }
+    .f3-body { padding: 16px 20px; }
+    .f3-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.8rem; }
+    .f3-row:last-child { border-bottom: none; }
+    .f3-row span:first-child { color: var(--text-muted); }
+    .f3-row span:last-child  { color: #fff; font-weight: 600; }
+    .f3-link { display: block; margin-top: 12px; }
+    .f3-link a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .f3-link a:hover { text-decoration: underline; }
+
+    /* ─── WISHLIST ────────────────────────────────────────── */
+    .wish-list { list-style: none; margin-top: 16px; }
+    .wish-list li {
+      display: flex;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .wish-list li:last-child { border-bottom: none; }
+    .wish-list li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+
+    /* ─── ONE-SENTENCE SUMMARY ────────────────────────────── */
+    .summary-box {
+      background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(0,212,255,0.02));
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 12px;
+      padding: 24px 28px;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+    .summary-box strong { color: var(--accent); }
+
+    /* ─── CODE INLINE ─────────────────────────────────────── */
+    code {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: monospace;
+      font-size: 0.83em;
+      color: #a0aec0;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    .footer { text-align: center; padding: 32px 24px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; }
+    .footer a { color: var(--accent); text-decoration: none; }
+
+    @media(max-width:640px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .step-grid  { grid-template-columns: 1fr; }
+    }
+  </style>
+  <style>body{padding-top:64px!important}</style>
+</head>
+<body>
+
+<!-- ═══ UNIVERSAL NAV ═══ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600;9..40,700&family=Syne:wght@400;600;700;800&display=swap');
+.unav{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);z-index:9999;font-family:'Syne',sans-serif;letter-spacing:.06em;font-size:.78rem;text-transform:uppercase}
+.unav-brand{font-weight:800;color:#fff;text-decoration:none;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.unav-brand em{color:#D4AF37;font-style:normal}
+.unav-links{display:flex;gap:1.5rem;align-items:center;list-style:none}
+.unav-links li{position:relative}
+.unav-links a,.unav-drop-trigger{color:rgba(255,255,255,0.65);text-decoration:none;cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:6px;padding:.3rem 0;background:none;border:none;font:inherit;letter-spacing:inherit;text-transform:inherit;font-size:inherit}
+.unav-links a:hover,.unav-drop-trigger:hover{color:#fff}
+.unav-links a.active,.unav-drop-trigger.active{color:#D4AF37}
+.unav-arrow{font-size:.5rem;transition:transform .25s;opacity:.6}
+.unav-links li:hover .unav-arrow{transform:rotate(180deg);opacity:1}
+.unav-drop{position:absolute;top:calc(100% + 12px);left:0;background:rgba(14,14,20,0.97);border:1px solid rgba(255,255,255,0.08);border-radius:10px;min-width:240px;padding:.5rem 0;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .25s cubic-bezier(.16,1,.3,1);box-shadow:0 20px 40px rgba(0,0,0,.7)}
+.unav-drop::before{content:'';position:absolute;top:-5px;left:18px;width:9px;height:9px;background:rgba(14,14,20,.97);border-left:1px solid rgba(255,255,255,.08);border-top:1px solid rgba(255,255,255,.08);transform:rotate(45deg)}
+.unav-links li:hover .unav-drop{opacity:1;visibility:visible;transform:translateY(0)}
+.unav-drop a{color:rgba(255,255,255,.55);text-decoration:none;padding:.75rem 1.4rem;display:flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;text-transform:none;letter-spacing:0;transition:all .2s;border-left:2px solid transparent;white-space:nowrap}
+.unav-drop a:hover{color:#fff;background:rgba(255,255,255,.03);border-left-color:#D4AF37}
+.unav-drop a .di{font-size:.8rem;opacity:.7}
+.unav-drop-divider{height:1px;background:rgba(255,255,255,0.06);margin:.3rem 0}
+.unav-cta{background:#D4AF37;color:#0a0a0f;padding:.45rem 1.1rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.72rem;transition:opacity .2s;white-space:nowrap}
+.unav-cta:hover{opacity:.85;color:#0a0a0f}
+@media(max-width:768px){.unav-links{gap:.8rem}.unav{padding:1rem 1.2rem}.unav-drop{left:-20px}}
+</style>
+<nav class="unav">
+  <a href="hub.html" class="unav-brand">Automated <em>Stalker</em></a>
+  <ul class="unav-links">
+    <li>
+      <button class="unav-drop-trigger">View Report V1 <span class="unav-arrow">▼</span></button>
+      <div class="unav-drop">
+        <a href="hub.html"><span class="di">🏠</span> Intelligence Hub</a>
+        <a href="index.html"><span class="di">🥇</span> Top 3 Deep Intel</a>
+        <a href="algorithm_sop.html"><span class="di">🧬</span> Algorithm SOP</a>
+        <a href="competitors28.html"><span class="di">👥</span> All 28 Candidates</a>
+        <a href="funnelipc.html"><span class="di">👤</span> Funnel &amp; ICP</a>
+      </div>
+    </li>
+    <li>
+      <button class="unav-drop-trigger active">View Report V2 <span class="unav-arrow">▼</span></button>
+      <div class="unav-drop">
+        <a href="process_brief.html" style="color:#D4AF37;border-left-color:#D4AF37"><span class="di">📋</span> Process Brief</a>
+        <a href="v2_intel.html"><span class="di">🥇</span> Top 3 Deep Intel V2</a>
+      </div>
+    </li>
+    <li><a href="https://github.com/camussicamusica/automated-stalker" target="_blank">GitHub ↗</a></li>
+    <li><a href="https://app.clickup.com" target="_blank">ClickUp ↗</a></li>
+  </ul>
+</nav>
+
+<!-- BANNER -->
+<div class="v2-banner">
+  ⚠️ This is the story behind V2. The original V1 research is still available under <a href="index.html">Report V1</a>.
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>How We Found Nuno's 3 Best-Fit Competitors</h1>
+  <p class="subtitle">Pareto Final Project · Sofia Camussi · April 12–13, 2026</p>
+  <div class="quote">"I had the algorithm. I just had the wrong question."</div>
+  <br>
+  <span class="badge">416 files touched · 23+ hours of work · April 12, 2026</span>
+</div>
+
+<div class="container">
+
+  <!-- OVERVIEW -->
+  <section>
+    <div class="section-title">Overview</div>
+    <div class="overview-box">
+      <p>This document explains the full research process behind the final competitor selection for Nuno Tavares (@AutomatedMarketer on YouTube). It covers what was attempted in code, what broke, what was learned, and how the final three competitors — <strong>Liam Ottley, Jordan Platten, and Billy Gene</strong> — were identified, validated, and deeply researched.</p>
+      <p>This is not a clean story. It is an honest one.</p>
+      <div class="stat-row">
+        <div class="stat-pill">📁 <strong>416</strong> files edited</div>
+        <div class="stat-pill">🕐 <strong>00:25 – 23:37</strong> time range</div>
+        <div class="stat-pill">🐍 <strong>6</strong> Python attempts</div>
+        <div class="stat-pill">🔄 <strong>1</strong> pivot that worked</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 1 — THE ALGORITHM -->
+  <section>
+    <div class="section-title">Part 1 — Where It Started: The Algorithm</div>
+    <div class="overview-box">
+      <p>The project began with a working algorithm, published at <a href="https://camussicamusica.github.io/automated-stalker" target="_blank" style="color:var(--accent)">camussicamusica.github.io/automated-stalker</a>. This tool was built to scrape and score potential competitors for a given YouTube creator — pulling channel data, estimating subscriber ranges, analyzing topic overlap, and ranking candidates by relevance. On paper, it was solid.</p>
+      <p>The core assumption baked into that algorithm was:</p>
+    </div>
+
+    <div class="insight-box" style="margin:16px 0">
+      <div class="ib-label">The Flawed Assumption</div>
+      <p>"If someone is a YouTuber talking about marketing and AI, they are a viable competitor and probably have a business behind them."</p>
+    </div>
+
+    <div class="overview-box">
+      <p>That assumption turned out to be <strong>wrong</strong> — or at least, wildly incomplete. When the algorithm ran and returned a list of candidates for Nuno, the results looked great on the surface. But when each candidate was manually checked, the same problem appeared again and again:</p>
+      <div class="files" style="margin-top:14px;flex-direction:column;gap:8px">
+        <div style="display:flex;gap:8px;align-items:flex-start;font-size:.87rem">
+          <span style="color:var(--red);flex-shrink:0">✗</span>
+          <span>Organic-only creators. No Facebook ads. No sales funnel. No product.</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start;font-size:.87rem">
+          <span style="color:var(--red);flex-shrink:0">✗</span>
+          <span>YouTube hobbyists with knowledge but no commercial operation behind them.</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start;font-size:.87rem">
+          <span style="color:var(--red);flex-shrink:0">✗</span>
+          <span>Educators with courses but zero paid traffic — a completely different acquisition model from Nuno's.</span>
+        </div>
+      </div>
+      <p style="margin-top:14px">Nuno runs Facebook and Instagram ads. He has active sales funnels. He sells high-ticket programs. His competitors need to match that profile — not just overlap on content topics. <strong>The algorithm had found the right industry. It had found the wrong type of player within it.</strong></p>
+    </div>
+  </section>
+
+  <!-- PART 2 — THE DAY OF BROKEN CODE -->
+  <section>
+    <div class="section-title">Part 2 — The Day of Broken Code (April 12)</div>
+    <p style="color:var(--text-muted);margin-bottom:28px;font-size:.9rem">The logical next step: update the algorithm to filter for the right signals. Add Facebook ads detection. Add funnel detection. Re-run. Done. <em>It did not go that way.</em></p>
+
+    <div class="timeline">
+
+      <div class="tl-item success">
+        <div class="tl-dot"></div>
+        <div class="tl-header">
+          <span class="tl-label">✓ worked</span>
+          <span class="tl-time">00:25 – 01:42</span>
+        </div>
+        <div class="tl-title" style="margin-bottom:8px">Attempt 1 — ICP &amp; Funnel Framework</div>
+        <div class="tl-body">
+          <p>Before rebuilding the algorithm, time was spent grounding the problem in Nuno's ICP (Ideal Customer Profile). Reference material pulled in: Alex Hormozi's <em>$100M Leads</em>, <em>$100M Offers</em>, and <em>$100M Money Models</em> — for framework on funnels and audience matching.</p>
+          <p>ICP profile images created (Diana, Ron, Marco archetypes). Funnel HTML iterations built.</p>
+          <div class="files">
+            <span class="file-tag">icp.html</span>
+            <span class="file-tag">icprofile.html</span>
+            <span class="file-tag">icpfunnel.html</span>
+            <span class="file-tag">funnelipc.html</span>
+            <span class="file-tag">diana.png</span>
+            <span class="file-tag">ron.png</span>
+            <span class="file-tag">marco.png</span>
+          </div>
+          <div class="result ok">✓ The ICP was solid. This part worked. Then the code began.</div>
+        </div>
+      </div>
+
+      <div class="tl-item partial">
+        <div class="tl-dot"></div>
+        <div class="tl-header">
+          <span class="tl-label">⚠ partial</span>
+          <span class="tl-time">02:20 – 04:07</span>
+        </div>
+        <div class="tl-title" style="margin-bottom:8px">Attempt 2 — Competitor Repo Iterations</div>
+        <div class="tl-body">
+          <p>Heavy commit activity on the repo — shell scripts to reorganize and fix repo structure. Presentation iterations. Also produced <code>algorithm_sop.html</code> — an attempt to document the algorithm SOP while rebuilding it.</p>
+          <div class="files">
+            <span class="file-tag">reorganize_repo.sh</span>
+            <span class="file-tag">fix_links.sh</span>
+            <span class="file-tag">fix_competitors28_responsive.sh</span>
+            <span class="file-tag">iteration2.html</span>
+            <span class="file-tag">iteration3.html</span>
+            <span class="file-tag">competitors28.html</span>
+            <span class="file-tag">algorithm_sop.html</span>
+          </div>
+          <div class="result partial">⚠ The presentation scaffolding worked. The scoring logic did not. The algorithm_sop remained more aspiration than reality.</div>
+        </div>
+      </div>
+
+      <div class="tl-item failed">
+        <div class="tl-dot"></div>
+        <div class="tl-header">
+          <span class="tl-label">✗ failed</span>
+          <span class="tl-time">19:32 – 20:32</span>
+        </div>
+        <div class="tl-title" style="margin-bottom:8px">Attempt 3 — Scraping Scripts</div>
+        <div class="tl-body">
+          <p>Several Python scripts written to automate the search. The critical one was <code>fb_scrap.py</code> — Facebook's ad library does not expose a clean API for this kind of scraping. It requires authentication, handles bot detection aggressively, and the data structure changes frequently.</p>
+          <div class="files">
+            <span class="file-tag">nuno_cleaner.py</span>
+            <span class="file-tag">scrap_compet.py</span>
+            <span class="file-tag">yt_cleaner.py</span>
+            <span class="file-tag">fb_scrap.py</span>
+            <span class="file-tag">nuno_motherdoc.txt</span>
+          </div>
+          <div class="result fail">✗ fb_scrap.py produced errors, partial data, and eventually nothing useful.</div>
+        </div>
+      </div>
+
+      <div class="tl-item partial">
+        <div class="tl-dot"></div>
+        <div class="tl-header">
+          <span class="tl-label">⚠ partial</span>
+          <span class="tl-time">21:05 – 21:33</span>
+        </div>
+        <div class="tl-title" style="margin-bottom:8px">Attempt 4 — Manual Ad Screenshots</div>
+        <div class="tl-body">
+          <p>Since the scraper wasn't working, Facebook Ads Library was opened manually. Nuno's own ads were screenshotted for reference. His funnel and website PDFs were saved. A visual HTML of his profile was built.</p>
+          <div class="files">
+            <span class="file-tag">nuno 1.jpeg – nuno 5.jpeg</span>
+            <span class="file-tag">nuno.html</span>
+            <span class="file-tag">nuno official website.pdf</span>
+            <span class="file-tag">nunos funnel.pdf</span>
+          </div>
+          <div class="result partial">⚠ Worked for Nuno. The problem was scaling to 20+ candidates manually.</div>
+        </div>
+      </div>
+
+      <div class="tl-item partial">
+        <div class="tl-dot"></div>
+        <div class="tl-header">
+          <span class="tl-label">⚠ partial</span>
+          <span class="tl-time">22:31</span>
+        </div>
+        <div class="tl-title" style="margin-bottom:8px">Attempt 5 — Firecrawl</div>
+        <div class="tl-body">
+          <p><code>testcrawl.py</code> was created. Firecrawl was installed, the API was learned, and a test crawl was run. It worked — Firecrawl successfully scraped page content from websites. However, it could not access the Facebook Ads Library (Facebook blocks headless crawlers and requires authentication).</p>
+          <div class="files">
+            <span class="file-tag">testcrawl.py</span>
+          </div>
+          <div class="result partial">⚠ New skill unlocked. Problem not fully solved. Yat for Firecrawl though!</div>
+        </div>
+      </div>
+
+      <div class="tl-item failed">
+        <div class="tl-dot"></div>
+        <div class="tl-header">
+          <span class="tl-label">✗ incomplete</span>
+          <span class="tl-time">23:06 – 23:37</span>
+        </div>
+        <div class="tl-title" style="margin-bottom:8px">Attempt 6 — competitor_intelligence.py + Apify</div>
+        <div class="tl-body">
+          <p>The most ambitious script of the day: a pipeline to pull YouTube data, check for Facebook ad activity, score candidates, and output a ranked CSV. Also explored Apify — a third-party scraping platform with Facebook Ads Library actors.</p>
+          <p>The script ran and produced 20+ Facebook ads library screenshots and a <code>competitors_scored.csv</code>. But the scoring logic was inconsistent — some active advertisers missed, some inactive ones flagged.</p>
+          <div class="files">
+            <span class="file-tag">competitor_intelligence.py</span>
+            <span class="file-tag">competitors_scored.csv</span>
+            <span class="file-tag">screenshots/ (23 files)</span>
+            <span class="file-tag">competitor_data/ (.md files)</span>
+            <span class="file-tag">Apify_fb_ads.png</span>
+          </div>
+          <div class="result fail">✗ Thousands of lines of Python. Multiple partial solutions. No clean, trustworthy output. The code worked in pieces. It did not work as a whole.</div>
+        </div>
+      </div>
+
+    </div><!-- /timeline -->
+  </section>
+
+  <!-- PART 3 — THE PIVOT -->
+  <section>
+    <div class="section-title">Part 3 — The Pivot: Manual Research + GHL as the Filter</div>
+
+    <div class="insight-box">
+      <div class="ib-label">The Reframe</div>
+      <p>Old question: <em>"How do I write code to find Nuno's competitors?"</em><br>
+      New question: <em>"What do I already <strong>KNOW</strong> that narrows this down?"</em></p>
+    </div>
+
+    <div class="overview-box" style="margin-top:16px">
+      <p>The key insight was <strong>GoHighLevel</strong>. Nuno Tavares uses GoHighLevel. His audience uses GoHighLevel. GHL is central to his business model. Therefore, his most relevant competitors would likely also be in the GHL ecosystem — either as affiliates, award winners, or featured partners.</p>
+      <p style="margin-top:10px">GoHighLevel runs a formal recognition program for high-performing affiliates and agencies. These people have (a) built real businesses using GHL, (b) are actively marketing those businesses, and (c) have been validated by GHL's own team. <strong>This became the new starting pool.</strong></p>
+    </div>
+
+    <div class="step-grid">
+      <div class="step-box">
+        <div class="step-num">Step 1</div>
+        <div class="step-title">GHL Award Winners List</div>
+        <p>Assembled manually from GoHighLevel's own website, partner pages, and YouTube searches for "GoHighLevel award."</p>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 2</div>
+        <div class="step-title">Claude Segmentation</div>
+        <p>List filtered by 3 criteria: active YouTube channel, GHL recognition/awards, and topic overlap with Nuno's content.</p>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 3</div>
+        <div class="step-title">Facebook Ads Library Check</div>
+        <p>Each passing candidate was manually verified at facebook.com/ads/library. Organic-only creators were removed.</p>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 4</div>
+        <div class="step-title">Final 3 Selected</div>
+        <p>Three candidates clearly stood above the rest — all matching Nuno's exact profile: YouTube + active FB ads + sales funnel.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FINAL 3 -->
+  <section>
+    <div class="section-title">The Final 3 Competitors</div>
+    <div class="cards-grid">
+      <div class="f3-card gold">
+        <div class="f3-head">
+          <div class="f3-rank">🥇 Rank #1</div>
+          <div class="f3-name">Liam Ottley</div>
+          <div class="f3-tagline">AI Automation Agency model · morningside.ai</div>
+        </div>
+        <div class="f3-body">
+          <div class="f3-row"><span>YouTube Subs</span><span>~730,000</span></div>
+          <div class="f3-row"><span>Free Community</span><span>280K+ Skool</span></div>
+          <div class="f3-row"><span>High Ticket</span><span>$5K–$7,150</span></div>
+          <div class="f3-row"><span>Est. Monthly Rev</span><span>$330K–$500K+</span></div>
+          <div class="f3-row"><span>FB Ads</span><span>Minimal/Organic</span></div>
+          <div class="f3-row"><span>GHL</span><span>None</span></div>
+          <div class="f3-link"><a href="v2_intel.html#liam">View Full Intel →</a></div>
+        </div>
+      </div>
+      <div class="f3-card silver">
+        <div class="f3-head">
+          <div class="f3-rank">🥈 Rank #2</div>
+          <div class="f3-name">Jordan Platten</div>
+          <div class="f3-tagline">SMMA + AI Lead Gen · affluent.academy</div>
+        </div>
+        <div class="f3-body">
+          <div class="f3-row"><span>YouTube Subs</span><span>~375,000</span></div>
+          <div class="f3-row"><span>Community</span><span>Free Skool</span></div>
+          <div class="f3-row"><span>High Ticket</span><span>$3.8K–$4.5K</span></div>
+          <div class="f3-row"><span>Est. Monthly Rev</span><span>$200K–$350K+</span></div>
+          <div class="f3-row"><span>FB Ads</span><span>✓ Active</span></div>
+          <div class="f3-row"><span>GHL</span><span>✓ Confirmed Affiliate</span></div>
+          <div class="f3-link"><a href="v2_intel.html#jordan">View Full Intel →</a></div>
+        </div>
+      </div>
+      <div class="f3-card bronze">
+        <div class="f3-head">
+          <div class="f3-rank">🥉 Rank #3</div>
+          <div class="f3-name">Billy Gene</div>
+          <div class="f3-tagline">AI + XR Marketing · billygeneismarketing.com</div>
+        </div>
+        <div class="f3-body">
+          <div class="f3-row"><span>Instagram</span><span>247K</span></div>
+          <div class="f3-row"><span>Facebook</span><span>285K+ likes</span></div>
+          <div class="f3-row"><span>High Ticket</span><span>~$5K–$10K+</span></div>
+          <div class="f3-row"><span>Est. Monthly Rev</span><span>$150K–$400K+</span></div>
+          <div class="f3-row"><span>FB Ads</span><span>✓ Heavy / Core</span></div>
+          <div class="f3-row"><span>GHL</span><span>✓ Co-Marketing Partner</span></div>
+          <div class="f3-link"><a href="v2_intel.html#billy">View Full Intel →</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 4 — FINAL INTEL RUN -->
+  <section>
+    <div class="section-title">Part 4 — Final Intelligence Run</div>
+    <div class="overview-box">
+      <p>With the final three competitors selected, deep intelligence was gathered using <strong>Claude Code with the RivalSearchMCP tool</strong> (<code>web_search</code>, <code>map_website</code>, <code>research_topic</code>) — the same GitHub repo used throughout this project as the operational environment.</p>
+      <p style="margin-top:10px">RivalSearchMCP ran parallel searches across DuckDuckGo and Yahoo, scraped review sites (marksinsights.com, ippei.com, salesforge.ai, trustpilot.com), pulled social media profiles, mapped product websites, and cross-referenced pricing data from Reddit, Scribd, and third-party analytics platforms.</p>
+      <p style="margin-top:14px">The output: a full intelligence report with 7 sections per competitor, pricing tables, funnel maps, social stats, GHL connection analysis, and a master comparison table. <a href="v2_intel.html" style="color:var(--accent);font-weight:700">→ View Report V2</a></p>
+    </div>
+  </section>
+
+  <!-- PART 5 — HONEST REFLECTION -->
+  <section>
+    <div class="section-title">Part 5 — What Would Have Been Better</div>
+    <p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem">If more time had been available, this is what a better algorithm looks like:</p>
+    <ul class="wish-list">
+      <li>Start with GHL affiliate/partner lists as the seed pool, not general YouTube searches</li>
+      <li>Add Facebook Ads Library check via Apify actor — automated, not manual, one query per candidate</li>
+      <li>Add sales funnel detection: does the candidate have a VSL page? A calendar booking page? A Skool community? These are programmatically detectable.</li>
+      <li>Weight the scoring: <code>YouTube subs * 0.2 + active FB ads * 0.4 + sales funnel * 0.3 + topic overlap * 0.1</code></li>
+      <li>Output a ranked shortlist of 10–15, apply manual review only to the top tier</li>
+    </ul>
+    <div class="insight-box" style="margin-top:20px">
+      <div class="ib-label">The Bottom Line</div>
+      <p>The manual process produced accurate results but would not scale. Rebuilding the algorithm with three hard filters (YouTube ✓ + FB ads ✓ + funnel ✓) would turn a 20-hour manual process into a 20-minute automated one. That is Part 2. Or the next time there is enough time.</p>
+    </div>
+  </section>
+
+  <!-- ONE-SENTENCE SUMMARY -->
+  <section>
+    <div class="section-title">In One Sentence</div>
+    <div class="summary-box">
+      This is Part 1 of competitor intelligence for Nuno Tavares (@AutomatedMarketer): a day of code that taught us what the algorithm was missing, a manual pivot that found the right answer anyway, and a deep intelligence report on the 3 best-fit competitors — <strong>Liam Ottley, Jordan Platten, and Billy Gene</strong> — all of whom run YouTube channels, active Facebook ad campaigns, and high-ticket sales funnels, the exact profile that Nuno competes with.
+    </div>
+    <p style="text-align:center;margin-top:20px;color:var(--text-muted);font-style:italic">"If I had more time, I'd have written a shorter algorithm."</p>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Process Brief · Pareto Final Project · Sofia Renata Camussi · April 2026</p>
+</div>
+
+<footer style="border-top:1px solid rgba(255,255,255,0.06);margin-top:40px;padding:48px 40px 36px;background:rgba(10,10,15,0.8);font-family:'DM Sans',sans-serif">
+  <div style="max-width:1100px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:32px;margin-bottom:36px">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:6px">Automated <span style="color:#D4AF37">Stalker</span></div>
+        <div style="color:rgba(255,255,255,0.35);font-size:0.78rem;line-height:1.7">Darwinian Competitor Intelligence · Built for Nuno Tavares<br>Pareto Talent Final Project · Sofia Renata Camussi · April 2026</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+        <a href="hub.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Hub</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="index.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">V1 Top 3</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="algorithm_sop.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Algorithm</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="v2_intel.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">V2 Intel</a>
+        <span style="color:rgba(255,255,255,0.15)">·</span>
+        <a href="https://github.com/camussicamusica/automated-stalker" target="_blank" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">GitHub ↗</a>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+      <div style="color:rgba(255,255,255,0.2);font-size:0.72rem">Built with Claude Code · Claude Sonnet 4.6 · Google Gemini 2.5 Pro · RivalSearchMCP · YouTube Data API v3</div>
+      <div style="color:rgba(255,255,255,0.15);font-size:0.72rem">© 2026 · MIT License</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

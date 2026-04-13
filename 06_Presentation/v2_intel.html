@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top 3 Competitor Intelligence — V2 | Automated Stalker</title>
+  <style>
+    :root {
+      --bg: #0a0f1e;
+      --bg2: #0d1426;
+      --bg3: #111827;
+      --accent: #00d4ff;
+      --accent2: #0099bb;
+      --gold: #ffd700;
+      --gold-dim: #b8960c;
+      --silver: #c0c0c0;
+      --bronze: #cd7f32;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: #1e2d4a;
+      --green: #10b981;
+      --purple: #8b5cf6;
+      --red: #ef4444;
+      --orange: #fb923c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-top: 64px;
+    }
+
+    /* ─── V2 BANNER ───────────────────────────────────────── */
+    .v2-banner {
+      background: linear-gradient(90deg, rgba(0,212,255,0.1), rgba(0,212,255,0.04));
+      border-bottom: 1px solid rgba(0,212,255,0.25);
+      padding: 12px 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--accent);
+    }
+    .v2-banner a { color: var(--accent); font-weight: 700; }
+
+    /* ─── HEADER ─────────────────────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, #0a0f1e 0%, #0d1f3c 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 52px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,212,255,0.08) 0%, transparent 70%);
+    }
+    .header h1 {
+      font-size: clamp(1.5rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, var(--accent) 0%, #ffffff 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      display: inline-block;
+    }
+    .header .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 8px;
+      position: relative;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-top: 14px;
+      position: relative;
+    }
+
+    /* ─── LAYOUT ──────────────────────────────────────────── */
+    .container { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 44px 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+    }
+
+    /* ─── PURPOSE BOX ─────────────────────────────────────── */
+    .purpose-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      font-size: 0.93rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+    .purpose-box p + p { margin-top: 10px; }
+    .purpose-box strong { color: var(--accent); }
+
+    /* ─── TOP 3 CARDS ─────────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .comp-card {
+      background: var(--bg2);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.2s;
+    }
+    .comp-card:hover { transform: translateY(-2px); }
+    .comp-card.gold   .card-head { background: linear-gradient(135deg,#1a1400,#2a1f00); border-bottom: 2px solid var(--gold); }
+    .comp-card.silver .card-head { background: linear-gradient(135deg,#111,#1a1a1a);    border-bottom: 2px solid var(--silver); }
+    .comp-card.bronze .card-head { background: linear-gradient(135deg,#1a0e00,#281500); border-bottom: 2px solid var(--bronze); }
+    .card-head { padding: 20px 22px; }
+    .card-rank {
+      font-size: 0.63rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+    .comp-card.gold   .card-rank { color: var(--gold); }
+    .comp-card.silver .card-rank { color: var(--silver); }
+    .comp-card.bronze .card-rank { color: var(--bronze); }
+    .card-name { font-size: 1.35rem; font-weight: 800; color: #ffffff; }
+    .card-tagline { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+    .card-body { padding: 16px 22px; }
+    .card-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.8rem; }
+    .card-row:last-child { border-bottom: none; }
+    .card-row span:first-child { color: var(--text-muted); }
+    .card-row span:last-child  { color: #fff; font-weight: 600; text-align: right; }
+    .card-link { display: block; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .card-link a { color: var(--accent); text-decoration: none; font-size: 0.78rem; font-weight: 600; }
+    .card-link a:hover { text-decoration: underline; }
+
+    /* ─── COMPARISON TABLE ────────────────────────────────── */
+    .table-wrap { overflow-x: auto; margin-top: 20px; border-radius: 12px; border: 1px solid var(--border); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    thead tr { background: rgba(0,212,255,0.06); }
+    thead th {
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-size: 0.72rem;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    thead th:first-child { color: var(--text-muted); }
+    tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.02); }
+    tbody td { padding: 10px 16px; color: var(--text); vertical-align: top; line-height: 1.45; }
+    tbody td:first-child { color: var(--text-muted); font-weight: 600; font-size: 0.78rem; white-space: nowrap; }
+    .td-gold   { color: var(--gold) !important; font-weight: 700 !important; }
+    .td-silver { color: var(--silver) !important; font-weight: 700 !important; }
+    .td-bronze { color: var(--bronze) !important; font-weight: 700 !important; }
+    .td-good { color: var(--green) !important; }
+    .td-none { color: var(--text-muted) !important; font-style: italic; }
+
+    /* ─── DEEP DIVE SECTIONS ──────────────────────────────── */
+    .competitor-block {
+      margin-bottom: 0;
+    }
+    .comp-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 28px 0 20px;
+    }
+    .comp-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      line-height: 1;
+      opacity: 0.15;
+    }
+    .comp-card.gold .comp-number, .comp-gold-num { color: var(--gold); }
+    .comp-card.silver .comp-number, .comp-silver-num { color: var(--silver); }
+    .comp-card.bronze .comp-number, .comp-bronze-num { color: var(--bronze); }
+    .comp-title-group h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .comp-title-group p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .rank-badge {
+      margin-left: auto;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .gold-badge   { background: rgba(255,215,0,0.1);   color: var(--gold);   border: 1px solid rgba(255,215,0,0.3); }
+    .silver-badge { background: rgba(192,192,192,0.1); color: var(--silver); border: 1px solid rgba(192,192,192,0.3); }
+    .bronze-badge { background: rgba(205,127,50,0.1);  color: var(--bronze); border: 1px solid rgba(205,127,50,0.3); }
+
+    .sub-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .sub-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sub-section p { font-size: 0.88rem; color: var(--text); line-height: 1.65; }
+    .sub-section p + p { margin-top: 8px; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .metric-pill {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    .metric-pill .mp-label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+    .metric-pill .mp-value { font-size: 0.95rem; font-weight: 700; color: #fff; }
+
+    .product-list { list-style: none; margin-top: 12px; }
+    .product-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .product-list li:last-child { border-bottom: none; }
+    .product-list .pl-name { font-weight: 700; color: #fff; font-size: 0.88rem; }
+    .product-list .pl-price { color: var(--green); font-size: 0.8rem; font-weight: 600; }
+    .product-list .pl-desc { color: var(--text-muted); font-size: 0.8rem; }
+
+    .funnel-flow {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-top: 14px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .ad-angle {
+      background: rgba(0,0,0,0.3);
+      border-left: 3px solid var(--accent);
+      padding: 10px 14px;
+      margin-top: 10px;
+      border-radius: 0 6px 6px 0;
+    }
+    .ad-angle .aa-label { font-size: 0.65rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 4px; }
+    .ad-angle p { font-size: 0.83rem; color: var(--text); font-style: italic; }
+    .ad-angle .aa-cta { margin-top: 6px; font-size: 0.75rem; color: var(--text-muted); }
+
+    .status-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .status-active  { background: rgba(16,185,129,0.15);  color: var(--green);  border: 1px solid rgba(16,185,129,0.3); }
+    .status-minimal { background: rgba(251,146,60,0.15);  color: var(--orange); border: 1px solid rgba(251,146,60,0.3); }
+    .status-heavy   { background: rgba(0,212,255,0.12);   color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+    .status-none    { background: rgba(148,163,184,0.1);  color: var(--text-muted); border: 1px solid rgba(148,163,184,0.2); }
+    .status-partner { background: rgba(255,215,0,0.12);   color: var(--gold);   border: 1px solid rgba(255,215,0,0.3); }
+
+    .url-list { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .url-list li { font-size: 0.82rem; display: flex; align-items: baseline; gap: 8px; }
+    .url-list .ul-label { color: var(--text-muted); min-width: 160px; flex-shrink: 0; font-size: 0.75rem; }
+    .url-list a { color: var(--accent); text-decoration: none; word-break: break-all; }
+    .url-list a:hover { text-decoration: underline; }
+
+    .social-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .social-pill {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+    }
+    .social-pill .sp-platform { color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.8px; }
+    .social-pill .sp-value { color: #fff; font-weight: 700; font-size: 0.88rem; }
+
+    .ghl-box {
+      background: rgba(212,175,55,0.05);
+      border: 1px solid rgba(212,175,55,0.2);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-top: 12px;
+    }
+    .ghl-box .gb-label { font-size: 0.68rem; color: #D4AF37; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; margin-bottom: 8px; }
+    .ghl-box p { font-size: 0.85rem; color: var(--text); line-height: 1.6; }
+    .ghl-box p + p { margin-top: 8px; }
+
+    /* ─── STRATEGIC ANALYSIS ──────────────────────────────── */
+    .strategy-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 26px;
+      margin-bottom: 16px;
+    }
+    .sc-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .strategy-card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .strategy-card li {
+      display: flex;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .strategy-card li::before { content: '→'; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+    .strategy-card li strong { color: #fff; }
+
+    .gap-card {
+      background: linear-gradient(135deg, rgba(0,212,255,0.04), rgba(0,212,255,0.01));
+      border: 1px solid rgba(0,212,255,0.15);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 14px;
+    }
+    .gc-label { font-size: 0.68rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; margin-bottom: 8px; }
+    .gap-card h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .gap-card p { font-size: 0.87rem; color: var(--text); line-height: 1.6; }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .footer a { color: var(--accent); text-decoration: none; }
+
+    @media(max-width:640px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2,1fr); }
+      .comp-header { flex-wrap: wrap; }
+      .rank-badge { margin-left: 0; }
+    }
+  </style>
+  <style>body{padding-top:64px!important}</style>
+</head>
+<body>
+
+<!-- ═══ UNIVERSAL NAV ═══ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600;9..40,700&family=Syne:wght@400;600;700;800&display=swap');
+.unav{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);z-index:9999;font-family:'Syne',sans-serif;letter-spacing:.06em;font-size:.78rem;text-transform:uppercase}
+.unav-brand{font-weight:800;color:#fff;text-decoration:none;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.unav-brand em{color:#D4AF37;font-style:normal}
+.unav-links{display:flex;gap:1.5rem;align-items:center;list-style:none}
+.unav-links li{position:relative}
+.unav-links a,.unav-drop-trigger{color:rgba(255,255,255,0.65);text-decoration:none;cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:6px;padding:.3rem 0;background:none;border:none;font:inherit;letter-spacing:inherit;text-transform:inherit;font-size:inherit}
+.unav-links a:hover,.unav-drop-trigger:hover{color:#fff}
+.unav-links a.active,.unav-drop-trigger.active{color:#D4AF37}
+.unav-arrow{font-size:.5rem;transition:transform .25s;opacity:.6}
+.unav-links li:hover .unav-arrow{transform:rotate(180deg);opacity:1}
+.unav-drop{position:absolute;top:calc(100% + 12px);left:0;background:rgba(14,14,20,0.97);border:1px solid rgba(255,255,255,0.08);border-radius:10px;min-width:240px;padding:.5rem 0;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .25s cubic-bezier(.16,1,.3,1);box-shadow:0 20px 40px rgba(0,0,0,.7)}
+.unav-drop::before{content:'';position:absolute;top:-5px;left:18px;width:9px;height:9px;background:rgba(14,14,20,.97);border-left:1px solid rgba(255,255,255,.08);border-top:1px solid rgba(255,255,255,.08);transform:rotate(45deg)}
+.unav-links li:hover .unav-drop{opacity:1;visibility:visible;transform:translateY(0)}
+.unav-drop a{color:rgba(255,255,255,.55);text-decoration:none;padding:.75rem 1.4rem;display:flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;text-transform:none;letter-spacing:0;transition:all .2s;border-left:2px solid transparent;white-space:nowrap}
+.unav-drop a:hover{color:#fff;background:rgba(255,255,255,.03);border-left-color:#D4AF37}
+.unav-drop a .di{font-size:.8rem;opacity:.7}
+.unav-drop-divider{height:1px;background:rgba(255,255,255,0.06);margin:.3rem 0}
+.unav-cta{background:#D4AF37;color:#0a0a0f;padding:.45rem 1.1rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.72rem;transition:opacity .2s;white-space:nowrap}
+.unav-cta:hover{opacity:.85;color:#0a0a0f}
+@media(max-width:768px){.unav-links{gap:.8rem}.unav{padding:1rem 1.2rem}.unav-drop{left:-20px}}
+</style>
+<nav class="unav">
+  <a href="hub.html" class="unav-brand">Automated <em>Stalker</em></a>
+  <ul class="unav-links">
+    <li>
+      <button class="unav-drop-trigger">View Report V1 <span class="unav-arrow">▼</span></button>
+      <div class="unav-drop">
+        <a href="hub.html"><span class="di">🏠</span> Intelligence Hub</a>
+        <a href="index.html"><span class="di">🥇</span> Top 3 Deep Intel</a>
+        <a href="algorithm_sop.html"><span class="di">🧬</span> Algorithm SOP</a>
+        <a href="competitors28.html"><span class="di">👥</span> All 28 Candidates</a>
+        <a href="funnelipc.html"><span class="di">👤</span> Funnel &amp; ICP</a>
+      </div>
+    </li>
+    <li>
+      <button class="unav-drop-trigger active">View Report V2 <span class="unav-arrow">▼</span></button>
+      <div class="unav-drop">
+        <a href="process_brief.html"><span class="di">📋</span> Process Brief</a>
+        <a href="v2_intel.html" style="color:#D4AF37;border-left-color:#D4AF37"><span class="di">🥇</span> Top 3 Deep Intel V2</a>
+      </div>
+    </li>
+    <li><a href="https://github.com/camussicamusica/automated-stalker" target="_blank">GitHub ↗</a></li>
+    <li><a href="https://app.clickup.com" target="_blank">ClickUp ↗</a></li>
+  </ul>
+</nav>
+
+<!-- V2 BANNER -->
+<div class="v2-banner">
+  🔄 This is Report V2. V1 research (<a href="index.html">Nick Saraev, Riley Brown, Nate Herk</a>) remains valid research. V2 adds the missing filter: active Facebook ads + confirmed sales funnels.
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Top 3 Competitor Intelligence — V2</h1>
+  <p class="subtitle">Liam Ottley · Jordan Platten · Billy Gene &nbsp;|&nbsp; April 13, 2026</p>
+  <br>
+  <span class="badge">Research Method: RivalSearchMCP · Web Search · Social Search · Website Mapping</span>
+</div>
+
+<div class="container">
+
+  <!-- PURPOSE -->
+  <section>
+    <div class="section-title">Purpose</div>
+    <div class="purpose-box">
+      <p>This report provides deep competitor intelligence on three key players in the AI marketing, agency education, and digital marketing training space — all of whom compete directly or tangentially with <strong>Nuno Tavares (@AutomatedMarketer on YouTube)</strong>.</p>
+      <p>The goal is to map each competitor's full business ecosystem: YouTube presence, product suite, pricing, sales funnel, social media reach, Facebook ad activity, and GoHighLevel (GHL) connections. These three were selected after the V1 algorithm was found to produce organic-only creators. The new filter: <strong>YouTube ✓ + Active Facebook ads ✓ + Confirmed sales funnel ✓ + GHL connection ✓</strong></p>
+      <p>Research method: <strong>RivalSearchMCP</strong> — parallel searches across DuckDuckGo and Yahoo, review site scraping (marksinsights.com, ippei.com, salesforge.ai, trustpilot.com), social profile pulls, website mapping, pricing triangulation from Reddit, Scribd, and third-party analytics.</p>
+    </div>
+  </section>
+
+  <!-- TOP 3 SUMMARY CARDS -->
+  <section>
+    <div class="section-title">The Final 3 — At a Glance</div>
+    <div class="cards-grid">
+
+      <!-- LIAM OTTLEY -->
+      <div class="comp-card gold">
+        <div class="card-head">
+          <div class="card-rank">🥇 Rank #1 — Dominant Leader</div>
+          <div class="card-name">Liam Ottley</div>
+          <div class="card-tagline">AI Automation Agency (AAA) model · Morningside AI · Skool 280K+</div>
+        </div>
+        <div class="card-body">
+          <div class="card-row"><span>YouTube Subs</span><span>~730,000</span></div>
+          <div class="card-row"><span>Free Community</span><span>280K–300K (Skool)</span></div>
+          <div class="card-row"><span>High-Ticket Price</span><span>$5,000–$7,150</span></div>
+          <div class="card-row"><span>Students</span><span>3,800+</span></div>
+          <div class="card-row"><span>Est. Monthly Rev</span><span>$330K–$500K+</span></div>
+          <div class="card-row"><span>Facebook Ads</span><span>Minimal / None</span></div>
+          <div class="card-row"><span>GHL Connection</span><span>None</span></div>
+          <div class="card-row"><span>Own Agency</span><span>Morningside AI</span></div>
+          <div class="card-link"><a href="#liam">→ Full Deep Dive</a></div>
+        </div>
+      </div>
+
+      <!-- JORDAN PLATTEN -->
+      <div class="comp-card silver">
+        <div class="card-head">
+          <div class="card-rank">🥈 Rank #2 — UK Agency Authority</div>
+          <div class="card-name">Jordan Platten</div>
+          <div class="card-tagline">SMMA + AI Lead Gen · Affluent Academy · Confirmed GHL Affiliate</div>
+        </div>
+        <div class="card-body">
+          <div class="card-row"><span>YouTube Subs</span><span>~361,000–375,000</span></div>
+          <div class="card-row"><span>Total Videos</span><span>1,028+ · 23.2M views</span></div>
+          <div class="card-row"><span>High-Ticket Price</span><span>$3,800–$4,500</span></div>
+          <div class="card-row"><span>Students</span><span>4,500+</span></div>
+          <div class="card-row"><span>Est. Monthly Rev</span><span>$200K–$350K+</span></div>
+          <div class="card-row"><span>Facebook Ads</span><span>Active (content-led)</span></div>
+          <div class="card-row"><span>GHL Connection</span><span>Confirmed Affiliate</span></div>
+          <div class="card-row"><span>Own Agency</span><span>Affluent.co ($250K+/mo)</span></div>
+          <div class="card-link"><a href="#jordan">→ Full Deep Dive</a></div>
+        </div>
+      </div>
+
+      <!-- BILLY GENE -->
+      <div class="comp-card bronze">
+        <div class="card-head">
+          <div class="card-rank">🥉 Rank #3 — OG Paid Ads Operator</div>
+          <div class="card-name">Billy Gene</div>
+          <div class="card-tagline">AI + XR Marketing · 10-Day AI Plan · GHL Co-Marketing Partner</div>
+        </div>
+        <div class="card-body">
+          <div class="card-row"><span>YouTube Subs</span><span>~300,000–400,000</span></div>
+          <div class="card-row"><span>Facebook Page</span><span>285,434 likes</span></div>
+          <div class="card-row"><span>Instagram</span><span>247,000 followers</span></div>
+          <div class="card-row"><span>High-Ticket Price</span><span>~$5,000–$10,000+</span></div>
+          <div class="card-row"><span>Entry Offer</span><span>$97–$197 (10-Day Plan)</span></div>
+          <div class="card-row"><span>Facebook Ads</span><span>HEAVY — Core Strategy</span></div>
+          <div class="card-row"><span>GHL Connection</span><span>Co-Marketing Partner</span></div>
+          <div class="card-row"><span>Podcast</span><span>~2M listeners</span></div>
+          <div class="card-link"><a href="#billy">→ Full Deep Dive</a></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MASTER COMPARISON TABLE -->
+  <section>
+    <div class="section-title">Master Comparison Table</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>🥇 Liam Ottley</th>
+            <th>🥈 Jordan Platten</th>
+            <th>🥉 Billy Gene</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>YouTube Subscribers</td><td class="td-gold">~730,000</td><td class="td-silver">~361K–375K</td><td class="td-bronze">~300K–400K</td></tr>
+          <tr><td>YouTube Videos</td><td>Large library</td><td>1,028+ videos</td><td>~31 (current)</td></tr>
+          <tr><td>Total YT Views</td><td>Not indexed</td><td>23.2M+</td><td>Not indexed</td></tr>
+          <tr><td>Instagram Followers</td><td>~33,000</td><td>~63,000</td><td class="td-gold">~247,000</td></tr>
+          <tr><td>Facebook Followers</td><td class="td-none">Not primary</td><td>Active (personal)</td><td class="td-gold">~285,434 likes</td></tr>
+          <tr><td>TikTok</td><td class="td-none">Not found</td><td class="td-none">Not found</td><td class="td-good">Active</td></tr>
+          <tr><td>Podcast</td><td>In development</td><td>Agency Giants / Audio</td><td class="td-gold">~2M listeners</td></tr>
+          <tr><td>Free Community</td><td class="td-gold">280K–300K+ (Skool)</td><td>Skool (smaller)</td><td class="td-none">None confirmed</td></tr>
+          <tr><td>Entry Product</td><td>FREE Skool</td><td>FREE Skool</td><td>$97–$197 course</td></tr>
+          <tr><td>Mid-Ticket Product</td><td class="td-none">None found</td><td>~$997–$1,497 (AA)</td><td>Low-ticket courses</td></tr>
+          <tr><td>High-Ticket Price</td><td>$5,000–$7,150</td><td>$3,800–$4,500</td><td>~$5,000–$10,000+</td></tr>
+          <tr><td>Total Students</td><td>3,800+</td><td>4,500+</td><td>Not stated</td></tr>
+          <tr><td>Facebook Ads</td><td class="td-none">Minimal / None</td><td class="td-good">Active (content-led)</td><td class="td-gold">HEAVY — Core Model</td></tr>
+          <tr><td>GHL Affiliation</td><td class="td-none">None</td><td class="td-good">Confirmed Affiliate</td><td class="td-gold">Co-Marketing Partner</td></tr>
+          <tr><td>GHL Course / Module</td><td class="td-none">None</td><td class="td-good">Yes (module)</td><td class="td-gold">Yes (workshops)</td></tr>
+          <tr><td>Own Agency</td><td>Morningside AI</td><td>Affluent.co</td><td>Billy Gene Is Mktg</td></tr>
+          <tr><td>Agency Revenue</td><td>Enterprise/Custom</td><td>$250K+/month</td><td>Not stated</td></tr>
+          <tr><td>Est. Monthly Revenue</td><td>$330K–$500K+</td><td>$200K–$350K+</td><td>$150K–$400K+</td></tr>
+          <tr><td>Niche</td><td>AI Automation Agency</td><td>SMMA + AI Lead Gen</td><td>AI + XR Paid Ads</td></tr>
+          <tr><td>Primary Traffic Source</td><td>Organic YouTube</td><td>YouTube + FB/IG</td><td class="td-gold">Paid FB/IG ads</td></tr>
+          <tr><td>In Space Since</td><td>2023 (AAA model)</td><td>~2016–2017</td><td class="td-gold">2010</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- COMPETITOR 1: LIAM OTTLEY                          -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="liam">
+    <div class="section-title">Deep Dive — Liam Ottley</div>
+
+    <div class="comp-header">
+      <div class="comp-number comp-gold-num" style="color:var(--gold);opacity:0.2;font-size:2.5rem;font-weight:900">01</div>
+      <div class="comp-title-group">
+        <h2>Liam Ottley</h2>
+        <p>Founder &amp; CEO, Morningside AI · Creator of the AAA Model · 730K YouTube Subs</p>
+      </div>
+      <span class="rank-badge gold-badge">🥇 Rank #1</span>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">Who He Is</div>
+      <p>Liam Ottley is a New Zealand-born AI entrepreneur widely credited with inventing and popularizing the "AI Automation Agency" (AAA) model starting in early 2023. He is the founder and CEO of Morningside AI, a real enterprise AI development company. In parallel, he built what is arguably the most influential free community in the AI business education space — over 280,000–300,000+ members on Skool — and then monetized that audience through a high-ticket paid program called the AAA Accelerator.</p>
+      <p>As of early 2026, he self-identifies as the "#1 AI business expert on YouTube" with 730,000+ subscribers. Multiple review sources describe him as an "8-figure AI entrepreneur."</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">1 — YouTube Presence</div>
+      <div class="metric-grid">
+        <div class="metric-pill"><div class="mp-label">Subscribers</div><div class="mp-value">~730,000</div></div>
+        <div class="metric-pill"><div class="mp-label">Second Channel</div><div class="mp-value">VLOGs Active</div></div>
+        <div class="metric-pill"><div class="mp-label">Content Volume</div><div class="mp-value">Large library</div></div>
+        <div class="metric-pill"><div class="mp-label">Top Video</div><div class="mp-value">371K views</div></div>
+      </div>
+      <p style="margin-top:14px">Recent confirmed video titles include <em>"How to Build &amp; Sell Web Apps With AI Without Coding (FULL COURSE)"</em> (371K+ views), <em>"My AI Agents Course — Rebuilt for 2026,"</em> and <em>"What's Actually Working Right Now When Starting an AI Agency."</em> VLOG channel bio: "Behind the scenes of building Morningside to $1bn."</p>
+      <p style="margin-top:8px">Content topics: AI Automation Agencies · No-code/low-code AI builds · AI SaaS products · n8n, Make, OpenAI API workflows · Real-world Morningside AI client data.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">2 — Business Model &amp; Products</div>
+      <ul class="product-list">
+        <li>
+          <div class="pl-name">Morningside AI</div>
+          <div class="pl-price">Custom enterprise pricing</div>
+          <div class="pl-desc">Done-for-you enterprise AI development agency. Core credibility asset — "I practice what I teach."</div>
+        </li>
+        <li>
+          <div class="pl-name">AI Automation Agency Hub (Free Skool)</div>
+          <div class="pl-price">FREE · skool.com/learn-ai</div>
+          <div class="pl-desc">280,000–300,000+ members. Top-of-funnel lead generation machine for AAA Accelerator.</div>
+        </li>
+        <li>
+          <div class="pl-name">AAA Accelerator (High-Ticket)</div>
+          <div class="pl-price">$5,000–$7,150 · aaaaccelerator.com</div>
+          <div class="pl-desc">3,800+ students. 6 months access. 1:1 coaching with Liam + 10 industry experts. No public pricing — book-a-call model. Promise: profitable AI business in 90 days.</div>
+        </li>
+        <li>
+          <div class="pl-name">The AI Founder's Fieldbook (Newsletter)</div>
+          <div class="pl-price">FREE · morningsideai.beehiiv.com</div>
+          <div class="pl-desc">Email list building and brand nurture via Beehiiv.</div>
+        </li>
+      </ul>
+      <p style="margin-top:14px;font-size:.85rem;color:var(--text-muted)">Primary monetization = AAA Accelerator ($5K–$7K per student). Estimated $330,000+ per month (confirmed via Substack funnel analysis). No low-ticket products found. No GHL affiliate income.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">3 — Sales Funnel</div>
+      <div class="funnel-flow">YouTube (organic) ──► Free Skool Hub (280-300K) ──► Book-a-Call
+                ▼                                              ▼
+        Newsletter (Beehiiv)                         AAA Accelerator
+        + Twitter/X + LinkedIn                       ($5K–$7.15K)</div>
+      <p style="margin-top:12px;font-size:.85rem">Three-stage machine: organic traffic in → free community → high-ticket close. The 280K free community eliminates need for paid acquisition. Book-a-call model creates exclusivity. VSL on landing page.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">4 — Facebook Ads</div>
+      <span class="status-tag status-minimal">Minimal / None</span>
+      <p>No confirmed active Facebook/Meta ad campaigns found across multiple search passes. His growth model is built entirely on organic YouTube inbound traffic. The free Skool community of 280K+ eliminates the need for paid acquisition. Strategy: YouTube SEO + content quality → free Skool → high-ticket conversion. 100% content-led, inbound funnel.</p>
+      <p style="margin-top:8px;font-style:italic;color:var(--text-muted)">This is a critical differentiator: Liam's competitive moat is organic YouTube authority, not paid traffic.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">5 — Websites &amp; Links</div>
+      <ul class="url-list">
+        <li><span class="ul-label">Main Agency</span><a href="https://morningside.ai" target="_blank">morningside.ai</a></li>
+        <li><span class="ul-label">High-Ticket Program</span><a href="https://www.aaaaccelerator.com" target="_blank">aaaaccelerator.com</a></li>
+        <li><span class="ul-label">Free Community</span><a href="https://www.skool.com/learn-ai" target="_blank">skool.com/learn-ai</a></li>
+        <li><span class="ul-label">Newsletter</span><a href="https://morningsideai.beehiiv.com" target="_blank">morningsideai.beehiiv.com</a></li>
+        <li><span class="ul-label">Personal Site</span><a href="https://www.liamottley.com" target="_blank">liamottley.com</a></li>
+        <li><span class="ul-label">YouTube Main</span><a href="https://www.youtube.com/@LiamOttley" target="_blank">youtube.com/@LiamOttley</a></li>
+        <li><span class="ul-label">YouTube VLOGs</span><a href="https://www.youtube.com/@LiamOttleyVLOGs" target="_blank">youtube.com/@LiamOttleyVLOGs</a></li>
+      </ul>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">6 — Social Presence</div>
+      <div class="social-row">
+        <div class="social-pill"><div class="sp-platform">YouTube</div><div class="sp-value">~730,000 subs</div></div>
+        <div class="social-pill"><div class="sp-platform">Instagram</div><div class="sp-value">~33,000 (11 posts)</div></div>
+        <div class="social-pill"><div class="sp-platform">Twitter / X</div><div class="sp-value">Active @liamottley_</div></div>
+        <div class="social-pill"><div class="sp-platform">Skool</div><div class="sp-value">280K–300K+ members</div></div>
+        <div class="social-pill"><div class="sp-platform">LinkedIn</div><div class="sp-value">Active</div></div>
+        <div class="social-pill"><div class="sp-platform">Podcast</div><div class="sp-value">In development</div></div>
+      </div>
+      <p style="margin-top:12px;font-size:.83rem;color:var(--text-muted)">Instagram is essentially inactive (11 posts, 33K). Liam's energy is almost entirely on YouTube and the Skool community.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">7 — GHL (GoHighLevel) Connection</div>
+      <span class="status-tag status-none">No GHL Connection</span>
+      <div class="ghl-box">
+        <div class="gb-label">Assessment</div>
+        <p>No GHL affiliate link found. No GHL certification or award. No GHL course in his product suite. His AI automation model is tool-agnostic — focuses on n8n, Make, OpenAI API, custom Python/JS builds. His students BUILD proprietary AI tools rather than reselling GHL white-label software.</p>
+        <p>Liam's positioning: "Build real AI solutions for businesses" (not CRM reselling). This is a key differentiator from Jordan Platten and Billy Gene, and means his audience wants to build and sell AI tools — a different buyer from the GHL-centric SMMA world.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- COMPETITOR 2: JORDAN PLATTEN                       -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="jordan">
+    <div class="section-title">Deep Dive — Jordan Platten</div>
+
+    <div class="comp-header">
+      <div class="comp-number" style="color:var(--silver);opacity:0.2;font-size:2.5rem;font-weight:900">02</div>
+      <div class="comp-title-group">
+        <h2>Jordan Platten</h2>
+        <p>Co-Founder, Affluent.co · Author · Speaker · Confirmed GHL Affiliate · 375K YouTube Subs</p>
+      </div>
+      <span class="rank-badge silver-badge">🥈 Rank #2</span>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">Who He Is</div>
+      <p>Jordan Platten is a British entrepreneur, author, and YouTube creator who built and actively runs Affluent.co, a digital marketing agency he scaled to over $250,000 per month in revenue. He was "kicked out of university at 23" and built a six-figure agency within six months — a story central to his marketing. He has mentored 4,500+ agency owners through the Affluent Academy and Agency Launch. He is one of the most prolific UK-based voices in the SMMA space and has recently pivoted toward AI lead generation. He holds a confirmed GoHighLevel affiliate deal with a dedicated landing page on GHL's own domain.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">1 — YouTube Presence</div>
+      <div class="metric-grid">
+        <div class="metric-pill"><div class="mp-label">Subscribers</div><div class="mp-value">~361K–375K</div></div>
+        <div class="metric-pill"><div class="mp-label">Total Videos</div><div class="mp-value">1,028+</div></div>
+        <div class="metric-pill"><div class="mp-label">Total Views</div><div class="mp-value">23.2M+</div></div>
+        <div class="metric-pill"><div class="mp-label">Primary Topics</div><div class="mp-value">SMMA + AI</div></div>
+      </div>
+      <p style="margin-top:14px">Recent confirmed titles include <em>"Transform Your Agency with These AI Tools in 2025"</em> (promoted on Facebook), <em>"The Best AI Lead Gen Agency Niches for 2025"</em> (pushed to LinkedIn), and Agency Giants podcast episodes. Content topics: SMMA building, AI lead generation, cold email/outreach, GHL setup, client acquisition, YouTube personal brand meta-content.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">2 — Business Model &amp; Products</div>
+      <ul class="product-list">
+        <li>
+          <div class="pl-name">Affluent.co (His Active Agency)</div>
+          <div class="pl-price">$250,000+/month revenue</div>
+          <div class="pl-desc">Full-service digital marketing agency. "One of the world's fastest growing digital marketing agencies" — GHL recognition page. Core credibility signal.</div>
+        </li>
+        <li>
+          <div class="pl-name">Free Skool Community — Agency Owners</div>
+          <div class="pl-price">FREE · skool.com/agencyowners</div>
+          <div class="pl-desc">Top-of-funnel lead generation for paid programs.</div>
+        </li>
+        <li>
+          <div class="pl-name">Affluent Academy 3.0</div>
+          <div class="pl-price">~$997–$1,497 · members.affluent.co</div>
+          <div class="pl-desc">World's first CPD (Continuing Professional Development) accredited agency training programme. Self-study + done-with-you mentorship on Kajabi.</div>
+        </li>
+        <li>
+          <div class="pl-name">Supercharging With HighLevel (GHL Module)</div>
+          <div class="pl-price">Included in Academy · members.affluent.co/p/supercharging-with-highlevel</div>
+          <div class="pl-desc">Dedicated GHL training module inside Affluent Academy. Teaches GHL to agency owners and drives GHL affiliate signups. Every student who signs up for GHL = recurring commission for Jordan.</div>
+        </li>
+        <li>
+          <div class="pl-name">Agency Launch (High-Ticket AI Programme)</div>
+          <div class="pl-price">$3,800–$4,500 · agency-launch.ai</div>
+          <div class="pl-desc">Application-based with VSL. Price intentionally hidden pre-call. Focus: AI lead generation agency model. "The AI pivot" of his business.</div>
+        </li>
+        <li>
+          <div class="pl-name">The Agency Podcast</div>
+          <div class="pl-price">FREE · theagencypodcast.com</div>
+          <div class="pl-desc">Top-of-funnel authority building and content distribution.</div>
+        </li>
+        <li>
+          <div class="pl-name">GHL Affiliate Program</div>
+          <div class="pl-price">Recurring commissions · gohighlevel.com/jordan-platten97</div>
+          <div class="pl-desc">Dedicated landing page on GHL's own domain — indicates official affiliate or partner status, likely Elite tier.</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">3 — Sales Funnel</div>
+      <div class="funnel-flow">YouTube + FB/IG ──► Free Skool ──► Affluent Academy ($997-$1,497)
+       ▼                                                ▼
+  Podcast / LinkedIn                        GHL Affiliate Upsell
+                                        (Supercharging With HighLevel)
+                                                    ▼
+                                        Agency Launch ($3,800–$4,500)
+                                        (VSL + Application + Sales Call)</div>
+      <p style="margin-top:12px;font-size:.85rem">Multi-layered funnel with three revenue tiers. GHL is woven into the mid-funnel as both a product and an affiliate income generator. Most cross-platform of the three competitors.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">4 — Facebook Ads</div>
+      <span class="status-tag status-active">Active — Content-Led with Retargeting</span>
+      <div class="ad-angle">
+        <div class="aa-label">Ad Angle #1</div>
+        <p>"Transform Your Agency with These AI Tools in 2025"</p>
+        <div class="aa-cta">→ Watch full video to claim free toolkit and 10X agency growth · CTA: YouTube video</div>
+      </div>
+      <div class="ad-angle">
+        <div class="aa-label">Ad Angle #2</div>
+        <p>"High Volume Outreach — The Secret to Supercharging Your Agency"</p>
+        <div class="aa-cta">→ Driving to course/community</div>
+      </div>
+      <div class="ad-angle">
+        <div class="aa-label">Ad Angle #3</div>
+        <p>"The Affluent Academy has become the world's first CPD ACCREDITED agency training programme. Join us on setting new standards."</p>
+        <div class="aa-cta">→ Credibility/social proof angle</div>
+      </div>
+      <div class="ad-angle">
+        <div class="aa-label">Ad Angle #4</div>
+        <p>"These are proven tactics from a 7-figure agency owner with years of experience. This is the same strategy I use within my own agency."</p>
+        <div class="aa-cta">→ Authority/proof angle</div>
+      </div>
+      <p style="margin-top:14px;font-size:.85rem">Strategy: Uses Facebook/Instagram primarily to distribute YouTube content and drive warm traffic to free community and course offers. Also runs paid traffic to YouTube videos (boosting), which compounds organic growth.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">5 — Websites &amp; Links</div>
+      <ul class="url-list">
+        <li><span class="ul-label">YouTube</span><a href="https://www.youtube.com/@JordanPlatten" target="_blank">youtube.com/@JordanPlatten</a></li>
+        <li><span class="ul-label">Main Academy</span><a href="https://affluent.academy" target="_blank">affluent.academy</a></li>
+        <li><span class="ul-label">GHL Course Module</span><a href="https://members.affluent.co/p/supercharging-with-highlevel" target="_blank">members.affluent.co/p/supercharging-with-highlevel</a></li>
+        <li><span class="ul-label">Agency Launch</span><a href="https://www.agency-launch.ai" target="_blank">agency-launch.ai</a></li>
+        <li><span class="ul-label">Free Skool</span><a href="https://www.skool.com/agencyowners" target="_blank">skool.com/agencyowners</a></li>
+        <li><span class="ul-label">His Agency</span><a href="https://affluent.co" target="_blank">affluent.co</a></li>
+        <li><span class="ul-label">GHL Affiliate Link</span><a href="https://www.gohighlevel.com/jordan-platten97?fp_ref=affluent" target="_blank">gohighlevel.com/jordan-platten97</a></li>
+        <li><span class="ul-label">Podcast</span><a href="https://theagencypodcast.com" target="_blank">theagencypodcast.com</a></li>
+        <li><span class="ul-label">Personal Site</span><a href="https://www.jordanplatten.co.uk" target="_blank">jordanplatten.co.uk</a></li>
+        <li><span class="ul-label">Facebook</span><a href="https://www.facebook.com/jordanplattenuk" target="_blank">facebook.com/jordanplattenuk</a></li>
+        <li><span class="ul-label">Instagram</span><a href="https://www.instagram.com/jordanplatten" target="_blank">instagram.com/jordanplatten</a></li>
+        <li><span class="ul-label">LinkedIn</span><a href="https://www.linkedin.com/in/jordanplatten" target="_blank">linkedin.com/in/jordanplatten</a></li>
+      </ul>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">6 — Social Presence</div>
+      <div class="social-row">
+        <div class="social-pill"><div class="sp-platform">YouTube</div><div class="sp-value">~361K–375K subs</div></div>
+        <div class="social-pill"><div class="sp-platform">Instagram</div><div class="sp-value">~63,000 · 134 posts</div></div>
+        <div class="social-pill"><div class="sp-platform">Facebook</div><div class="sp-value">Very active page</div></div>
+        <div class="social-pill"><div class="sp-platform">Twitter / X</div><div class="sp-value">Active @JordanPlatten</div></div>
+        <div class="social-pill"><div class="sp-platform">LinkedIn</div><div class="sp-value">Active — clips + posts</div></div>
+        <div class="social-pill"><div class="sp-platform">Podcast</div><div class="sp-value">Agency Giants</div></div>
+        <div class="social-pill"><div class="sp-platform">Skool</div><div class="sp-value">Free + Paid groups</div></div>
+      </div>
+      <p style="margin-top:12px;font-size:.83rem">Jordan is the most cross-platform of the three — active on YouTube, Instagram, Facebook, LinkedIn, Twitter/X, and podcast simultaneously. Bio: "Co-founder @affluentdotco | Investor: Appointwise, Clay, Skool, TripleWhale, ClubNeuro | 4,500+ Agencies Scaled."</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">7 — GHL (GoHighLevel) Connection</div>
+      <span class="status-tag status-active">Confirmed Active GHL Affiliate + Dedicated Course</span>
+      <div class="ghl-box">
+        <div class="gb-label">GHL Affiliate Details</div>
+        <p><strong>Affiliate Link:</strong> gohighlevel.com/jordan-platten97?fp_ref=affluent — dedicated landing page ON GoHighLevel's own domain with his personal identifier. Indicates official affiliate or partner status, likely Elite tier.</p>
+        <p><strong>GHL Course:</strong> "Supercharging With HighLevel" — listed as a FEATURED COURSE on members.affluent.co alongside Affluent Academy 3.0. Every Affluent Academy student who signs up for GHL = recurring commission for Jordan.</p>
+        <p><strong>GHL Recognition:</strong> "In recognition of consistently generating exceptional client results. Jordan Platten is the co-founder of Affluent.co, one of the world's fastest growing digital marketing agencies, responsible for millions in ROI for clients." — Official GHL recognition page.</p>
+        <p>Jordan likely earns 40% recurring commissions on every GHL subscription referred through his link. With 4,500+ agency owners trained, this could represent significant passive monthly income. GHL is not a side mention — it's built directly into his course curriculum.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- COMPETITOR 3: BILLY GENE                           -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="billy">
+    <div class="section-title">Deep Dive — Billy Gene</div>
+
+    <div class="comp-header">
+      <div class="comp-number" style="color:var(--bronze);opacity:0.2;font-size:2.5rem;font-weight:900">03</div>
+      <div class="comp-title-group">
+        <h2>Billy Gene</h2>
+        <p>Billy Gene Is Marketing LLC → Billy Gene Is A.I. &amp; XR Marketing · In Space Since 2010</p>
+      </div>
+      <span class="rank-badge bronze-badge">🥉 Rank #3</span>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">Who He Is</div>
+      <p>Billy Gene is one of the original digital marketing education figures, having been in the space since 2010 — making him the most tenured competitor in this analysis. He is the founder and CEO of "Billy Gene Is Marketing LLC," rebranded to "Billy Gene Is A.I. &amp; XR Marketing," leaning hard into AI and Extended Reality (XR/AR/VR) as the future of advertising. He operates from a "million-dollar broadcasting studio in downtown San Diego." His personal ads have been seen over 1 BILLION times across Facebook and Instagram. He is also deeply integrated with GoHighLevel, having a co-branded workshop page on GHL's own domain. His podcast boasts almost 2 million listeners. His unique market angle: targeting entrepreneurs and professionals over 40.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">1 — YouTube Presence</div>
+      <div class="metric-grid">
+        <div class="metric-pill"><div class="mp-label">Subscribers</div><div class="mp-value">~300K–400K</div></div>
+        <div class="metric-pill"><div class="mp-label">Videos (Current)</div><div class="mp-value">~31 videos</div></div>
+        <div class="metric-pill"><div class="mp-label">Primary Channel</div><div class="mp-value">Facebook/IG</div></div>
+        <div class="metric-pill"><div class="mp-label">Channel CTA</div><div class="mp-value">TryBillysPlan.com</div></div>
+      </div>
+      <p style="margin-top:14px">YouTube presence functions as a content library and top-of-funnel awareness tool rather than a primary growth engine. Only 31 videos currently in main playlist — strategic shift away from YouTube in favor of Facebook, Instagram, and paid ads. Recent titles: <em>"Day 1: Intro to Billy Gene's 10-Day A.I. Business Plan,"</em> <em>"Billy Gene HighLevel Workshop: Upgrade Outdated Businesses with AI,"</em> <em>"RSVP for Billy's Orientation"</em> (13K views).</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">2 — Business Model &amp; Products</div>
+      <ul class="product-list">
+        <li>
+          <div class="pl-name">10-Day A.I. Business Plan (Main Entry Offer)</div>
+          <div class="pl-price">~$97–$197 · trybillysplan.com</div>
+          <div class="pl-desc">Primary top-of-funnel paid entry point driven by heavy Facebook and Instagram ad spend. "Use A.I., marketing, and automation to deliver customers to businesses in exchange for money. 100% remote." Steps: "1. Get a customer. 2. Repeat step 1 for 10 days."</div>
+        </li>
+        <li>
+          <div class="pl-name">Escape With AI / Billy's A.I. Marketing Blueprint</div>
+          <div class="pl-price">~$97–$297 · escapewithai.com</div>
+          <div class="pl-desc">Alternate entry or upsell. "We help entrepreneurs and business owners get more customers using social media and artificial intelligence."</div>
+        </li>
+        <li>
+          <div class="pl-name">Billy's A.I. Tool (Proprietary SaaS)</div>
+          <div class="pl-price">Subscription-based · billygenesai.com</div>
+          <div class="pl-desc">Sales AI writes sales scripts and objection handling. Mindset AI provides coaching. Billy has built his OWN AI product — a unique differentiator vs. all three competitors.</div>
+        </li>
+        <li>
+          <div class="pl-name">A.I. Powered Advertising Agency Accelerator (16-Week Flagship)</div>
+          <div class="pl-price">~$5,000–$10,000+ · billysaccelerator.com</div>
+          <div class="pl-desc">Application-based. 16-week intensive program. "Want Billy to personally help you launch your own A.I. Powered Advertising Agency or scale your current company to 6, 7, or 8 figures in 2025?" Multiple URL variants suggest active A/B testing.</div>
+        </li>
+        <li>
+          <div class="pl-name">Geniuse Education (Formal Accredited School)</div>
+          <div class="pl-price">TBA · geneiuseducation.com</div>
+          <div class="pl-desc">Formally structured education institution with School Performance Fact Sheets (California-regulated). Billy's play for legitimacy/accreditation — similar to Jordan's CPD strategy but within the US educational framework.</div>
+        </li>
+        <li>
+          <div class="pl-name">GHL Co-Branded Workshop Series</div>
+          <div class="pl-price">Free/Low-cost · gohighlevel.com/billy-gene-workshop</div>
+          <div class="pl-desc">"How to Make a Million Bucks Using HighLevel, A.I., and Ads." Hosted ON GHL's own domain — highest level of partner status visible in the GHL ecosystem.</div>
+        </li>
+        <li>
+          <div class="pl-name">Podcast — "Billy Gene Is Marketing Offends The Internet"</div>
+          <div class="pl-price">FREE · ~2,000,000 listeners</div>
+          <div class="pl-desc">Mass awareness, brand building, and top-of-funnel audience. Largest podcast of all 3 competitors.</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">3 — Sales Funnel</div>
+      <div class="funnel-flow">Facebook/Instagram Ads ──► 10-Day AI Plan ($97-$197) ──► Email Nurture
+           ▼                                                             ▼
+  YouTube Content                                              Billy's AI Tool (SaaS)
+  Podcast (2M listeners)                                               ▼
+  GHL Workshops                                         A.I. Ad Agency Accelerator
+                                                         (16-week, ~$5K–$10K+)
+                                                                  ▼
+                                                       Certification / Geniuse Education</div>
+      <p style="margin-top:12px;font-size:.85rem">The most direct-response / performance marketing approach of all 3 competitors. Paid acquisition into low-ticket offers ($97–$197) followed by high-ticket backend sales. Billy's entire business model is predicated on paid acquisition — he built his brand through Facebook advertising before YouTube even existed as it does today.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">4 — Facebook Ads</div>
+      <span class="status-tag status-heavy">HEAVILY ACTIVE — Paid Ads Are Core to Business Model</span>
+      <div style="margin-bottom:12px">
+        <p><strong>Facebook Page:</strong> facebook.com/billygeneismarketing · 285,434 likes · 151 actively talking about it · San Diego, CA</p>
+        <p style="margin-top:6px"><strong>Page Bio:</strong> "We help business owners &amp; entrepreneurs turn clicks on Facebook, Instagram, &amp; YouTube into customers."</p>
+      </div>
+      <div class="ad-angle">
+        <div class="aa-label">Ad Angle #1 — Identity-Based Hook</div>
+        <p>"I Turn Professionals Over 40 Into A.I. Marketing Geniuses"</p>
+        <div class="aa-cta">→ "U didn't spend 20 years building expertise just to get left behind by AI" · CTA: trybillysplan.com or escapewithai.com</div>
+      </div>
+      <div class="ad-angle">
+        <div class="aa-label">Ad Angle #2 — Lifestyle/Freedom</div>
+        <p>"Start an A.I. Marketing Business in 10 Days — Live anywhere, work anytime, afford anything, while outsourcing everything."</p>
+        <div class="aa-cta">→ CTA: TryBillysPlan.com · Cross-platform consistency (also in YouTube description)</div>
+      </div>
+      <div class="ad-angle">
+        <div class="aa-label">Ad Angle #3 — GHL Workshop Promotion</div>
+        <p>"Join the Billy Gene HighLevel workshop: Upgrade Outdated Businesses with AI + HighLevel, on Dec 15–16. Learn how to package, price, and launch AI Employees."</p>
+        <div class="aa-cta">→ Educational event angle driving to GHL ecosystem</div>
+      </div>
+      <div class="ad-angle">
+        <div class="aa-label">Ad Angle #4 — Live Event RSVP</div>
+        <p>"RSVP for Billy's Orientation" — Facebook video post with 13K views.</p>
+        <div class="aa-cta">→ Live event/webinar angle — proven direct response format</div>
+      </div>
+      <div class="ad-angle">
+        <div class="aa-label">Ad Angle #5 — Proof/Scale</div>
+        <p>"His personal ads have been seen over 1 BILLION times" — authority and scale proof used on accelerator landing pages.</p>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">5 — Websites &amp; Links</div>
+      <ul class="url-list">
+        <li><span class="ul-label">YouTube</span><a href="https://www.youtube.com/@Billygeneismarketing" target="_blank">youtube.com/@Billygeneismarketing</a></li>
+        <li><span class="ul-label">Main Website</span><a href="https://billygeneismarketing.com" target="_blank">billygeneismarketing.com</a></li>
+        <li><span class="ul-label">10-Day AI Plan</span><a href="https://www.trybillysplan.com" target="_blank">trybillysplan.com</a></li>
+        <li><span class="ul-label">AI Blueprint/Escape</span><a href="https://www.escapewithai.com" target="_blank">escapewithai.com</a></li>
+        <li><span class="ul-label">Billy's AI Tool</span><a href="https://www.billygenesai.com" target="_blank">billygenesai.com</a></li>
+        <li><span class="ul-label">Accelerator</span><a href="https://www.billysaccelerator.com" target="_blank">billysaccelerator.com</a></li>
+        <li><span class="ul-label">Official School</span><a href="https://geneiuseducation.com" target="_blank">geneiuseducation.com</a></li>
+        <li><span class="ul-label">GHL Workshop (on GHL)</span><a href="https://www.gohighlevel.com/billy-gene-workshop" target="_blank">gohighlevel.com/billy-gene-workshop</a></li>
+        <li><span class="ul-label">Instagram</span><a href="https://instagram.com/billygeneismarketing" target="_blank">instagram.com/billygeneismarketing</a></li>
+        <li><span class="ul-label">Facebook</span><a href="https://www.facebook.com/billygeneismarketing" target="_blank">facebook.com/billygeneismarketing</a></li>
+        <li><span class="ul-label">TikTok</span><a href="https://tiktok.com/@billygeneismarketing" target="_blank">tiktok.com/@billygeneismarketing</a></li>
+      </ul>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">6 — Social Presence</div>
+      <div class="social-row">
+        <div class="social-pill"><div class="sp-platform">YouTube</div><div class="sp-value">~300K–400K subs</div></div>
+        <div class="social-pill"><div class="sp-platform">Instagram</div><div class="sp-value">~247,000 · 57 posts</div></div>
+        <div class="social-pill"><div class="sp-platform">Facebook</div><div class="sp-value">~285,434 likes</div></div>
+        <div class="social-pill"><div class="sp-platform">TikTok</div><div class="sp-value">Active</div></div>
+        <div class="social-pill"><div class="sp-platform">Podcast</div><div class="sp-value">~2M listeners</div></div>
+        <div class="social-pill"><div class="sp-platform">LinkedIn</div><div class="sp-value">Less active</div></div>
+      </div>
+      <p style="margin-top:12px;font-size:.83rem">Billy Gene is a Facebook/Instagram-native creator. Unlike Liam (YouTube-first) or Jordan (YouTube + cross-platform), Billy's roots are in Facebook advertising. His Instagram at 247K is by far the highest of the 3 competitors. His Facebook page at 285K is an enormous organic asset that also functions as a paid ad audience base. Instagram bio: "I turn professionals over 40 into A.I. Marketing Geneius! U didn't spend 20 years building expertise just to get left behind."</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="sub-title">7 — GHL (GoHighLevel) Connection</div>
+      <span class="status-tag status-partner">Co-Marketing Partner — Strongest GHL Integration of All 3</span>
+      <div class="ghl-box">
+        <div class="gb-label">GHL Co-Marketing Details</div>
+        <p><strong>GHL Workshop Page (on GHL's own domain):</strong> gohighlevel.com/billy-gene-workshop — Title: "How to Make a Million Bucks Using HighLevel, A.I., and Ads." Bio on GHL site: "Billy Gene is the founder and CEO of Billy Gene Is Marketing LLC — A top-ranked agency &amp; educational hub for digital advertising and customer acquisition. His personal ads have been seen over 1 Billion times."</p>
+        <p><strong>Second Workshop:</strong> "Upgrade Outdated Businesses with AI + HighLevel" (December 15–16, 2024), hosted via ghlcentral.com. Focus: "Package, price, and launch AI Employees that modernize outdated business systems."</p>
+        <p><strong>Assessment:</strong> Billy Gene is NOT just an affiliate — he is a CO-MARKETING PARTNER with GoHighLevel. Having a dedicated landing page on gohighlevel.com's own domain is reserved for a small number of high-profile figures GHL actively co-promotes. This is the strongest GHL relationship of all 3 competitors analyzed. His workshop angle: "Upgrade outdated businesses with AI + HighLevel" — teaching students to package AI + GHL together as a service offering.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRATEGIC ANALYSIS -->
+  <section>
+    <div class="section-title">Strategic Analysis for Nuno Tavares</div>
+
+    <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:28px">Based on the intelligence above, here are the competitive gaps, competitor weaknesses, and key lessons applicable to Nuno's positioning as @AutomatedMarketer.</p>
+
+    <div class="section-title" style="font-size:0.85rem;margin-bottom:16px">Competitive Gaps in the Market</div>
+
+    <div class="gap-card">
+      <div class="gc-label">Gap #1</div>
+      <h3>GHL + AI + Organic YouTube — The Unfilled Slot</h3>
+      <p>Liam Ottley dominates organic YouTube with 730K subs but has NO GHL connection. Jordan Platten has GHL but only 375K subs and a UK-centric audience. Billy Gene has the strongest GHL relationship but relies heavily on paid ads and targets over-40 professionals. <strong>The gap: a strong YouTube presence that combines AI automation + GHL education for the 25–40 entrepreneur crowd, with organic-first strategy.</strong></p>
+    </div>
+
+    <div class="gap-card">
+      <div class="gc-label">Gap #2</div>
+      <h3>Transparent Pricing vs. "Book a Call"</h3>
+      <p>All 3 competitors hide their high-ticket pricing behind application funnels. This creates friction and distrust for a portion of the market. A competitor willing to be more transparent about pricing could attract buyers who disengage from the hidden-price model.</p>
+    </div>
+
+    <div class="gap-card">
+      <div class="gc-label">Gap #3</div>
+      <h3>AI + GHL SaaS Reseller Model</h3>
+      <p>None of these 3 clearly dominates the space of "use GHL as your white-label SaaS product, automated with AI." This combines Liam's AI-build angle with Jordan's/Billy's GHL affiliation — and has high recurring revenue potential for students.</p>
+    </div>
+
+    <div class="section-title" style="font-size:0.85rem;margin-bottom:16px;margin-top:28px">Competitor Weaknesses</div>
+
+    <div class="strategy-card">
+      <div class="sc-title">🥇 Liam Ottley — Weaknesses</div>
+      <ul>
+        <li><strong>Instagram dead zone:</strong> 33K followers, 11 posts — no short-form content engine. Missing an entire acquisition channel.</li>
+        <li><strong>No GHL integration:</strong> Missing the largest affiliate revenue opportunity in the agency training space.</li>
+        <li><strong>$5K–$7K price point competition:</strong> Multiple similar-priced offers entering the market.</li>
+        <li><strong>Refund policy issues:</strong> Criticized on Reddit and in YouTube reviews — potential churn and reputation risk.</li>
+      </ul>
+    </div>
+
+    <div class="strategy-card">
+      <div class="sc-title">🥈 Jordan Platten — Weaknesses</div>
+      <ul>
+        <li><strong>UK-centric audience:</strong> Limits US market penetration — biggest addressable market.</li>
+        <li><strong>Hidden pricing friction:</strong> Agency Launch pricing ($3.8K–$4.5K) not publicly displayed — creates friction with sophisticated buyers.</li>
+        <li><strong>Smaller YouTube channel:</strong> 375K vs Liam's 730K — 2x disadvantage in organic reach.</li>
+        <li><strong>"Agency Giants" podcast:</strong> Under-branded and under-leveraged given his audience size.</li>
+      </ul>
+    </div>
+
+    <div class="strategy-card">
+      <div class="sc-title">🥉 Billy Gene — Weaknesses</div>
+      <ul>
+        <li><strong>YouTube severely underutilized:</strong> Only 31 videos in current playlist — leaving organic search and evergreen content value on the table.</li>
+        <li><strong>Over-reliance on paid ads:</strong> Business is tied to Facebook/Meta ad costs and platform risk.</li>
+        <li><strong>"Over 40" targeting is narrowing:</strong> Excludes large younger entrepreneur market (25–40 demographic).</li>
+        <li><strong>Scattered funnel:</strong> Multiple URL variants for the same product (5+ accelerator URLs) suggests brand confusion and untested conversion paths.</li>
+      </ul>
+    </div>
+
+    <div class="section-title" style="font-size:0.85rem;margin-bottom:16px;margin-top:28px">Key Lessons from Top Performers</div>
+
+    <div class="strategy-card">
+      <div class="sc-title">From Liam Ottley</div>
+      <ul>
+        <li><strong>FREE community as core funnel asset</strong> is extraordinarily powerful — 280K+ free members converting to high-ticket is a proven three-step machine.</li>
+        <li><strong>Owning a real agency</strong> gives unmatched credibility ("I practice what I teach") and differentiates from pure educators.</li>
+        <li><strong>YouTube → Skool → High-ticket:</strong> Clean, simple, scalable funnel architecture that doesn't require paid ads to sustain.</li>
+      </ul>
+    </div>
+
+    <div class="strategy-card">
+      <div class="sc-title">From Jordan Platten</div>
+      <ul>
+        <li><strong>GHL affiliation creates passive recurring revenue</strong> and deep curriculum integration — this should be explored by any agency educator building on the GHL ecosystem.</li>
+        <li><strong>CPD accreditation (or equivalent credentialing)</strong> adds a significant trust signal — especially for buyers comparing multiple programs.</li>
+        <li><strong>Cross-platform distribution</strong> (YouTube + Facebook + LinkedIn + Instagram) maximizes audience reach and resilience against any single platform algorithm change.</li>
+      </ul>
+    </div>
+
+    <div class="strategy-card">
+      <div class="sc-title">From Billy Gene</div>
+      <ul>
+        <li><strong>Low-ticket entry offers ($97–$197) dramatically expand the funnel top</strong> and identify buyers early, making high-ticket backend sales more efficient.</li>
+        <li><strong>Facebook/Instagram as primary channels</strong> reach audiences that YouTube doesn't — especially professionals over 35 with budget.</li>
+        <li><strong>Having your OWN branded AI tool</strong> (billygenesai.com) is a future-proof competitive moat — it creates stickiness, recurring revenue, and brand identity no competitor can easily replicate.</li>
+        <li><strong>Podcast with 2M listeners</strong> is a massive, underappreciated distribution asset that compounds brand authority over time.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer style="border-top:1px solid rgba(255,255,255,0.06);margin-top:80px;padding:48px 40px 36px;background:rgba(10,10,15,0.8);font-family:'DM Sans',sans-serif">
+  <div style="max-width:1100px;margin:0 auto">
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:6px">Automated <span style="color:#D4AF37">Stalker</span></div>
+    <div style="color:rgba(255,255,255,0.35);font-size:0.78rem;line-height:1.7">Darwinian Competitor Intelligence · Built for Nuno Tavares<br>Pareto Talent Final Project · Sofia Renata Camussi · April 2026</div>
+    <div style="color:rgba(255,255,255,0.2);font-size:0.72rem;margin-top:8px">Built with Claude Code · Claude Sonnet 4.6 · Google Gemini 2.5 Pro · RivalSearchMCP · YouTube Data API v3</div>
+  </div>
+</footer>
+
+</body>
+</html>
