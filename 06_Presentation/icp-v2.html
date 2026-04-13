@@ -74,49 +74,24 @@
             font-weight: 800;
             line-height: 1.1;
             margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #fff, #9ca3af);
+            background: linear-gradient(90deg,
+                #b8860b 0%,
+                #D4AF37 20%,
+                #fff8dc 40%,
+                #ffd700 50%,
+                #fff8dc 60%,
+                #D4AF37 80%,
+                #b8860b 100%);
+            background-size: 200% auto;
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
-            position: relative;
-            display: inline-block;
-            animation: glitch-main 2s infinite;
+            animation: gold-shimmer 3s linear infinite;
         }
-        .hero h1::before, .hero h1::after {
-            content: 'From Stranger to Superfan';
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0a0a0f; overflow: hidden;
-            -webkit-background-clip: unset; background-clip: unset;
-            -webkit-text-fill-color: #fff; color: #fff;
-        }
-        .hero h1::before {
-            left: 3px; text-shadow: -2px 0 #ff0080;
-            clip-path: polygon(0 10%, 100% 10%, 100% 35%, 0 35%);
-            animation: glitch-top 2s infinite;
-        }
-        .hero h1::after {
-            left: -3px; text-shadow: 2px 0 #00ffcc;
-            clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
-            animation: glitch-bot 2s infinite;
-        }
-        @keyframes glitch-main {
-            0%,88%,92%,96%,100% { transform: none; }
-            89%  { transform: skewX(-2deg) translateX(2px); }
-            90%  { transform: skewX(2deg) translateX(-2px); }
-            91%  { transform: none; }
-            93%  { transform: skewX(-1deg); }
-            95%  { transform: skewX(1deg) translateX(1px); }
-        }
-        @keyframes glitch-top {
-            0%,88%,92%,100% { opacity: 0; transform: none; }
-            89%  { opacity: 1; transform: translateX(-4px); }
-            90%  { opacity: 1; transform: translateX(4px); }
-            91%  { opacity: 0; }
-        }
-        @keyframes glitch-bot {
-            0%,90%,95%,100% { opacity: 0; transform: none; }
-            91%  { opacity: 1; transform: translateX(4px); }
-            93%  { opacity: 1; transform: translateX(-4px); }
-            94%  { opacity: 0; }
+
+        @keyframes gold-shimmer {
+            from { background-position: 0% center; }
+            to   { background-position: 200% center; }
         }
 
         .hero p {
@@ -985,9 +960,9 @@
             .kanban-board { grid-template-columns: 1fr; }
         }
     </style>
-<style>body{padding-top:64px!important}</style>
 </head>
 <body>
+
 <!-- ═══ UNIVERSAL NAV ═══ -->
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600;9..40,700&family=Syne:wght@400;600;700;800&display=swap');
@@ -1036,6 +1011,7 @@
 .unav-drop a.drop-v2:hover{background:rgba(212,175,55,0.15);border-left-color:#D4AF37;color:#fff;}
 .unav-drop a.drop-v2.drop-current{background:rgba(212,175,55,0.15);border-left-color:#D4AF37;color:#D4AF37;}
 .unav-drop a.drop-current{border-left-color:#D4AF37;color:#D4AF37;}
+.unav-drop-divider{height:1px;background:rgba(255,255,255,0.06);margin:.4rem 1rem;}
 </style>
 <nav class="unav">
   <a href="hub.html" class="unav-brand">Automated <em>Stalker</em></a>
@@ -1049,7 +1025,7 @@
         <div class="drop-section-head v2-head">&#10024; Latest &mdash; V2</div>
         <a href="process_brief.html" class="drop-v2"><span class="di">&#128203;</span> Process Brief</a>
         <a href="v2_intel.html" class="drop-v2"><span class="di">&#129351;</span> Top 3 Deep Intel V2</a>
-        <a href="icp-v2.html" class="drop-v2"><span class="di">&#128100;</span> Funnel &amp; ICP V2</a>
+        <a href="icp-v2.html" class="drop-v2 drop-current"><span class="di">&#128100;</span> Funnel &amp; ICP V2</a>
         <div class="unav-drop-divider"></div>
         <div class="drop-section-head v1-head">Oldest &mdash; V1</div>
         <a href="hub.html"><span class="di">&#127968;</span> Intelligence Hub</a>
@@ -1073,7 +1049,7 @@
     <main class="content-wrapper">
         
         <aside class="funnel-container">
-            <p class="funnel-label">They all started at TOFU. Some became MOFU. Some became BOFU.</p>
+            <p class="funnel-label">Every buyer starts as Carlos &mdash; broke on motivation, short on time. Some level up to Ron, carving out their first real build day. The ones who stick become Maya: she&apos;s been here before &mdash; she just needs someone in the room when step 7 breaks.</p>
             <div id="layer-tofu" class="funnel-layer">TOFU</div>
             <div id="layer-mofu" class="funnel-layer">MOFU</div>
             <div id="layer-bofu" class="funnel-layer">BOFU</div>
@@ -1082,272 +1058,217 @@
         <div class="personas-container">
             
             <article class="persona-card card-tofu scroll-element" data-stage="tofu">
-                <div class="raffle-banner">
-                    <h4>🎟 Buy anything = automatic raffle entry</h4>
-                    <p>Prizes: 1:1 with Nuno · Group session spot · The Playbook</p>
-                    <p><i>Every purchase is a ticket. The more you invest, the closer you get.</i></p>
-                </div>
-                
                 <div class="card-header">
-                    <img src="../05_Assets/diana.png" alt="Diana" class="photo-placeholder" >
+                    <div class="photo-placeholder" style="border: 3px solid var(--tofu); font-size: 2.2rem; background: rgba(255,107,53,0.08);">🔥</div>
                     <div class="persona-info">
-                        <h2>Diana</h2>
-                        <div class="persona-meta">Age 38–55 · Service business owner (sales, consulting, small agency)</div>
+                        <h2>Carlos</h2>
+                        <div class="persona-meta">Age 25–38 &middot; <em>The Eager Bootstrapper</em> &middot; Freelancer / early-stage entrepreneur</div>
                         <div class="stage-badge">Top of Funnel (TOFU)</div>
                     </div>
                 </div>
                 <div class="card-content">
                     <div class="content-block">
                         <h4>Context</h4>
-                        <p>Never touched GHL or AI tools.</p>
+                        <p>Already paying for GHL &mdash; going into debt to do it. Has watched every tutorial. Has shipped nothing yet.</p>
                     </div>
                     <div class="content-block">
                         <h4>Pain Points</h4>
-                        <p>Hiring is expensive. Competitors are moving faster. Doesn't know what she doesn't know.</p>
+                        <p>Cost anxiety is real. Every subscription feels like a bet he hasn&apos;t cashed yet. Competitors are shipping. He&apos;s still setting up.</p>
                     </div>
                     <div class="content-block">
                         <h4>Goal</h4>
-                        <p>Needs to understand <strong>WHY</strong> this matters before committing to <strong>HOW</strong>.</p>
+                        <p>One working thing. Anything. Something he can point to and say <strong>&ldquo;I built that.&rdquo;</strong> Proof he can do this before the next bill hits.</p>
                     </div>
                     <div class="content-block">
                         <h4>Messaging Angle</h4>
                         <div class="quote-block">
-                            "The market changed. You used to hire an expert. Now YOU are the expert — and AI is your team."
+                            &ldquo;You&apos;re not behind on skills. You&apos;re behind on shipping. This workshop ends that &mdash; today.&rdquo;
                         </div>
                     </div>
-
+                    <div class="content-block">
+                        <h4>Source Signal</h4>
+                        <p style="font-size:0.88rem; color:var(--text-muted); font-style:italic;">&ldquo;I can&apos;t afford the extra $100 upsell but I&apos;m already going into more debt 😅&hellip; I have yet to build anything yet. But I think I can I think I can.&rdquo; &mdash; Real YouTube comment, Nuno&apos;s channel</p>
+                    </div>
                     <div class="ladder-section">
-                        <h3 class="ladder-title">Diana's Offer Ladder</h3>
+                        <h3 class="ladder-title">Carlos&apos;s Offer Ladder</h3>
+                        <div style="background:rgba(255,107,53,0.06); border:1px solid var(--tofu); border-radius:8px; padding:1.2rem 1.5rem; margin-bottom:1.8rem;">
+                            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--tofu); font-weight:700; margin-bottom:0.5rem;">&#10003; What Exists Now</div>
+                            <p style="font-size:0.95rem; margin:0; color:#fff;">Standard Workshop Seat &mdash; <strong>$67</strong> &nbsp;&middot;&nbsp; VIP Upgrade (recordings + templates) &mdash; <strong>$164</strong></p>
+                        </div>
                         <div class="ladder">
-                            <div class="ladder-step up" style="--step: 0;">
+                            <div class="ladder-step up" style="--step:0; opacity:0.8; border:1px dashed var(--border-color); border-radius:8px; padding:1.2rem;">
+                                <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:0.8rem;">&#128161; Ideal Funnel Vision &mdash; Would be built in GHL with more time</div>
                                 <div class="step-header">
-                                    <span class="ladder-step-icon">⬆</span>
-                                    <span><strong>UP 1 — "The AI Jumpstart Class"</strong></span>
+                                    <span class="ladder-step-icon">&#11014;</span>
+                                    <span><strong>UPSELL &mdash; &ldquo;Agency-in-a-Box&rdquo; Reseller Snapshot</strong></span>
                                 </div>
-                                <div class="step-desc">Live group session with Nuno's facilitation team.</div>
+                                <div class="step-desc">The next question after the workshop: &ldquo;How do I make back my GHL subscription cost?&rdquo; Nuno&apos;s white-label strategy, pre-packaged and ready to sell.</div>
                                 <ul class="value-stack">
-                                    <li>Live group class ($297 value)</li>
-                                    <li>Class recording ($97 value)</li>
-                                    <li>Starter SOP templates ($97 value)</li>
-                                    <li>🎟 Raffle entry — win 1:1 with Nuno ($500 value)</li>
+                                    <li>White-label GHL snapshot, pre-configured</li>
+                                    <li>Reseller pricing walkthrough SOP</li>
+                                    <li>First-client acquisition checklist</li>
                                 </ul>
-                                <div class="price-box">TOTAL VALUE: $991 — <span>Your price: $97</span></div>
-                                <div class="guarantee-badge">Guarantee: Show up, take notes, implement one thing — or get your money back.</div>
+                                <div class="price-box">Recommended price: <span>$297 &ndash; $497</span></div>
+                                <div class="guarantee-badge">Conditional Guarantee: &ldquo;Ship your first client in 30 days or we build it with you.&rdquo;</div>
                             </div>
-                            <div class="ladder-step up" style="--step: 1;">
+                            <div class="ladder-step down" style="--step:1; opacity:0.8; border:1px dashed var(--border-color); border-radius:8px; padding:1.2rem;">
+                                <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:0.8rem;">&#128161; Ideal Funnel Vision &mdash; Would be built in GHL with more time</div>
                                 <div class="step-header">
-                                    <span class="ladder-step-icon">⬆</span>
-                                    <span><strong>UP 2 — "The No-Code AI Playbook" (Ebook)</strong></span>
+                                    <span class="ladder-step-icon">&#11015;</span>
+                                    <span><strong>DOWNSELL &mdash; &ldquo;Zero-Terminal Blueprint&rdquo; SOP Bundle</strong></span>
                                 </div>
+                                <div class="step-desc">For when $67 feels like too much right now. Strip out the live workshop &mdash; keep the raw SOPs and checklists. A win, without the commitment.</div>
                                 <ul class="value-stack">
-                                    <li>Ebook PDF ($197 value)</li>
-                                    <li>SOP template pack ($97 value)</li>
-                                    <li>Bonus video walkthrough ($147 value)</li>
-                                    <li>🎟 Raffle entry — win 1:1 with Nuno ($500 value)</li>
+                                    <li>Step-by-step Claude Code setup SOP (Mac + Windows)</li>
+                                    <li>Build checklist: your first app in writing</li>
+                                    <li>No live attendance required</li>
                                 </ul>
-                                <div class="price-box">TOTAL VALUE: $941 — <span>Your price: $27</span></div>
-                                <div class="guarantee-badge">Guarantee: Read it. Use it. If you don't get your first automation running, full refund.</div>
-                            </div>
-                            <div class="ladder-step down" style="--step: 2;">
-                                <div class="step-header">
-                                    <span class="ladder-step-icon">⬇</span>
-                                    <span><strong>DOWN — "The Vault" (Early Bird Access)</strong></span>
-                                </div>
-                                <div class="step-desc">Discounted access to private platform with recorded sessions NOT on YouTube.</div>
-                                <ul class="value-stack">
-                                    <li>Private library access ($197 value)</li>
-                                    <li>New sessions added monthly ($97/mo value)</li>
-                                    <li>🎟 Raffle entry ($500 value)</li>
-                                </ul>
-                                <div class="price-box">TOTAL VALUE: $794 — <span>Early Bird: $17/mo</span></div>
-                                <div class="scarcity-tag">Founding member pricing. Locks in forever. Limited spots.</div>
+                                <div class="price-box">Recommended price: <span>$17 &ndash; $27</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </article>
-
             <article class="persona-card card-mofu scroll-element" data-stage="mofu">
-                <div class="raffle-banner">
-                    <h4>🎟 Buy anything = automatic raffle entry</h4>
-                    <p>Prizes: 1:1 with Nuno · Group session spot · The Playbook</p>
-                    <p><i>Every purchase is a ticket. The more you invest, the closer you get.</i></p>
-                </div>
-
                 <div class="card-header">
-                    <img src="../05_Assets/ron.png" alt="Ron" class="photo-placeholder" >
+                    <div class="photo-placeholder" style="border: 3px solid var(--mofu); font-size: 2.2rem; background: rgba(124,58,237,0.08);">🛠️</div>
                     <div class="persona-info">
                         <h2>Ron</h2>
-                        <div class="persona-meta">Age 40–55 · Solopreneur or small biz owner.</div>
+                        <div class="persona-meta">Age 35&ndash;50 &middot; <em>The Weekend Builder</em> &middot; Solopreneur / small business owner</div>
                         <div class="stage-badge">Middle of Funnel (MOFU)</div>
                     </div>
                 </div>
                 <div class="card-content">
                     <div class="content-block">
                         <h4>Context</h4>
-                        <p>Watches every tutorial, saves every SOP, implements nothing.</p>
+                        <p>Has a job or business that runs Monday&ndash;Friday. Carves out Saturday mornings to learn. Watches, saves, bookmarks &mdash; but rarely ships.</p>
                     </div>
                     <div class="content-block">
                         <h4>Pain Points</h4>
-                        <p>Burned credits. Got lost in JSON files. Tried Claude Code once and panicked.</p>
+                        <p>The week gets in the way every time. He has the intention but not the structure. Tutorials don&apos;t give him enough to finish what he starts.</p>
                     </div>
                     <div class="content-block">
                         <h4>Goal</h4>
-                        <p>Finally build <strong>ONE</strong> thing that works. Prove to himself he can do this.</p>
+                        <p>Finally build <strong>ONE thing</strong> end-to-end. Prove to himself he can go from idea to deployed app before Sunday night.</p>
                     </div>
                     <div class="content-block">
                         <h4>Messaging Angle</h4>
                         <div class="quote-block">
-                            "You're not behind. You just need a system, not another tutorial."
+                            &ldquo;You&apos;re not missing skills. You&apos;re missing a blocked Saturday and someone keeping you accountable until it ships.&rdquo;
                         </div>
                     </div>
-
+                    <div class="content-block">
+                        <h4>Source Signal</h4>
+                        <p style="font-size:0.88rem; color:var(--text-muted); font-style:italic;">&ldquo;Been wanting to learn and use Cowork for a while &mdash; this was just the right amount of info and implementation to get me rolling. There goes the rest of my weekend LOL.&rdquo; &mdash; Ron Nedd, YouTube comment, Nuno&apos;s channel</p>
+                    </div>
                     <div class="ladder-section">
-                        <h3 class="ladder-title">Ron's Offer Ladder</h3>
+                        <h3 class="ladder-title">Ron&apos;s Offer Ladder</h3>
+                        <div style="background:rgba(124,58,237,0.06); border:1px solid var(--mofu); border-radius:8px; padding:1.2rem 1.5rem; margin-bottom:1.8rem;">
+                            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--mofu); font-weight:700; margin-bottom:0.5rem;">&#10003; What Exists Now</div>
+                            <p style="font-size:0.95rem; margin:0; color:#fff;">Standard Workshop Seat &mdash; <strong>$67</strong> &nbsp;&middot;&nbsp; VIP Upgrade (recordings + templates) &mdash; <strong>$164</strong></p>
+                        </div>
                         <div class="ladder">
-                            <div class="ladder-step up" style="--step: 0;">
+                            <div class="ladder-step up" style="--step:0; opacity:0.8; border:1px dashed var(--border-color); border-radius:8px; padding:1.2rem;">
+                                <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:0.8rem;">&#128161; Ideal Funnel Vision &mdash; Would be built in GHL with more time</div>
                                 <div class="step-header">
-                                    <span class="ladder-step-icon">⬆</span>
-                                    <span><strong>UP 1 — "The Build Session"</strong></span>
+                                    <span class="ladder-step-icon">&#11014;</span>
+                                    <span><strong>UPSELL &mdash; &ldquo;The Saturday Build&rdquo; Live Intensive</strong></span>
                                 </div>
-                                <div class="step-desc">1:1 with Nuno's facilitation team (not Nuno directly).</div>
+                                <div class="step-desc">A dedicated 4-hour implementation session. Not a demo &mdash; Ron builds his actual app, live, with Nuno guiding. Time Delay: zero. Effort: near zero.</div>
                                 <ul class="value-stack">
-                                    <li>60-min private session ($397 value)</li>
-                                    <li>Custom SOP built for YOUR business ($197 value)</li>
-                                    <li>Session recording ($97 value)</li>
-                                    <li>🎟 Raffle entry — win 1:1 with Nuno ($500 value)</li>
+                                    <li>4-hour guided live build session</li>
+                                    <li>Nuno-facilitated from idea to deployed URL</li>
+                                    <li>Session recording + custom SOP for your app</li>
                                 </ul>
-                                <div class="price-box">TOTAL VALUE: $1,191 — <span>Your price: $197</span></div>
-                                <div class="scarcity-tag">Limited seats per cohort.</div>
-                                <div class="guarantee-badge">Guarantee: Walk away with one working automation or we redo the session free.</div>
+                                <div class="price-box">Recommended price: <span>$497 &ndash; $997</span></div>
+                                <div class="guarantee-badge">Conditional Guarantee: &ldquo;If your app isn&apos;t deployed by end of session, we finish it with you &mdash; free.&rdquo;</div>
                             </div>
-                            <div class="ladder-step up" style="--step: 1;">
+                            <div class="ladder-step down" style="--step:1; opacity:0.8; border:1px dashed var(--border-color); border-radius:8px; padding:1.2rem;">
+                                <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:0.8rem;">&#128161; Ideal Funnel Vision &mdash; Would be built in GHL with more time</div>
                                 <div class="step-header">
-                                    <span class="ladder-step-icon">⬆</span>
-                                    <span><strong>UP 2 — "The Mastermind Room"</strong></span>
+                                    <span class="ladder-step-icon">&#11015;</span>
+                                    <span><strong>DOWNSELL &mdash; &ldquo;Watch at Your Own Pace&rdquo; Playback Pass</strong></span>
                                 </div>
-                                <div class="step-desc">Live virtual or in-person mastermind event.</div>
+                                <div class="step-desc">Can&apos;t make the live sessions? Get all recordings + implementation guides. Build it on your own schedule &mdash; same framework, no live pressure.</div>
                                 <ul class="value-stack">
-                                    <li>Event access ($497 value)</li>
-                                    <li>Peer network + recordings ($197 value)</li>
-                                    <li>🎟 Raffle entry ($500 value)</li>
+                                    <li>Full workshop recordings (all 4 days)</li>
+                                    <li>Implementation guides for async builders</li>
+                                    <li>Lifetime access &mdash; rewatch any time</li>
                                 </ul>
-                                <div class="price-box">TOTAL VALUE: $1,194 — <span>Your price: $297</span></div>
-                                <div class="scarcity-tag">Seats are physically limited.</div>
-                            </div>
-                            <div class="ladder-step down" style="--step: 2;">
-                                <div class="step-header">
-                                    <span class="ladder-step-icon">⬇</span>
-                                    <span><strong>DOWN 1 — "The AI Jumpstart Class"</strong></span>
-                                </div>
-                                <div class="step-desc">(Same as Diana's UP 1 — group class with Nuno's team)</div>
-                                <div class="price-box"><span>Price: $97</span></div>
-                            </div>
-                            <div class="ladder-step down" style="--step: 3;">
-                                <div class="step-header">
-                                    <span class="ladder-step-icon">⬇</span>
-                                    <span><strong>DOWN 2 — "The No-Code AI Playbook"</strong></span>
-                                </div>
-                                <div class="step-desc">(Same as Diana's UP 2 — ebook bundle)</div>
-                                <div class="price-box"><span>Price: $27</span></div>
+                                <div class="price-box">Recommended price: <span>$47</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </article>
-
             <article class="persona-card card-bofu scroll-element" data-stage="bofu">
-                <div class="raffle-banner">
-                    <h4>🎟 Buy anything = automatic raffle entry</h4>
-                    <p>Prizes: 1:1 with Nuno · Group session spot · The Playbook</p>
-                    <p><i>Every purchase is a ticket. The more you invest, the closer you get.</i></p>
-                </div>
-
                 <div class="card-header">
-                    <img src="../05_Assets/marco.png" alt="Marco" class="photo-placeholder" >
+                    <div class="photo-placeholder" style="border: 3px solid var(--bofu); font-size: 2.2rem; background: rgba(5,150,105,0.08);">🧩</div>
                     <div class="persona-info">
-                        <h2>Marco</h2>
-                        <div class="persona-meta">Age 35–50 · GHL Agency Owner, serves clients.</div>
+                        <h2>Maya</h2>
+                        <div class="persona-meta">Age 30&ndash;50 &middot; <em>The Lost Implementer</em> &middot; Motivated builder who gets stuck mid-tutorial</div>
                         <div class="stage-badge">Bottom of Funnel (BOFU)</div>
                     </div>
                 </div>
                 <div class="card-content">
                     <div class="content-block">
                         <h4>Context</h4>
-                        <p>Already knows GHL. Builds manually. Fears being left behind by AI.</p>
+                        <p>Starts everything. Finishes nothing. Not because she lacks motivation &mdash; because something never matches the screen, and there&apos;s no one to ask.</p>
                     </div>
                     <div class="content-block">
                         <h4>Pain Points</h4>
-                        <p>Clients asking about AI. He's the expert but doesn't have the answers yet.</p>
+                        <p>Connectors that don&apos;t appear. JSON files that break. Tutorials filmed on a different version of the tool. She hits a wall, tabs out, and doesn&apos;t come back.</p>
                     </div>
                     <div class="content-block">
                         <h4>Goal</h4>
-                        <p>Stay the smartest person in the room. Automate client delivery. Scale without hiring.</p>
+                        <p>Not to learn more &mdash; she already knows enough. She needs <strong>someone in the room</strong> when she gets stuck. One finished build would change everything.</p>
                     </div>
                     <div class="content-block">
                         <h4>Messaging Angle</h4>
                         <div class="quote-block">
-                            "You already know GHL. Now let AI run it for you."
+                            &ldquo;The tutorial was fine. The problem was step 7, when nothing matched. We cover that. Every warning. Every error. Every step everyone skips.&rdquo;
                         </div>
                     </div>
-
+                    <div class="content-block">
+                        <h4>Source Signal</h4>
+                        <p style="font-size:0.88rem; color:var(--text-muted); font-style:italic;">&ldquo;I don&apos;t see YouTube or GitHub as connectors. According to Claude they have never existed.&rdquo; &mdash; LoriBuzz, YouTube comment, Nuno&apos;s channel</p>
+                    </div>
                     <div class="ladder-section">
-                        <h3 class="ladder-title">Marco's Offer Ladder</h3>
+                        <h3 class="ladder-title">Maya&apos;s Offer Ladder</h3>
+                        <div style="background:rgba(5,150,105,0.06); border:1px solid var(--bofu); border-radius:8px; padding:1.2rem 1.5rem; margin-bottom:1.8rem;">
+                            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--bofu); font-weight:700; margin-bottom:0.5rem;">&#10003; What Exists Now</div>
+                            <p style="font-size:0.95rem; margin:0; color:#fff;">Standard Workshop Seat &mdash; <strong>$67</strong> &nbsp;&middot;&nbsp; VIP Upgrade (recordings + templates) &mdash; <strong>$164</strong></p>
+                        </div>
                         <div class="ladder">
-                            <div class="ladder-step up" style="--step: 0;">
+                            <div class="ladder-step up" style="--step:0; opacity:0.8; border:1px dashed var(--border-color); border-radius:8px; padding:1.2rem;">
+                                <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:0.8rem;">&#128161; Ideal Funnel Vision &mdash; Would be built in GHL with more time</div>
                                 <div class="step-header">
-                                    <span class="ladder-step-icon">⬆</span>
-                                    <span><strong>UP 1 — "The Inner Circle"</strong></span>
+                                    <span class="ladder-step-icon">&#11014;</span>
+                                    <span><strong>UPSELL &mdash; &ldquo;No-Builder-Left-Behind&rdquo; VIP Support Hub</strong></span>
                                 </div>
-                                <div class="step-desc">1:1 coaching directly with Nuno. HARD LIMIT: 20 spots total. Ever.</div>
+                                <div class="step-desc">Ongoing access to Nuno&apos;s team when Maya hits a wall. Not a course &mdash; a safety net. Live office hours, async troubleshooting, and a community of builders at her level.</div>
                                 <ul class="value-stack">
-                                    <li>90-min private strategy session with Nuno ($997 value)</li>
-                                    <li>Custom AI agent roadmap for your agency ($497 value)</li>
-                                    <li>30-day follow-up access via voice memo ($297 value)</li>
-                                    <li>🎟 Raffle entry ($500 value)</li>
+                                    <li>Monthly live office hours with Nuno&apos;s team</li>
+                                    <li>Async error-resolution support channel</li>
+                                    <li>Private builder community (peer troubleshooting)</li>
+                                    <li>Recorded session library &mdash; updated monthly</li>
                                 </ul>
-                                <div class="price-box">TOTAL VALUE: $2,291 — <span>Your price: $797</span></div>
-                                <div class="scarcity-tag">17 of 20 spots claimed. This closes when it's full. No exceptions.</div>
-                                <div class="guarantee-badge">Guarantee: Come with your GHL account. Leave with a working AI system. Or Nuno works with you again free.</div>
+                                <div class="price-box">Recommended price: <span>$197 / month</span></div>
+                                <div class="guarantee-badge">Conditional Guarantee: &ldquo;If you don&apos;t ship within 60 days with our support, we refund your first month.&rdquo;</div>
                             </div>
-                            <div class="ladder-step up" style="--step: 1;">
+                            <div class="ladder-step down" style="--step:1; opacity:0.8; border:1px dashed var(--border-color); border-radius:8px; padding:1.2rem;">
+                                <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:0.8rem;">&#128161; Ideal Funnel Vision &mdash; Would be built in GHL with more time</div>
                                 <div class="step-header">
-                                    <span class="ladder-step-icon">⬆</span>
-                                    <span><strong>UP 2 — "The Mastermind Room"</strong></span>
+                                    <span class="ladder-step-icon">&#11015;</span>
+                                    <span><strong>DOWNSELL &mdash; &ldquo;Troubleshooter&apos;s&rdquo; Error-Fix SOP Library</strong></span>
                                 </div>
-                                <div class="step-desc">Live mastermind event (in-person or virtual).</div>
+                                <div class="step-desc">Can&apos;t commit monthly? Get the 25 most common Claude Code errors &mdash; documented, solved, explained in plain English. The guide that exists because every warning in Nuno&apos;s SOPs was a real problem first.</div>
                                 <ul class="value-stack">
-                                    <li>Event access + recordings ($497 value)</li>
-                                    <li>Peer network of agency owners ($297 value)</li>
-                                    <li>Nuno live Q&A ($497 value)</li>
-                                    <li>🎟 Raffle entry ($500 value)</li>
+                                    <li>25-point error resolution guide</li>
+                                    <li>Mac + Windows troubleshooting variants</li>
+                                    <li>MCP connector setup FAQ</li>
                                 </ul>
-                                <div class="price-box">TOTAL VALUE: $1,791 — <span>Your price: $497</span></div>
-                                <div class="scarcity-tag">Seats are physically limited.</div>
-                            </div>
-                            <div class="ladder-step down" style="--step: 2;">
-                                <div class="step-header">
-                                    <span class="ladder-step-icon">⬇</span>
-                                    <span><strong>DOWN 1 — "The Build Session"</strong></span>
-                                </div>
-                                <div class="step-desc">1:1 with Nuno's facilitation team. (Same as Ron's UP 1)</div>
-                                <div class="price-box"><span>Price: $197</span></div>
-                            </div>
-                            <div class="ladder-step down" style="--step: 3;">
-                                <div class="step-header">
-                                    <span class="ladder-step-icon">⬇</span>
-                                    <span><strong>DOWN 2 — "The AI Jumpstart Class"</strong></span>
-                                </div>
-                                <div class="step-desc">Group class with Nuno's team.</div>
-                                <div class="price-box"><span>Price: $97</span></div>
-                            </div>
-                            <div class="ladder-step down" style="--step: 4;">
-                                <div class="step-header">
-                                    <span class="ladder-step-icon">⬇</span>
-                                    <span><strong>DOWN 3 — "The No-Code AI Playbook"</strong></span>
-                                </div>
-                                <div class="step-desc">Ebook bundle.</div>
-                                <div class="price-box"><span>Price: $27</span></div>
+                                <div class="price-box">Recommended price: <span>$37</span></div>
                             </div>
                         </div>
                     </div>
@@ -1357,7 +1278,133 @@
         </div>
     </main>
 
-    <section class="hormozi-section scroll-element">
+    
+    <!-- ============================================================
+         GRAND SLAM OFFER SECTION
+         ============================================================ -->
+    <section class="hormozi-section scroll-element" style="max-width:1000px; margin: 4rem auto 2rem auto; border-top: 3px solid var(--gold);">
+        <h2>The Grand Slam Offer</h2>
+        <div class="hormozi-subtitle">Engineered with Hormozi&apos;s Value Equation &mdash; Claude Code Workshop</div>
+        <div style="background:rgba(37,99,235,0.08); border:1px solid var(--electric-blue); border-radius:8px; padding:1rem 1.5rem; margin-bottom:2rem; font-size:0.9rem; color:var(--electric-blue-light);">
+            &#128203; <strong>Assignment Deliverable &mdash; Phase 3b</strong> &nbsp;&middot;&nbsp; This Grand Slam Offer feeds the landing page, email sequences, and ad copy in subsequent phases. The $67 Standard and $164 VIP are Nuno&apos;s real current offers &mdash; the ideal upsell/downsell ladder per ICP is shown in the persona cards above as a strategic vision for what a full GHL funnel would include.
+        </div>
+
+        <div class="equation-visual" style="text-align:left; gap:2.5rem;">
+
+            <div style="width:100%; background:#0f0f14; border-radius:12px; padding:2rem; border-left:4px solid var(--bofu);">
+                <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; color:var(--bofu); font-weight:700; margin-bottom:0.8rem;">&#11014; Dream Outcome &mdash; Increase</div>
+                <p style="font-size:1.05rem; color:var(--text-light); margin:0;">Move from <strong>Prompting</strong> (mass production) to <strong>Systems Architecture</strong> (mass personalization). Own a permanent AI that lives inside GHL, managing lead research and sales briefs 24/7 &mdash; for $0.67/day vs. $500/day for a developer.</p>
+            </div>
+
+            <div style="width:100%; background:#0f0f14; border-radius:12px; padding:2rem; border-left:4px solid var(--bofu);">
+                <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; color:var(--bofu); font-weight:700; margin-bottom:0.8rem;">&#11014; Perceived Likelihood &mdash; Increase</div>
+                <p style="font-size:1.05rem; color:var(--text-light); margin:0;">25 years of Fortune 100 IT rigor (Bank of America, Capital One). 3&times; GHL SaaS Award Winner. Co-taught with a former Amazon AWS Security Expert. This isn&apos;t a toy &mdash; it&apos;s enterprise-grade, built by people who bet their businesses on it.</p>
+            </div>
+
+            <div style="width:100%; background:#0f0f14; border-radius:12px; padding:2rem; border-left:4px solid var(--tofu);">
+                <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; color:var(--tofu); font-weight:700; margin-bottom:0.8rem;">&#11015; Time Delay &mdash; Decrease</div>
+                <p style="font-size:1.05rem; color:var(--text-light); margin:0;">While competitors sell multi-week accelerators at $5K&ndash;$7K, Nuno delivers a <strong>120-Minute Promise.</strong> By end of Day 2: a working Lead Magnet Quiz Funnel deployed to a live URL. The Pre-Work Setup Guide eliminates installation lag before Day 1 begins.</p>
+            </div>
+
+            <div style="width:100%; background:#0f0f14; border-radius:12px; padding:2rem; border-left:4px solid var(--tofu);">
+                <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; color:var(--tofu); font-weight:700; margin-bottom:0.8rem;">&#11015; Effort &amp; Sacrifice &mdash; Decrease</div>
+                <p style="font-size:1.05rem; color:var(--text-light); margin:0;">Zero-Terminal &ldquo;Vibe Coding&rdquo; workflow. No Python. No command line. No $150/hr developer on retainer. A 10-Lesson SOP Library (step-by-step for Mac and Windows) and pre-configured MCP Hubs so Claude already has &ldquo;hands&rdquo; inside GHL on Day 1.</p>
+            </div>
+
+            <div style="width:100%; background:rgba(212,175,55,0.06); border-radius:12px; padding:2rem; border-left:4px solid var(--gold);">
+                <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; color:var(--gold); font-weight:700; margin-bottom:0.8rem;">&#128176; Price Justification</div>
+                <p style="font-size:1.05rem; color:var(--text-light); margin:0;">The <strong>$67 Standard Seat</strong> is anchored against a $5,991 total perceived value stack. &ldquo;Money at a discount&rdquo; &mdash; less than one hour of developer time for a repeatable framework you&apos;ll use to build apps for the next 2&ndash;3 years.</p>
+            </div>
+
+        </div>
+
+        <div class="eq-caption" style="margin-top:2.5rem;">
+            Value = (Dream Outcome &times; Likelihood) &divide; (Time Delay &times; Effort)<br><br>
+            <strong style="color:var(--gold);">$67 Standard &nbsp;&middot;&nbsp; $164 VIP &nbsp;&middot;&nbsp; $5,991 Perceived Value Stack</strong>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         VIP UPSELL PAGE COPY
+         ============================================================ -->
+    <section class="scroll-element" style="max-width:900px; margin: 0 auto 6rem auto; padding: 0 2rem;">
+
+        <div style="background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(245,158,11,0.03)); border: 1px solid var(--vip-gold); border-radius:16px; padding:3rem; text-align:center;">
+
+            <div style="display:flex; gap:0.8rem; justify-content:center; margin-bottom:1.2rem; flex-wrap:wrap;">
+                <div style="font-size:0.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--vip-gold); font-weight:700;">VIP Upgrade &mdash; $97 One-Time</div>
+            </div>
+            <div style="background:rgba(37,99,235,0.1); border:1px solid var(--electric-blue); border-radius:6px; padding:0.6rem 1.2rem; font-size:0.8rem; color:var(--electric-blue-light); font-weight:600; margin-bottom:1rem; display:inline-block;">&#128203; Assignment Deliverable &mdash; Phase 3c &nbsp;&middot;&nbsp; Copy only &mdash; GHL One-Step Checkout widget goes on the live landing page</div>
+            <h2 style="font-size:2rem; color:#fff; margin-bottom:0.5rem; font-family:&apos;Syne&apos;, sans-serif;">STOP. Do Not Re-Watch Tutorials Alone.</h2>
+            <p style="font-size:1.2rem; color:var(--vip-gold-light); margin-bottom:2rem; font-family:&apos;Syne&apos;, sans-serif; font-weight:600;">Upgrade to VIP and Get the &ldquo;Done-With-You&rdquo; Fast Track.</p>
+
+            <p style="color:var(--text-muted); font-size:1rem; max-width:650px; margin:0 auto 2.5rem auto;">Most builders hit a wall at 3:45 PM on Day 2 when a JSON error pops up and there&apos;s no one to ask. The Standard seat gets you the knowledge. The VIP Access Ticket gets you <strong style="color:#fff;">implementation insurance.</strong></p>
+
+            <!-- VIP Stack -->
+            <div style="text-align:left; display:flex; flex-direction:column; gap:1rem; margin-bottom:2.5rem;">
+                <div style="background:#13131a; border:1px solid var(--border-color); border-radius:10px; padding:1.2rem 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:700; color:#fff; margin-bottom:0.2rem;">VIP Front-Row Seat + Priority Q&amp;A</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">Your technical blocks solved first. Skip the queue during live builds.</div>
+                    </div>
+                    <div style="color:var(--vip-gold); font-weight:700; white-space:nowrap; margin-left:1rem;">$297 value</div>
+                </div>
+                <div style="background:#13131a; border:1px solid var(--border-color); border-radius:10px; padding:1.2rem 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:700; color:#fff; margin-bottom:0.2rem;">Lifetime Workshop Recordings</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">Rewatch every click, every command, every &ldquo;aha&rdquo; moment &mdash; forever.</div>
+                    </div>
+                    <div style="color:var(--vip-gold); font-weight:700; white-space:nowrap; margin-left:1rem;">$197 value</div>
+                </div>
+                <div style="background:#13131a; border:1px solid var(--border-color); border-radius:10px; padding:1.2rem 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:700; color:#fff; margin-bottom:0.2rem;">Private VIP SOP Template Pack</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">The Agent Team configurations Nuno uses for his own agency. Not in the standard library.</div>
+                    </div>
+                    <div style="color:var(--vip-gold); font-weight:700; white-space:nowrap; margin-left:1rem;">$197 value</div>
+                </div>
+                <div style="background:#13131a; border:1px solid var(--border-color); border-radius:10px; padding:1.2rem 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:700; color:#fff; margin-bottom:0.2rem;">30-Min Group &ldquo;Hot Seat&rdquo; Session</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">Post-workshop audit of your specific GHL workflow with Nuno&apos;s team.</div>
+                    </div>
+                    <div style="color:var(--vip-gold); font-weight:700; white-space:nowrap; margin-left:1rem;">$297 value</div>
+                </div>
+                <div style="background:rgba(212,175,55,0.06); border:1px solid var(--gold); border-radius:10px; padding:1.2rem 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:700; color:var(--gold); margin-bottom:0.2rem;">&#127183; BONUS &mdash; &ldquo;Golden Ticket&rdquo; Raffle Entry</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">Auto-entered to win a 1:1 Build Session with Nuno.</div>
+                    </div>
+                    <div style="color:var(--gold); font-weight:700; white-space:nowrap; margin-left:1rem;">$500 value</div>
+                </div>
+            </div>
+
+            <!-- Total + Scarcity -->
+            <div style="background:#0a0a0f; border:2px solid var(--vip-gold); border-radius:12px; padding:1.5rem; margin-bottom:2rem;">
+                <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">Total Stack Value</div>
+                <div style="font-size:2rem; font-family:&apos;Syne&apos;, sans-serif; font-weight:800; color:#fff;">$1,488 &mdash; <span style="color:var(--vip-gold);">Your Price: $97</span></div>
+            </div>
+
+            <div style="display:flex; gap:1rem; justify-content:center; margin-bottom:2rem; flex-wrap:wrap;">
+                <div style="background:rgba(255,107,53,0.1); border:1px solid var(--tofu); border-radius:6px; padding:0.6rem 1.2rem; font-size:0.85rem; color:var(--tofu); font-weight:700;">&#128308; 17 of 50 spots remaining</div>
+                <div style="background:rgba(255,107,53,0.1); border:1px solid var(--tofu); border-radius:6px; padding:0.6rem 1.2rem; font-size:0.85rem; color:var(--tofu); font-weight:700;">Limited to 50 seats total</div>
+            </div>
+
+            <!-- Guarantee -->
+            <div style="background:#0f0f14; border-left:4px solid var(--bofu); border-radius:0 8px 8px 0; padding:1.5rem; text-align:left; margin-bottom:2rem;">
+                <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:var(--bofu); font-weight:700; margin-bottom:0.5rem;">&#9989; The &ldquo;Shipped-or-Solved&rdquo; Guarantee</div>
+                <p style="color:var(--text-light); margin:0; font-size:0.95rem;">Join VIP, follow the SOPs, and if you still don&apos;t have a working agent live by end of Day 3 &mdash; we redo the session with you for free. Or Nuno works with you until it ships. <strong>No builder left behind. Period.</strong></p>
+            </div>
+
+            <!-- CTA -->
+            <div style="background: linear-gradient(135deg, var(--vip-gold), var(--vip-gold-light)); color:#0a0a0f; font-family:&apos;Syne&apos;,sans-serif; font-weight:800; font-size:1.1rem; padding:1.2rem 2.5rem; border-radius:8px; display:inline-block; margin-bottom:1.5rem; cursor:pointer;">Upgrade to VIP for Just $97 &mdash; One-Step Checkout</div>
+
+            <div style="font-size:0.8rem; color:var(--text-muted);">&#128274; Secure Registration via HighLevel &nbsp;&middot;&nbsp; &#9889; Instant Access to VIP Private Portal &nbsp;&middot;&nbsp; All Sales are Final</div>
+
+        </div>
+    </section>
+
+<section class="hormozi-section scroll-element">
         <h2>Why these offers are designed this way</h2>
         <div class="hormozi-subtitle">The Hormozi Value Equation</div>
         
@@ -1396,7 +1443,7 @@
     <section class="rationale scroll-element">
         <h2>Why 3 profiles and not 1?</h2>
         <div class="rationale-quote">
-            The three ICPs are not separate audiences — they are the same person at different stages of their journey. Diana becomes Ron. Ron becomes Marco. Nuno's role is to serve each stage with the right offer, so every interaction moves them one level up. The webinar is the entry point for all three.
+            The three ICPs are not separate audiences — they are the same person at different stages of their journey. Carlos becomes Ron. Ron becomes Maya. Nuno's role is to serve each stage with the right offer, so every interaction moves them one level up. The webinar is the entry point for all three.
         </div>
     </section>
 
@@ -1496,9 +1543,9 @@
                 <div class="crm-step">
                     <span class="crm-step-icon">3</span> IF/ELSE workflow tags contact:
                     <div class="crm-split">
-                        <span class="crm-tag-badge bg-tofu">Beginner → TOFU-Diana</span>
+                        <span class="crm-tag-badge bg-tofu">Beginner → TOFU-Carlos</span>
                         <span class="crm-tag-badge bg-mofu">Intermediate → MOFU-Ron</span>
-                        <span class="crm-tag-badge bg-bofu">Advanced → BOFU-Marco</span>
+                        <span class="crm-tag-badge bg-bofu">Advanced → BOFU-Maya</span>
                     </div>
                 </div>
                 <div class="crm-arrow">↓</div>
@@ -1599,7 +1646,7 @@
 
     <div class="final-banner scroll-element">
         <p>This funnel was designed using the <br><span class="highlight">Hormozi Grand Slam Offer framework</span>,<br> grounded in Nuno Tavares's real audience pain points, and built for GoHighLevel.</p>
-        <p class="highlight" style="color: var(--gold);">Diana → Ron → Marco.<br>Every stage. Every offer. One journey.</p>
+        <p class="highlight" style="color: var(--gold);">Carlos → Ron → Maya.<br>Every stage. Every offer. One journey.</p>
         
         <div class="final-banner-meta">
             <span>Automated Marketer · Pareto Talent Final Project · Sofia Camussi · 2026</span>
@@ -1654,35 +1701,6 @@
             });
         });
     </script>
-<!-- ═══ UNIVERSAL FOOTER ═══ -->
-<footer style="border-top:1px solid rgba(255,255,255,0.06);margin-top:80px;padding:48px 40px 36px;background:rgba(10,10,15,0.8);font-family:'DM Sans',sans-serif">
-  <div style="max-width:1100px;margin:0 auto">
-    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:32px;margin-bottom:36px">
-      <div>
-        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:6px">Automated <span style="color:#D4AF37">Stalker</span></div>
-        <div style="color:rgba(255,255,255,0.35);font-size:0.78rem;line-height:1.7">Darwinian Competitor Intelligence · Built for Nuno Tavares<br>Pareto Talent Final Project · Sofia Renata Camussi · April 2026</div>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
-        <a href="hub.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Hub</a>
-        <span style="color:rgba(255,255,255,0.15)">·</span>
-        <a href="index.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Top 3 Intel</a>
-        <span style="color:rgba(255,255,255,0.15)">·</span>
-        <a href="algorithm_sop.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Algorithm SOP</a>
-        <span style="color:rgba(255,255,255,0.15)">·</span>
-        <a href="iteration1.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Evolution Matrix</a>
-        <span style="color:rgba(255,255,255,0.15)">·</span>
-        <a href="funnelipc.html" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Funnel &amp; ICP</a>
-        <span style="color:rgba(255,255,255,0.15)">·</span>
-        <a href="https://github.com/camussicamusica/automated-stalker" target="_blank" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">GitHub ↗</a>
-      </div>
-    </div>
-    <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
-      <div style="color:rgba(255,255,255,0.2);font-size:0.72rem">Built with Claude Code · Claude Sonnet 4.6 · Google Gemini 2.5 Pro · RivalSearchMCP · YouTube Data API v3</div>
-      <div style="color:rgba(255,255,255,0.15);font-size:0.72rem">© 2026 · MIT License</div>
-    </div>
-  </div>
-</footer>
-
 <script>
 (function(){
   var btn = document.getElementById('unav-hamburger');
@@ -1696,9 +1714,7 @@
   document.querySelectorAll('.unav-drop-trigger').forEach(function(trigger){
     trigger.addEventListener('click', function(){
       var drop = trigger.nextElementSibling;
-      if(drop){ drop.classList.toggle('open'); }
-      var arrow = trigger.querySelector('.unav-arrow');
-      if(arrow){ arrow.style.transform = drop && drop.classList.contains('open') ? 'rotate(180deg)' : ''; }
+      if(drop) drop.classList.toggle('open');
     });
   });
 })();
