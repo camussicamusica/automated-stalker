@@ -481,9 +481,9 @@
 .unav-drop-divider{height:1px;background:rgba(255,255,255,0.06);margin:.3rem 0}
 .unav-cta{background:#D4AF37;color:#0a0a0f;padding:.45rem 1.1rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.72rem;transition:opacity .2s;white-space:nowrap}
 .unav-cta:hover{opacity:.85;color:#0a0a0f}
-.unav-live-btn{position:relative;overflow:hidden;background:linear-gradient(135deg,#00d4ff 0%,#0076a3 100%);color:#0a0a0f;padding:.45rem 1.3rem;border-radius:20px;font-weight:800;text-decoration:none;font-size:.72rem;white-space:nowrap;letter-spacing:.05em;box-shadow:0 0 14px rgba(0,212,255,0.45);transition:box-shadow .3s,transform .2s;animation:unavLivePulse 3s ease-in-out infinite;}
+.unav-live-btn{position:absolute;left:50%;transform:translateX(-50%);overflow:hidden;background:linear-gradient(135deg,#00d4ff 0%,#0076a3 100%);color:#0a0a0f;padding:.45rem 1.3rem;border-radius:20px;font-weight:800;text-decoration:none;font-size:.72rem;white-space:nowrap;letter-spacing:.05em;box-shadow:0 0 14px rgba(0,212,255,0.45);transition:box-shadow .3s,transform .2s;animation:unavLivePulse 3s ease-in-out infinite;}
 .unav-live-btn::before{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent);animation:unavLiveShimmer 2.8s ease-in-out infinite;}
-.unav-live-btn:hover{box-shadow:0 0 28px rgba(0,212,255,0.85),0 0 48px rgba(0,212,255,0.25);transform:scale(1.06);color:#0a0a0f;}
+.unav-live-btn:hover{box-shadow:0 0 28px rgba(0,212,255,0.85),0 0 48px rgba(0,212,255,0.25);transform:translateX(-50%) scale(1.06);color:#0a0a0f;}
 @keyframes unavLivePulse{0%,100%{box-shadow:0 0 14px rgba(0,212,255,0.45);}50%{box-shadow:0 0 24px rgba(0,212,255,0.9),0 0 40px rgba(0,212,255,0.3);}}
 @keyframes unavLiveShimmer{0%{left:-120%;}60%,100%{left:160%;}}
 .unav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:.4rem;}
@@ -494,6 +494,7 @@
 @media(max-width:768px){
   .unav{padding:1rem 1.2rem;flex-wrap:wrap;}
   .unav-hamburger{display:flex;}
+  .unav-live-btn{display:none;}
   .unav-links{display:none;flex-direction:column;width:100%;gap:0;padding:.5rem 0;border-top:1px solid rgba(255,255,255,0.06);}
   .unav-links.open{display:flex;}
   .unav-links li{width:100%;}
@@ -515,11 +516,12 @@
 </style>
 <nav class="unav">
   <a href="hub.html" class="unav-brand">Automated <em>Stalker</em></a>
+  <a href="https://camussicamusica.github.io/nuno-final-website/nuno_final_v8.html" target="_blank" class="unav-live-btn">&#127640; The Website is LIVE!</a>
+
   <button class="unav-hamburger" id="unav-hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
   <ul class="unav-links" id="unav-links">
-    <li><a href="https://camussicamusica.github.io/nuno-final-website/nuno_final_v8.html" target="_blank" class="unav-live-btn">&#127640; The Website is LIVE!</a></li>
     <li>
       <button class="unav-drop-trigger active">Reports <span class="unav-arrow">&#9660;</span></button>
       <div class="unav-drop" style="min-width:270px">
