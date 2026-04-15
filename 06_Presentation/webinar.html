@@ -46,7 +46,7 @@
 
         /* Hero */
         .hero {
-            padding: 6rem 3rem 4rem;
+            padding: calc(58px + 3.5rem) 3rem 4rem;
             text-align: center;
             max-width: 900px;
             margin: 0 auto;
@@ -746,90 +746,98 @@
 </head>
 <body>
 
-<!-- ═══ UNIVERSAL NAV ═══ -->
+<!-- ═══ NAV ═══ -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600;9..40,700&family=Syne:wght@400;600;700;800&display=swap');
-.unav{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);z-index:9999;font-family:'Syne',sans-serif;letter-spacing:.06em;font-size:.78rem;text-transform:uppercase}
-.unav-brand{font-weight:800;color:#fff;text-decoration:none;font-size:.9rem;display:flex;align-items:center;gap:8px}
-.unav-brand em{color:#D4AF37;font-style:normal}
-.unav-links{display:flex;gap:1.5rem;align-items:center;list-style:none}
-.unav-links li{position:relative}
-.unav-links a,.unav-drop-trigger{color:rgba(255,255,255,0.65);text-decoration:none;cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:6px;padding:.3rem 0;background:none;border:none;font:inherit;letter-spacing:inherit;text-transform:inherit;font-size:inherit}
-.unav-links a:hover,.unav-drop-trigger:hover{color:#fff}
-.unav-links a.active,.unav-drop-trigger.active{color:#D4AF37}
-.unav-arrow{font-size:.5rem;transition:transform .25s;opacity:.6}
-.unav-links li:hover .unav-arrow{transform:rotate(180deg);opacity:1}
-.unav-drop{position:absolute;top:calc(100% + 12px);right:0;background:rgba(14,14,20,0.97);border:1px solid rgba(255,255,255,0.08);border-radius:10px;min-width:240px;padding:.5rem 0;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .25s cubic-bezier(.16,1,.3,1);box-shadow:0 20px 40px rgba(0,0,0,.7)}
-.unav-drop::before{content:'';position:absolute;top:-5px;right:18px;width:9px;height:9px;background:rgba(14,14,20,.97);border-left:1px solid rgba(255,255,255,.08);border-top:1px solid rgba(255,255,255,.08);transform:rotate(45deg)}
-.unav-links li:hover .unav-drop{opacity:1;visibility:visible;transform:translateY(0)}
-.unav-drop a{color:rgba(255,255,255,.55);text-decoration:none;padding:.75rem 1.4rem;display:flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;text-transform:none;letter-spacing:0;transition:all .2s;border-left:2px solid transparent;white-space:nowrap}
-.unav-drop a:hover{color:#fff;background:rgba(255,255,255,.03);border-left-color:#D4AF37}
-.unav-drop a .di{font-size:.8rem;opacity:.7}
-.unav-drop-divider{height:1px;background:rgba(255,255,255,0.06);margin:.3rem 0}
-.unav-cta{background:#D4AF37;color:#0a0a0f;padding:.45rem 1.1rem;border-radius:6px;font-weight:700;text-decoration:none;font-size:.72rem;transition:opacity .2s;white-space:nowrap}
-.unav-cta:hover{opacity:.85;color:#0a0a0f}
-.unav-live-btn{position:absolute;left:50%;transform:translateX(-50%);overflow:hidden;background:linear-gradient(135deg,#00d4ff 0%,#0076a3 100%);color:#0a0a0f;padding:.45rem 1.3rem;border-radius:20px;font-weight:800;text-decoration:none;font-size:.72rem;white-space:nowrap;letter-spacing:.05em;box-shadow:0 0 14px rgba(0,212,255,0.45);transition:box-shadow .3s,transform .2s;animation:unavLivePulse 3s ease-in-out infinite;}
-.unav-live-btn::before{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent);animation:unavLiveShimmer 2.8s ease-in-out infinite;}
-.unav-live-btn:hover{box-shadow:0 0 28px rgba(0,212,255,0.85),0 0 48px rgba(0,212,255,0.25);transform:translateX(-50%) scale(1.06);color:#0a0a0f;}
-@keyframes unavLivePulse{0%,100%{box-shadow:0 0 14px rgba(0,212,255,0.45);}50%{box-shadow:0 0 24px rgba(0,212,255,0.9),0 0 40px rgba(0,212,255,0.3);}}
-@keyframes unavLiveShimmer{0%{left:-120%;}60%,100%{left:160%;}}
-.unav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:.4rem;}
-.unav-hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:transform .3s,opacity .3s;}
-.unav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-.unav-hamburger.open span:nth-child(2){opacity:0;}
-.unav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.snav2{position:fixed;top:0;left:0;right:0;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(10,10,15,0.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,0.07);z-index:9999;font-family:'Syne',sans-serif;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase}
+.snav2-brand{font-weight:800;color:#fff;text-decoration:none;font-size:.88rem;white-space:nowrap}
+.snav2-brand em{color:#D4AF37;font-style:normal}
+.snav2-center{position:absolute;left:50%;transform:translateX(-50%)}
+.snav2-live{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#00d4ff,#0076a3);color:#0a0a0f;padding:.4rem 1.2rem;border-radius:20px;font-weight:800;font-size:.72rem;letter-spacing:.05em;text-decoration:none;white-space:nowrap;box-shadow:0 0 14px rgba(0,212,255,0.45);transition:box-shadow .3s,transform .2s;animation:snav2Pulse 3s ease-in-out infinite}
+.snav2-live::before{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:snav2Shimmer 2.8s ease-in-out infinite}
+.snav2-live:hover{box-shadow:0 0 28px rgba(0,212,255,.85),0 0 48px rgba(0,212,255,.25);transform:translateX(0) scale(1.06);color:#0a0a0f}
+@keyframes snav2Pulse{0%,100%{box-shadow:0 0 14px rgba(0,212,255,.45)}50%{box-shadow:0 0 24px rgba(0,212,255,.9),0 0 40px rgba(0,212,255,.3)}}
+@keyframes snav2Shimmer{0%{left:-120%}60%,100%{left:160%}}
+.snav2-right{display:flex;align-items:center;gap:1.4rem;list-style:none}
+.snav2-right li{position:relative}
+.snav2-right a,.snav2-drop-btn{color:rgba(255,255,255,.65);text-decoration:none;cursor:pointer;display:flex;align-items:center;gap:5px;background:none;border:none;font:inherit;letter-spacing:inherit;text-transform:inherit;font-size:inherit;padding:.3rem 0;transition:color .2s;white-space:nowrap}
+.snav2-right a:hover,.snav2-drop-btn:hover{color:#fff}
+.snav2-arrow{font-size:.5rem;opacity:.6;transition:transform .25s}
+.snav2-right li:hover .snav2-arrow{transform:rotate(180deg);opacity:1}
+.snav2-drop{position:absolute;top:calc(100% + 10px);right:0;background:rgba(14,14,20,.97);border:1px solid rgba(255,255,255,.08);border-radius:10px;min-width:240px;padding:.5rem 0;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .22s cubic-bezier(.16,1,.3,1);box-shadow:0 20px 40px rgba(0,0,0,.7)}
+.snav2-right li:hover .snav2-drop{opacity:1;visibility:visible;transform:translateY(0)}
+.snav2-drop a{color:rgba(255,255,255,.55);text-decoration:none;padding:.7rem 1.4rem;display:flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;font-size:.85rem;text-transform:none;letter-spacing:0;transition:all .2s;border-left:2px solid transparent;white-space:nowrap}
+.snav2-drop a:hover{color:#fff;background:rgba(255,255,255,.03);border-left-color:#D4AF37}
+.snav2-drop-head{padding:.5rem 1.4rem .25rem;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;pointer-events:none}
+.snav2-drop-head.gold{color:#D4AF37}
+.snav2-drop-head.dim{color:rgba(255,255,255,.28);margin-top:.2rem}
+.snav2-drop-divider{height:1px;background:rgba(255,255,255,.06);margin:.3rem 0}
+.snav2-drop a.v2{background:rgba(212,175,55,.07);border-left:2px solid rgba(212,175,55,.55);color:rgba(255,255,255,.8)}
+.snav2-drop a.v2:hover{background:rgba(212,175,55,.15);border-left-color:#D4AF37;color:#fff}
+.snav2-cta{background:#D4AF37;color:#0a0a0f !important;padding:.4rem 1rem;border-radius:6px;font-weight:700;font-size:.72rem;transition:opacity .2s;white-space:nowrap}
+.snav2-cta:hover{opacity:.85}
+.snav2-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:.4rem}
+.snav2-burger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:transform .3s,opacity .3s}
+.snav2-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.snav2-burger.open span:nth-child(2){opacity:0}
+.snav2-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 @media(max-width:768px){
-  .unav{padding:1rem 1.2rem;flex-wrap:wrap;}
-  .unav-hamburger{display:flex;}
-  .unav-live-btn{display:none;}
-  .unav-links{display:none;flex-direction:column;width:100%;gap:0;padding:.5rem 0;border-top:1px solid rgba(255,255,255,0.06);}
-  .unav-links.open{display:flex;}
-  .unav-links li{width:100%;}
-  .unav-links a:not(.unav-cta),.unav-drop-trigger{padding:.75rem 1.2rem;width:100%;border-bottom:1px solid rgba(255,255,255,0.04);justify-content:flex-start;}
-  .unav-cta{margin:.75rem 1.2rem;display:inline-block;}
-  .unav-drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;border-radius:0;background:rgba(255,255,255,0.03);min-width:unset;padding:.25rem 0;display:none;}
-  .unav-drop.open{display:block;}
-  .unav-drop::before{display:none;}
-  .unav-drop a{padding:.6rem 2.4rem;}
-  .unav-links li:hover .unav-drop{opacity:1;visibility:visible;transform:none;}
+  .snav2{flex-wrap:wrap;height:auto;padding:.8rem 1.2rem}
+  .snav2-center{display:none}
+  .snav2-burger{display:flex}
+  .snav2-right{display:none;flex-direction:column;width:100%;gap:0;padding:.5rem 0;border-top:1px solid rgba(255,255,255,.06)}
+  .snav2-right.open{display:flex}
+  .snav2-right li{width:100%}
+  .snav2-right a:not(.snav2-cta),.snav2-drop-btn{padding:.75rem 1.2rem;width:100%;border-bottom:1px solid rgba(255,255,255,.04)}
+  .snav2-cta{margin:.75rem 1.2rem;display:inline-block}
+  .snav2-drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;border-radius:0;background:rgba(255,255,255,.03);min-width:unset;padding:.25rem 0;display:none}
+  .snav2-drop.open{display:block}
+  .snav2-drop a{padding:.6rem 2.4rem}
 }
-.drop-section-head{padding:.5rem 1.4rem .25rem;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;pointer-events:none;}
-.drop-section-head.v2-head{color:#D4AF37;}
-.drop-section-head.v1-head{color:rgba(255,255,255,.28);margin-top:.2rem;}
-.unav-drop a.drop-v2{background:rgba(212,175,55,0.07);border-left:2px solid rgba(212,175,55,0.55);color:rgba(255,255,255,.8);}
-.unav-drop a.drop-v2:hover{background:rgba(212,175,55,0.15);border-left-color:#D4AF37;color:#fff;}
-.unav-drop a.drop-v2.drop-current{background:rgba(212,175,55,0.15);border-left-color:#D4AF37;color:#D4AF37;}
-.unav-drop a.drop-current{border-left-color:#D4AF37;color:#D4AF37;}
 </style>
-<nav class="unav">
-  <a href="hub.html" class="unav-brand">Automated <em>Stalker</em></a>
-  <a href="https://camussicamusica.github.io/nuno-final-website/nuno_final_v8.html" target="_blank" class="unav-live-btn">&#127640; The Website is LIVE!</a>
+<nav class="snav2">
+  <a href="hub.html" class="snav2-brand">Automated <em>Stalker</em></a>
 
-  <button class="unav-hamburger" id="unav-hamburger" aria-label="Menu">
+  <div class="snav2-center">
+    <a href="https://camussicamusica.github.io/nuno-final-website/nuno_final_v8.html" target="_blank" class="snav2-live">&#127640; The Website is LIVE!</a>
+  </div>
+
+  <button class="snav2-burger" id="snav2-burger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
-  <ul class="unav-links" id="unav-links">
+
+  <ul class="snav2-right" id="snav2-right">
     <li>
-      <button class="unav-drop-trigger">Reports <span class="unav-arrow">&#9660;</span></button>
-      <div class="unav-drop" style="min-width:270px">
-        <div class="drop-section-head v2-head">&#10024; Latest &mdash; V2</div>
-        <a href="process_brief.html" class="drop-v2"><span class="di">&#128203;</span> Process Brief</a>
-        <a href="v2_intel.html" class="drop-v2"><span class="di">&#129351;</span> Top 3 Deep Intel V2</a>
-        <a href="icp-v2.html" class="drop-v2"><span class="di">&#128100;</span> Funnel &amp; ICP V2</a>
-        <div class="unav-drop-divider"></div>
-        <div class="drop-section-head v1-head">Oldest &mdash; V1</div>
-        <a href="hub.html"><span class="di">&#127968;</span> Intelligence Hub</a>
-        <a href="index.html"><span class="di">&#129351;</span> Top 3 Deep Intel</a>
-        <a href="algorithm_sop.html"><span class="di">&#129516;</span> Algorithm SOP</a>
-        <a href="competitors28.html"><span class="di">&#128101;</span> All 28 Candidates</a>
-        <a href="funnelipc.html"><span class="di">&#128100;</span> Funnel &amp; ICP</a>
+      <button class="snav2-drop-btn">Reports <span class="snav2-arrow">&#9660;</span></button>
+      <div class="snav2-drop" style="min-width:270px">
+        <div class="snav2-drop-head gold">&#10024; Latest &mdash; V2</div>
+        <a href="process_brief.html" class="v2"><span>&#128203;</span> Process Brief</a>
+        <a href="v2_intel.html" class="v2"><span>&#129351;</span> Top 3 Deep Intel V2</a>
+        <a href="icp-v2.html" class="v2"><span>&#128100;</span> Funnel &amp; ICP V2</a>
+        <div class="snav2-drop-divider"></div>
+        <div class="snav2-drop-head dim">Oldest &mdash; V1</div>
+        <a href="hub.html"><span>&#127968;</span> Intelligence Hub</a>
+        <a href="index.html"><span>&#129351;</span> Top 3 Deep Intel</a>
+        <a href="algorithm_sop.html"><span>&#129516;</span> Algorithm SOP</a>
+        <a href="competitors28.html"><span>&#128101;</span> All 28 Candidates</a>
+        <a href="funnelipc.html"><span>&#128100;</span> Funnel &amp; ICP</a>
       </div>
     </li>
-    <li><a href="webinar.html" class="unav-cta">&#127916; Webinar Proposal</a></li>
+    <li><a href="webinar.html" class="snav2-cta">&#127916; Webinar Proposal</a></li>
     <li><a href="https://github.com/camussicamusica/automated-stalker" target="_blank">GitHub &#8599;</a></li>
     <li><a href="https://app.clickup.com" target="_blank">ClickUp &#8599;</a></li>
   </ul>
 </nav>
+<script>
+(function(){
+  var b=document.getElementById('snav2-burger'),m=document.getElementById('snav2-right');
+  if(b&&m){b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');})}
+  document.querySelectorAll('.snav2-drop-btn').forEach(function(t){
+    t.addEventListener('click',function(){
+      var d=t.nextElementSibling;if(d)d.classList.toggle('open');
+    });
+  });
+})();
+</script>
 
     <div class="hero">
         <div class="hero-tag">Automated Marketer · Webinar Launch Strategy · Prepared by Sofia Camussi</div>
@@ -1163,23 +1171,5 @@
             updateClock();
         });
     </script>
-<script>
-(function(){
-  var btn = document.getElementById('unav-hamburger');
-  var menu = document.getElementById('unav-links');
-  if(btn && menu){
-    btn.addEventListener('click', function(){
-      btn.classList.toggle('open');
-      menu.classList.toggle('open');
-    });
-  }
-  document.querySelectorAll('.unav-drop-trigger').forEach(function(trigger){
-    trigger.addEventListener('click', function(){
-      var drop = trigger.nextElementSibling;
-      if(drop) drop.classList.toggle('open');
-    });
-  });
-})();
-</script>
 </body>
 </html>
